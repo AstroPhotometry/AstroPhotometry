@@ -23,11 +23,11 @@ $ Set-ExecutionPolicy Unrestricted -Scope Process
 ## packages
 update:
 ```shell
-$ python3 -m pip install --upgrade pip
+$ python -m pip install --upgrade pip
 ```
 astropy:
 ```shell
-$ pip install --upgrade astropy[recommended]
+$ python -m pip install --upgrade astropy[recommended]
 ```
 pillow:
 ```shell
@@ -37,4 +37,4 @@ matplotlib:
 ```shell
 $ pip install matplotlib
 ```
-if its not installing type without the `python3 -m `
+if its not installing type without the `python -m `
