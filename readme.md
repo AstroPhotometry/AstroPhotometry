@@ -1,6 +1,7 @@
 # Astro Photometry
 ## packages:
 - astropy
+- Numpy
 
 ## venv installation
 ```shell
@@ -26,7 +27,7 @@ $ python3 -m pip install --upgrade pip
 ```
 astropy:
 ```shell
-$ pip install --upgrade astropy
+$ pip install --upgrade astropy[recommended]
 ```
 pillow:
 ```shell
