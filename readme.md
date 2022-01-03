@@ -40,5 +40,5 @@ $ pip install matplotlib
 if its not installing type without the `python -m `
 
 ## reference
-Structure of FITS files: http://www.eso.org/sci/software/esomidas/doc/user/18NOV/vola/node111.html  
-FITS File Handling with astropy in python: https://docs.astropy.org/en/stable/io/fits/index.html
+* Structure of FITS files: http://www.eso.org/sci/software/esomidas/doc/user/18NOV/vola/node111.html  
+* FITS File Handling with astropy in python: https://docs.astropy.org/en/stable/io/fits/index.html
