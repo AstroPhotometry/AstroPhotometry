@@ -6,9 +6,9 @@ from astropy.io import fits
 
 import sys
 
-# TODO: add stuff like -o to overwrite or list of files
 
-
+# TODO: add stuff like -o to overwrite or list of files, -s show after
+# TODO: return or print the output file name for piping 
 def print_usage(file_name: str) -> None:
     split_filename = file_name.split(sep="\\")
     print(
@@ -42,6 +42,9 @@ def main(argv: list[str]):
 
     hdul = fits.HDUList([hdu])
     hdul.writeto(output_file_name, overwrite=True)
+
+    first_file.close()
+    second_file.close()
 
 
 if __name__ == "__main__":
