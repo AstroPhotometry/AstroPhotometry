@@ -7,39 +7,39 @@
 ```shell
 $ python -m venv --system-site-packages .\venv
 ```
-to start venv type:   
+1. to start venv type:   
 ```shell
 $ &"./venv/Scripts/Activate.ps1"
 ```
-$ to get out of venv type:
+2. to get out of venv type:
 ```shell
 $ deactivate
 ```
-if error in stating, type in admin cmd:
+3. if error in stating, type in admin cmd:
 ```shell
 $ Set-ExecutionPolicy Unrestricted -Scope Process
 ```
 
 ## packages
-update:
+* update:
 ```shell
 $ python -m pip install --upgrade pip
 ```
-astropy:
+* astropy:
 ```shell
 $ python -m pip install --upgrade astropy[recommended]
 ```
-pillow:
+* pillow:
 ```shell
 $ python3 -m pip install --upgrade Pillow
 ```
-matplotlib:
+* matplotlib:
 ```shell
 $ pip install matplotlib
 ```
 if its not installing type without the `python -m `
 
-static type checker - mypy (doesn't fully work because astropy don't have decelerations):
+* static type checker - mypy (doesn't fully work because astropy don't have decelerations):
 ```shell
 $ python -m pip install mypy
 ```
