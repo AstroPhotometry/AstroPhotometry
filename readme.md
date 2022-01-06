@@ -4,6 +4,9 @@
 - Numpy
 
 ## venv installation
+<details>
+  <summary>code:</summary>
+
 ```shell
 $ python -m venv --system-site-packages .\venv
 ```
@@ -19,6 +22,7 @@ $ deactivate
 ```shell
 $ Set-ExecutionPolicy Unrestricted -Scope Process
 ```
+</details>
 
 ## packages
 * update:
