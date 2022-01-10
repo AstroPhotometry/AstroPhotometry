@@ -13,11 +13,13 @@ def print_usage(file_name: str) -> None:
     print(
         f"""usage: {split_filename[-1]} -operand <first file> <second file> <output file or -s for show>
         operand can be:
+        -A      avarage
+        -a      addition
         -m      minus
-        -a      avarage
         -M      multiplication
-        -<num>  divide by num
+        -d      division
         """)
+        # -<num>  divide by num #unary operand
 
 
 def main(argv: list[str]):
@@ -39,7 +41,7 @@ def main(argv: list[str]):
     first_file = fits.open(first_file_name, mode='readonly')
     second_file = fits.open(second_file_name, mode='readonly')
 
-    if operand == "-a":
+    if operand == "-A":
         out_picture = first_file[0].data[:, :]
         out_picture += second_file[0].data[:, :]
         out_picture = out_picture[:, :] / 2
@@ -49,14 +51,20 @@ def main(argv: list[str]):
     elif operand == "-M":
         out_picture = first_file[0].data[:, :]
         out_picture *= second_file[0].data[:, :]
-    elif operand[0] == '-' and operand[1:].isdigit():
-        num: int = int(operand[1:])
-        if num == 0:
-            print("ERROR: can not divide by 0")
-            print_usage(argv[0])
-            exit(1)
+    elif operand == "-a":
         out_picture = first_file[0].data[:, :]
-        out_picture = out_picture/num
+        out_picture += second_file[0].data[:, :]
+    elif operand == "-d": # TODO: check for 0
+        out_picture = first_file[0].data[:, :]
+        out_picture = out_picture / second_file[0].data[:, :]
+    # elif operand[0] == '-' and operand[1:].isdigit(): # unary operand
+    #     num: int = int(operand[1:])
+    #     if num == 0:
+    #         print("ERROR: can not divide by 0")
+    #         print_usage(argv[0])
+    #         exit(1)
+    #     out_picture = first_file[0].data[:, :]
+    #     out_picture = out_picture / num
     else:
         first_file.close()
         second_file.close()
