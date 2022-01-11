@@ -19,7 +19,7 @@ def print_usage(file_name: str) -> None:
         -M      multiplication
         -d      division
         """)
-        # -<num>  divide by num #unary operand
+    # -<num>  divide by num #unary operand
 
 
 def main(argv: list[str]):
@@ -38,8 +38,8 @@ def main(argv: list[str]):
     output_file_name: str = argv[4]
 
     # open the files TODO: check if file exists
-    first_file = fits.open(first_file_name, mode='readonly')
-    second_file = fits.open(second_file_name, mode='readonly')
+    first_file: fits.hdu.hdulist.HDUList = fits.open(first_file_name, mode='readonly')
+    second_file: fits.hdu.hdulist.HDUList = fits.open(second_file_name, mode='readonly')
 
     if operand == "-A":
         out_picture = first_file[0].data[:, :]
@@ -54,7 +54,7 @@ def main(argv: list[str]):
     elif operand == "-a":
         out_picture = first_file[0].data[:, :]
         out_picture += second_file[0].data[:, :]
-    elif operand == "-d": # TODO: check for 0
+    elif operand == "-d":  # TODO: check for 0
         out_picture = first_file[0].data[:, :]
         out_picture = out_picture / second_file[0].data[:, :]
     # elif operand[0] == '-' and operand[1:].isdigit(): # unary operand
