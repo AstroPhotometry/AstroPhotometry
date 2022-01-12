@@ -1,12 +1,9 @@
-# import matplotlib.pyplot as plt
-# from astropy.visualization import astropy_mpl_style
-# plt.style.use(astropy_mpl_style)
-
+import numpy as np
 from astropy.io import fits
 import sys
 
 
-# TODO: add stuff like -o to overwrite or list of files, -s show after
+# TODO: add stuff like -o to overwrite or list of files
 # TODO: return or print the output file name for piping
 def print_usage(file_name: str) -> None:
     split_filename = file_name.split(sep="\\")
@@ -41,20 +38,27 @@ def main(argv: list[str]):
     first_file: fits.hdu.hdulist.HDUList = fits.open(first_file_name, mode='readonly')
     second_file: fits.hdu.hdulist.HDUList = fits.open(second_file_name, mode='readonly')
 
+    operator = ""  # the operator to write into the header
+
     if operand == "-A":
+        operator = "avarage"
         out_picture = first_file[0].data[:, :]
         out_picture += second_file[0].data[:, :]
         out_picture = out_picture[:, :] / 2
     elif operand == "-m":
+        operator = "minus"
         out_picture = first_file[0].data[:, :]
         out_picture -= second_file[0].data[:, :]
     elif operand == "-M":
+        operator = "multiplication"
         out_picture = first_file[0].data[:, :]
         out_picture *= second_file[0].data[:, :]
     elif operand == "-a":
+        operator = "addition"
         out_picture = first_file[0].data[:, :]
         out_picture += second_file[0].data[:, :]
     elif operand == "-d":  # TODO: check for 0
+        operator = "division"
         out_picture = first_file[0].data[:, :]
         out_picture = out_picture / second_file[0].data[:, :]
     # elif operand[0] == '-' and operand[1:].isdigit(): # unary operand
@@ -82,9 +86,10 @@ def main(argv: list[str]):
         plt.show()
     else:
         hdr = fits.Header()
-        hdr['testing'] = 'first edition'
-        hdr['COMMENT'] = "this is an avarage of 2 fits files"
-        # empty_primary = fits.PrimaryHDU(header=hdr) # to make with only header
+        import datetime
+        date = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
+        hdr['history'] = f"= edited on {date}"
+        hdr['COMMENT'] = f"= this is an {operator} of 2 fits files"
         hdu = fits.PrimaryHDU(data=out_picture, header=hdr)
 
         hdul = fits.HDUList([hdu])
