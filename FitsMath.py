@@ -18,6 +18,37 @@ def print_usage(file_name: str) -> None:
         """)
     # -<num>  divide by num #unary operand
 
+def parser(argv: list[str]):
+    show = "-s" in argv
+    if show:
+        output_file_name = None
+    else:
+        output_file_name = argv[-1]
+    
+    if "-A" in argv:
+        argv.remove("-A")
+        operator = "avarage"
+    elif "-a" in argv:
+        argv.remove("-a")
+        operator = "addition"
+    elif "-m" in argv:
+        argv.remove("-m")
+        operator = "minus"
+    elif "-M" in argv:
+        argv.remove("-M")
+        operator = "multiplication"
+    elif "-d" in argv:
+        argv.remove("-d")
+        operator = "division"
+    else:
+        print_usage(argv[0])
+        exit(1)
+    
+    # TODO: check if they are paths or exist or unary
+    first_file_name = argv[-3]
+    second_file_name = argv[-2]
+
+    return (show,first_file_name,second_file_name,output_file_name,operator)
 
 def main(argv: list[str]):
     if len(argv) < 5:
@@ -29,38 +60,32 @@ def main(argv: list[str]):
         print_usage(argv[0])
         exit(1)
 
+    (show,first_file_name,second_file_name,output_file_name,operator) = parser(argv)
     # get the file names
-    first_file_name: str = argv[2]
-    second_file_name: str = argv[3]
-    output_file_name: str = argv[4]
+    # first_file_name: str = argv[2]
+    # second_file_name: str = argv[3]
+    # output_file_name: str = argv[4]
 
     # open the files TODO: check if file exists
     with fits.open(first_file_name, mode='readonly') as first_file, fits.open(
             second_file_name, mode='readonly') as second_file:
-        # first_file: fits.hdu.hdulist.HDUList = fits.open(first_file_name, mode='readonly')
-        # second_file: fits.hdu.hdulist.HDUList = fits.open(second_file_name, mode='readonly')
 
-        operator = ""  # the operator to write into the header
+        # operator = ""  # the operator to write into the header
 
-        if operand == "-A":
-            operator = "avarage"
+        if operator == "avarage":
             out_picture = first_file[0].data[:, :]
             out_picture += second_file[0].data[:, :]
             out_picture = out_picture[:, :] / 2
-        elif operand == "-m":
-            operator = "minus"
+        elif operator == "minus":
             out_picture = first_file[0].data[:, :]
             out_picture -= second_file[0].data[:, :]
-        elif operand == "-M":
-            operator = "multiplication"
+        elif operator == "multiplication":
             out_picture = first_file[0].data[:, :]
             out_picture *= second_file[0].data[:, :]
-        elif operand == "-a":
-            operator = "addition"
+        elif operator == "addition":
             out_picture = first_file[0].data[:, :]
             out_picture += second_file[0].data[:, :]
-        elif operand == "-d":  # TODO: check for 0
-            operator = "division"
+        elif operator == "division":  # TODO: check for 0
             out_picture = first_file[0].data[:, :]
             out_picture = out_picture / second_file[0].data[:, :]
         # elif operand[0] == '-' and operand[1:].isdigit(): # unary operand
@@ -77,7 +102,7 @@ def main(argv: list[str]):
             print_usage(argv[0])
             exit(1)
 
-        if output_file_name == "-s":
+        if show:
             import matplotlib.pyplot as plt
             from astropy.visualization import astropy_mpl_style
             plt.style.use(astropy_mpl_style)
@@ -96,9 +121,6 @@ def main(argv: list[str]):
 
             hdul = fits.HDUList([hdu])
             hdul.writeto(output_file_name, overwrite=True)
-
-    # first_file.close()
-    # second_file.close()
 
 
 if __name__ == "__main__":
