@@ -3,6 +3,64 @@ from astropy.io import fits
 import sys
 
 
+def get_astropy_mpl_style():  # the setting for the graph that show on the screen
+    return {
+        # Lines
+        'lines.linewidth': 1.7,
+        'lines.antialiased': True,
+
+        # Patches
+        'patch.linewidth': 1.0,
+        'patch.facecolor': '#348ABD',
+        'patch.edgecolor': '#CCCCCC',
+        'patch.antialiased': True,
+
+        # Images
+        'image.cmap': 'gist_heat',
+        'image.origin': 'upper',
+
+        # Font
+        'font.size': 12.0,
+
+        # Axes
+        'axes.facecolor': '#FFFFFF',
+        'axes.edgecolor': '#AAAAAA',
+        'axes.linewidth': 1.0,
+        # 'axes.grid': True, # making an WARNING
+        'axes.titlesize': 'x-large',
+        'axes.labelsize': 'large',
+        'axes.labelcolor': 'k',
+        'axes.axisbelow': True,
+
+        # Ticks
+        'xtick.major.size': 0,
+        'xtick.minor.size': 0,
+        'xtick.major.pad': 6,
+        'xtick.minor.pad': 6,
+        'xtick.color': '#565656',
+        'xtick.direction': 'in',
+        'ytick.major.size': 0,
+        'ytick.minor.size': 0,
+        'ytick.major.pad': 6,
+        'ytick.minor.pad': 6,
+        'ytick.color': '#565656',
+        'ytick.direction': 'in',
+
+        # Legend
+        'legend.fancybox': True,
+        'legend.loc': 'best',
+
+        # Figure
+        'figure.figsize': [8, 6],
+        'figure.facecolor': '1.0',
+        'figure.edgecolor': '0.50',
+        'figure.subplot.hspace': 0.5,
+
+        # Other
+        'savefig.dpi': 72,
+    }
+
+
 # TODO: add stuff like -o to overwrite or list of files
 # TODO: return or print the output file name for piping
 def print_usage(file_name: str) -> None:
@@ -109,13 +167,13 @@ def main(argv: list[str]):
 
     if show:
         import matplotlib.pyplot as plt
-        from astropy.visualization import astropy_mpl_style
-        plt.style.use(astropy_mpl_style)
+        plt.style.use(get_astropy_mpl_style())
         plt.figure()
-        plt.grid(False)
         plt.imshow(out_picture, cmap='gray')
+        plt.grid(False)
         plt.colorbar()
         plt.show()
+
     else:
         hdr = fits.Header()
         import datetime
