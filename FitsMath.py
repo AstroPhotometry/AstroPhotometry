@@ -8,7 +8,7 @@ import sys
 def print_usage(file_name: str) -> None:
     split_filename = file_name.split(sep="\\")
     print(
-        f"""usage: {split_filename[-1]} -operand <first file> <second file> <output file or -s for show>
+        f"""usage: {split_filename[-1]} -operand [file names...] <output file or -s for show>
         operand can be:
         -A      avarage
         -a      addition
@@ -18,13 +18,16 @@ def print_usage(file_name: str) -> None:
         """)
     # -<num>  divide by num #unary operand
 
+
 def parser(argv: list[str]):
     show = "-s" in argv
     if show:
+        argv.remove("-s")
         output_file_name = None
     else:
         output_file_name = argv[-1]
-    
+        argv.remove(output_file_name)
+
     if "-A" in argv:
         argv.remove("-A")
         operator = "avarage"
@@ -43,12 +46,13 @@ def parser(argv: list[str]):
     else:
         print_usage(argv[0])
         exit(1)
-    
-    # TODO: check if they are paths or exist or unary
-    first_file_name = argv[-3]
-    second_file_name = argv[-2]
 
-    return (show,first_file_name,second_file_name,output_file_name,operator)
+    # TODO: check if they are paths or exist or unary
+    input_files = []
+    for arg in argv[1:]:
+        input_files.append(arg)
+    return (show, input_files, output_file_name, operator)
+
 
 def main(argv: list[str]):
     if len(argv) < 5:
@@ -60,67 +64,68 @@ def main(argv: list[str]):
         print_usage(argv[0])
         exit(1)
 
-    (show,first_file_name,second_file_name,output_file_name,operator) = parser(argv)
-    # get the file names
-    # first_file_name: str = argv[2]
-    # second_file_name: str = argv[3]
-    # output_file_name: str = argv[4]
+    (show, input_files, output_file_name, operator) = parser(argv)
+
+    if len(input_files) == 0:
+        print("ERROR: no input file detected")
+        print_usage(argv[0])
+        exit(1)
 
     # open the files TODO: check if file exists
-    with fits.open(first_file_name, mode='readonly') as first_file, fits.open(
-            second_file_name, mode='readonly') as second_file:
+    with fits.open(input_files[0], mode='readonly') as base_file:
+        out_picture = base_file[0].data[:, :]
 
-        # operator = ""  # the operator to write into the header
+    average: int = len(input_files)
+    for input_file in input_files[1:]:
+        with fits.open(input_file, mode='readonly') as next_file:
+            if operator == "avarage":
+                out_picture += next_file[0].data[:, :]
+            elif operator == "minus":
+                out_picture = base_file[0].data[:, :]
+                out_picture -= next_file[0].data[:, :]
+            elif operator == "multiplication":
+                out_picture *= next_file[0].data[:, :]
+            elif operator == "addition":
+                out_picture = base_file[0].data[:, :]
+                out_picture += next_file[0].data[:, :]
+            elif operator == "division":  # TODO: check for 0
+                out_picture = base_file[0].data[:, :]
+                out_picture = out_picture / next_file[0].data[:, :]
+            else:
+                print_usage(argv[0])
+                exit(1)
 
-        if operator == "avarage":
-            out_picture = first_file[0].data[:, :]
-            out_picture += second_file[0].data[:, :]
-            out_picture = out_picture[:, :] / 2
-        elif operator == "minus":
-            out_picture = first_file[0].data[:, :]
-            out_picture -= second_file[0].data[:, :]
-        elif operator == "multiplication":
-            out_picture = first_file[0].data[:, :]
-            out_picture *= second_file[0].data[:, :]
-        elif operator == "addition":
-            out_picture = first_file[0].data[:, :]
-            out_picture += second_file[0].data[:, :]
-        elif operator == "division":  # TODO: check for 0
-            out_picture = first_file[0].data[:, :]
-            out_picture = out_picture / second_file[0].data[:, :]
-        # elif operand[0] == '-' and operand[1:].isdigit(): # unary operand
-        #     num: int = int(operand[1:])
-        #     if num == 0:
-        #         print("ERROR: can not divide by 0")
-        #         print_usage(argv[0])
-        #         exit(1)
-        #     out_picture = first_file[0].data[:, :]
-        #     out_picture = out_picture / num
-        else:
-            first_file.close()
-            second_file.close()
-            print_usage(argv[0])
-            exit(1)
+    if operator == "avarage":
+        out_picture = out_picture[:, :] / average
 
-        if show:
-            import matplotlib.pyplot as plt
-            from astropy.visualization import astropy_mpl_style
-            plt.style.use(astropy_mpl_style)
-            plt.figure()
-            plt.grid(False)
-            plt.imshow(out_picture, cmap='gray')
-            plt.colorbar()
-            plt.show()
-        else:
-            hdr = fits.Header()
-            import datetime
-            date = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
-            hdr['history'] = f"= edited on {date}"
-            hdr['COMMENT'] = f"= this is an {operator} of 2 fits files"
-            hdu = fits.PrimaryHDU(data=out_picture, header=hdr)
+    # elif operand[0] == '-' and operand[1:].isdigit(): # unary operand
+    #     num: int = int(operand[1:])
+    #     if num == 0:
+    #         print("ERROR: can not divide by 0")
+    #         print_usage(argv[0])
+    #         exit(1)
+    #     out_picture = first_file[0].data[:, :]
+    #     out_picture = out_picture / num
 
-            hdul = fits.HDUList([hdu])
-            hdul.writeto(output_file_name, overwrite=True)
+    if show:
+        import matplotlib.pyplot as plt
+        from astropy.visualization import astropy_mpl_style
+        plt.style.use(astropy_mpl_style)
+        plt.figure()
+        plt.grid(False)
+        plt.imshow(out_picture, cmap='gray')
+        plt.colorbar()
+        plt.show()
+    else:
+        hdr = fits.Header()
+        import datetime
+        date = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
+        hdr['history'] = f"= edited on {date}"
+        hdr['COMMENT'] = f"= this is an {operator} of 2 fits files"
+        hdu = fits.PrimaryHDU(data=out_picture, header=hdr)
+
+        hdul = fits.HDUList([hdu])
+        hdul.writeto(output_file_name, overwrite=True)
 
 
 if __name__ == "__main__":
