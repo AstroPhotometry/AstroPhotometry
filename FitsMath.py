@@ -3,7 +3,12 @@ from astropy.io import fits
 import sys
 
 
-def get_astropy_mpl_style():  # the setting for the graph that show on the screen
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+
+
+def get_astropy_mpl_style(
+):  # the setting for the graph that show on the screen
     return {
         # Lines
         'lines.linewidth': 1.7,
@@ -65,7 +70,7 @@ def get_astropy_mpl_style():  # the setting for the graph that show on the scree
 # TODO: return or print the output file name for piping
 def print_usage(file_name: str) -> None:
     split_filename = file_name.split(sep="\\")
-    print(
+    eprint(
         f"""usage: {split_filename[-1]} -operand [file names...] <output file or -s for show>
         operand can be:
         -A      avarage
@@ -125,7 +130,7 @@ def main(argv: list[str]):
     (show, input_files, output_file_name, operator) = parser(argv)
 
     if len(input_files) == 0:
-        print("ERROR: no input file detected")
+        eprint("ERROR: no input file detected")
         print_usage(argv[0])
         exit(1)
 
@@ -185,6 +190,7 @@ def main(argv: list[str]):
 
         hdul = fits.HDUList([hdu])
         hdul.writeto(output_file_name, overwrite=True)
+        print(output_file_name)
 
 
 if __name__ == "__main__":

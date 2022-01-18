@@ -4,6 +4,10 @@ from astropy.io import fits
 import sys
 
 
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+
+
 def str_tuple_to_arr(tup: str) -> list[int]:
     return [
         int(s) for s in tup.strip("(").strip(")").split(",") if s.isdigit()
@@ -13,12 +17,13 @@ def str_tuple_to_arr(tup: str) -> list[int]:
 # TODO: return or print the output file name for piping
 def print_usage(file_name: str) -> None:
     split_filename = file_name.split(sep="\\")
-    print(
-        f"""usage: {split_filename[-1]} <file name> -r <resolution of histogram> -sxy (sx,sy) -exy (ex,ey) -s
+    eprint(
+        f"""usage: {split_filename[-1]} -p <file name> -r <resolution of histogram> -sxy (sx,sy) -exy (ex,ey) -s
+        -p for piping filename, default = false
         -r resolution of histogram, default = 100
         -sxy start position in x,y coordinates, default = 0
         -exy end position in x,y coordinates, default = end
-        -s show plt on screen, default = not
+        -s show plt on screen, default = false
         """)
 
 
@@ -75,7 +80,13 @@ def parser(argv: list[str]):
         show: bool = False  # default
 
     # TODO: check if they are paths or exist
-    if len(argv) == 2:
+    if "-p" in argv:
+        input_file = input()
+        input_file = input_file[1:]  # dirty fix
+        if len(input_file) == 0:
+            eprint("PIPING ERROR: did not received file name")
+            exit(1)
+    elif len(argv) == 2:
         input_file = argv[-1]
     else:
         print_usage(argv[0])
@@ -104,13 +115,13 @@ def main(argv: list[str]):
         else:
             loaded_picture = base_file[0].data[sx:ex, sy:ey]
 
-    hist,bins = np.histogram(loaded_picture, bins=resolution)
+    hist, bins = np.histogram(loaded_picture, bins=resolution)
 
     if show:
-        from matplotlib import pyplot as plt 
+        from matplotlib import pyplot as plt
         # plt.bar([str(i) for i in bins[:-1]],hist,color ='maroon')
-        plt.plot(bins[1:],hist)
-        plt.title("histogram") 
+        plt.plot(bins[1:], hist)
+        plt.title("histogram")
         plt.show()
     else:
         print(f"histogram: {hist}")
