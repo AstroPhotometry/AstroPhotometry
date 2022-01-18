@@ -129,6 +129,7 @@ def main(argv: list[str]):
         print_usage(argv[0])
         exit(1)
 
+    out_picture = []
     # open the files TODO: check if file exists
     with fits.open(input_files[0], mode='readonly') as base_file:
         out_picture = base_file[0].data[:, :]
