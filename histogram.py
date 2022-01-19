@@ -82,7 +82,7 @@ def parser(argv: list[str]):
     # TODO: check if they are paths or exist
     if "-p" in argv:
         input_file = input()
-        input_file = input_file[1:]  # dirty fix
+        input_file = input_file.removeprefix("\ufeff")
         if len(input_file) == 0:
             eprint("PIPING ERROR: did not received file name")
             exit(1)
