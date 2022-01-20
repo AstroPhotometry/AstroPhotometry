@@ -1,4 +1,11 @@
 # Astro Photometry
+## The tools in this repo:
+| file          | description  | 
+| :------------ |:---------------|
+| FitsMath.py   | creat picture by math of other picture |
+| showfits.py   | show the picture with pyplot|
+| histogram.py  | creat histogram |
+
 ## packages:
 - astropy
 - Numpy
