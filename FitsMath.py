@@ -118,8 +118,9 @@ def parser(argv: list[str]):
             output_file_name = argv[-1]
             argv.remove(output_file_name)
 
-        if len(input_files) == 0:
-            eprint("PIPING ERROR: did not received file name")
+        if len(input_files) <= 1:
+            eprint("PIPING ERROR: did not received enough file names:")
+            eprint(f"{input_files}")
             exit(1)
     else:
         if not show:  # fix for taking the last arg and it -p

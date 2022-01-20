@@ -1,4 +1,3 @@
-from array import array
 import numpy as np
 from astropy.io import fits
 import sys
@@ -14,7 +13,6 @@ def str_tuple_to_arr(tup: str) -> list[int]:
     ]
 
 
-# TODO: return or print the output file name for piping
 def print_usage(file_name: str) -> None:
     split_filename = file_name.split(sep="\\")
     eprint(
