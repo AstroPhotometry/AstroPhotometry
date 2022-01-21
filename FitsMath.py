@@ -7,8 +7,8 @@ def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
 
-def get_astropy_mpl_style(
-):  # the setting for the graph that show on the screen
+def get_astropy_mpl_style():
+    # the setting for the graph that show on the screen
     return {
         # Lines
         'lines.linewidth': 1.7,
@@ -66,7 +66,6 @@ def get_astropy_mpl_style(
     }
 
 
-# TODO: add stuff like -o to overwrite or list of files
 def print_usage(file_name: str) -> None:
     split_filename = file_name.split(sep="\\")
     eprint(
@@ -77,6 +76,10 @@ def print_usage(file_name: str) -> None:
         -m      minus
         -M      multiplication
         -d      division
+
+        can add:
+        -d for debug info
+        -o for overwrite output file
         """)
     # -<num>  divide by num #unary operand
 
@@ -102,6 +105,18 @@ def parser(argv: list[str]):
         print_usage(argv[0])
         exit(1)
 
+    if "-d" in argv:
+        argv.remove("-d")
+        debug = True
+    else:
+        debug = False
+
+    if "-o" in argv:
+        argv.remove("-o")
+        overwrite = True
+    else:
+        overwrite = False
+
     show = "-s" in argv
     if show:
         argv.remove("-s")
@@ -109,26 +124,26 @@ def parser(argv: list[str]):
 
     # TODO: check if they are paths or exist or unary
     input_files = []
+    pipeing = False
     if "-p" in argv:
+        pipeing = True
         argv.remove("-p")
         for line in sys.stdin:
             input_files.append(line.rstrip().removeprefix("\ufeff"))
-
-        if not show:  # fix for taking the last arg and it -p
-            output_file_name = argv[-1]
-            argv.remove(output_file_name)
 
         if len(input_files) <= 1:
             eprint("PIPING ERROR: did not received enough file names:")
             eprint(f"{input_files}")
             exit(1)
-    else:
-        if not show:  # fix for taking the last arg and it -p
-            output_file_name = argv[-1]
-            argv.remove(output_file_name)
+
+    if not show:
+        output_file_name = argv[-1]
+        argv.remove(output_file_name)
+
+    if not pipeing:
         for arg in argv[1:]:
             input_files.append(arg)
-    return (show, input_files, output_file_name, operator)
+    return (show, input_files, output_file_name, operator, overwrite, debug)
 
 
 def main(argv: list[str]):
@@ -141,7 +156,10 @@ def main(argv: list[str]):
         print_usage(argv[0])
         exit(1)
 
-    (show, input_files, output_file_name, operator) = parser(argv)
+    (show, input_files, output_file_name, operator, overwrite, debug) = parser(argv)
+
+    if debug:
+        print(f"show:{show}\ninput_files: {input_files}\noutput_file_name: {output_file_name}\noperator: {operator}\noverwrite: {overwrite}\n")
 
     if len(input_files) == 0:
         eprint("ERROR: no input file detected")
@@ -204,7 +222,7 @@ def main(argv: list[str]):
         hdu = fits.PrimaryHDU(data=out_picture, header=hdr)
 
         hdul = fits.HDUList([hdu])
-        hdul.writeto(output_file_name, overwrite=True)
+        hdul.writeto(output_file_name, overwrite=overwrite)  # check for errors
         print(output_file_name)
 
 
