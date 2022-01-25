@@ -167,8 +167,12 @@ def main(argv: list[str]):
         exit(1)
 
     out_picture = []
-    # open the files TODO: check if file exists
-    # FIXME: if not a file there is no error
+    # open the files 
+    # TODO: check if file exists
+    if len(input_files) < 2:
+        eprint(f"ERROR: not enough input files: {len(input_files)}")
+        exit(1)
+
     with fits.open(input_files[0], mode='readonly') as base_file:
         out_picture = base_file[0].data[:, :]
 
