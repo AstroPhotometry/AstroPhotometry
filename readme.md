@@ -6,6 +6,15 @@
 | showfits.py   | show the picture with pyplot|
 | histogram.py  | creat histogram |
 
+## The files:
+| file          | description  | 
+| :------------ |:---------------|
+| AstroPhotography  | WPF view model, view layers|
+| BE    | WPF Business layer |
+| !TODO! | WPF Data layer
+
+![image](https://morecoding.files.wordpress.com/2015/01/3tier_2.jpg)
+
 ## packages:
 - astropy
 - Numpy
