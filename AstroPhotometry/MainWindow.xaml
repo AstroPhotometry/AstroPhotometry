@@ -1,0 +1,26 @@
+﻿<Window x:Class="AstroPhotometry.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AstroPhotometry"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Image Grid.Column="1" HorizontalAlignment="Left" Height="276" VerticalAlignment="Top" Width="623" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="80,109,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <ProgressBar Grid.Column="1" HorizontalAlignment="Left" Height="10" Margin="183,103,0,0" Grid.Row="2" VerticalAlignment="Top" Width="100"/>
+        <TextBox HorizontalAlignment="Left" Grid.Row="1" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+
+    </Grid>
+</Window>

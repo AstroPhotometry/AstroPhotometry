@@ -1,0 +1,6 @@
+C:\Users\ishay\source\repos\AstroPhotometry\BE\bin\Debug\BE.dll
+C:\Users\ishay\source\repos\AstroPhotometry\BE\bin\Debug\BE.pdb
+C:\Users\ishay\source\repos\AstroPhotometry\BE\obj\Debug\BE.csproj.AssemblyReference.cache
+C:\Users\ishay\source\repos\AstroPhotometry\BE\obj\Debug\BE.csproj.CoreCompileInputs.cache
+C:\Users\ishay\source\repos\AstroPhotometry\BE\obj\Debug\BE.dll
+C:\Users\ishay\source\repos\AstroPhotometry\BE\obj\Debug\BE.pdb
