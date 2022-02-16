@@ -12,6 +12,8 @@
 | AstroPhotography  | WPF view model, view layers|
 | BE    | WPF Business layer |
 | !TODO! | WPF Data layer
+| data_test | fits files for testing| 
+| study | test study and tries |
 
 ![image](https://morecoding.files.wordpress.com/2015/01/3tier_2.jpg)
 
