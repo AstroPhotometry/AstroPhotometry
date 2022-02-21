@@ -1,5 +1,4 @@
-﻿using AstroPhotometry.Models;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +25,7 @@ namespace AstroPhotometry
         public MainWindow()
         {
             InitializeComponent();
-            var photo = new Photo();
+            var photo = new PhotoVM();
             DataContext = photo;
         }
 
@@ -42,7 +41,7 @@ namespace AstroPhotometry
             //Console.WriteLine(e.GetType().ToString());
             //// String filePos = textBox_file.Text.Replace("\\", "/");
         }
-        
+
         //public Image getPicture()
         //{
 
