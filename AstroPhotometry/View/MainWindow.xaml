@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:AstroPhotometry"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -13,14 +14,18 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="20px"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <Image Grid.Column="1" HorizontalAlignment="Left" Height="276" VerticalAlignment="Top" Width="623" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="80,109,0,0" Grid.Row="1" VerticalAlignment="Top"/>
-        <ProgressBar Grid.Column="1" HorizontalAlignment="Left" Height="10" Margin="183,103,0,0" Grid.Row="2" VerticalAlignment="Top" Width="100"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="80,109,0,0" Grid.Row="1" VerticalAlignment="Top" Click="Button_Click"/>
+        <ProgressBar Grid.Column="1" HorizontalAlignment="Center" Height="10" Grid.Row="3" VerticalAlignment="Top" Width="200"/>
         <TextBox HorizontalAlignment="Left" Grid.Row="1" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2">
+            <Image x:Name="ImageFrame" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                   Source="{Binding Path}" />
+        </Border>
 
     </Grid>
 </Window>
