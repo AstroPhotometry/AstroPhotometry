@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,15 +32,13 @@ namespace AstroPhotometry
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //OpenFileDialog openFileDialog = new OpenFileDialog();
-            //openFileDialog.Filter = "Fits files (*.fits)|*.fit;*.fits|All files (*.*)|*.*";
-            ////openFileDialog.Multiselect = true;
+            // String filePos = textBox_file.Text.Replace("\\", "/");
 
-
-            //if (openFileDialog.ShowDialog() == DialogResult.OK)
-            //    ImageFrame.Image = Image.FromFile(openFileDialog.FileName);
-            //Console.WriteLine(e.GetType().ToString());
-            //// String filePos = textBox_file.Text.Replace("\\", "/");
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Fits files (*.fits)|*.fit;*.fits|All files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+                txtEditor.Text = openFileDialog.FileName;
+                //txtEditor.Text = File.ReadAllText(openFileDialog.FileName);
         }
 
         //public Image getPicture()

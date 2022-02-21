@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AstroPhotometry"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -26,6 +26,8 @@
             <Image x:Name="ImageFrame" HorizontalAlignment="Left" VerticalAlignment="Top" 
                    Source="{Binding Path}" />
         </Border>
+        <TreeView Grid.Row="2"/>
+        <TextBox Name="txtEditor" Grid.Column="1" Grid.ColumnSpan="2" />
 
     </Grid>
 </Window>
