@@ -22,11 +22,11 @@ namespace AstroPhotometry
     /// </summary>
     public partial class MainWindow : Window
     {
-        //Photo photo;
+        private PhotoVM photo;
         public MainWindow()
         {
             InitializeComponent();
-            var photo = new PhotoVM();
+            photo = new PhotoVM();
             DataContext = photo;
         }
 
@@ -37,7 +37,10 @@ namespace AstroPhotometry
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Fits files (*.fits)|*.fit;*.fits|All files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
+            {
                 txtEditor.Text = openFileDialog.FileName;
+                photo.updateUri(openFileDialog.FileName);
+            }
                 //txtEditor.Text = File.ReadAllText(openFileDialog.FileName);
         }
 

@@ -27,7 +27,7 @@
                    Source="{Binding Path}" />
         </Border>
         <TreeView Grid.Row="2"/>
-        <TextBox Name="txtEditor" Grid.Column="1" Grid.ColumnSpan="2" />
+        <TextBox Name="txtEditor" Grid.Column="1" Grid.ColumnSpan="2" Focusable="False" />
 
     </Grid>
 </Window>
