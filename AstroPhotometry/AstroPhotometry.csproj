@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>m32.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -103,7 +106,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\BE\BE.csproj">
       <Project>{a1ba65b0-5c7e-4082-9723-cf84306db41c}</Project>
@@ -112,6 +114,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\test.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="m32.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AstroPhotometry"
+        xmlns:view="clr-namespace:AstroPhotometry.View"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
@@ -26,8 +27,7 @@
             <Image x:Name="ImageFrame" HorizontalAlignment="Left" VerticalAlignment="Top" 
                    Source="{Binding Path}" />
         </Border>
-        <TreeView Grid.Row="2"/>
         <TextBox Name="txtEditor" Grid.Column="1" Grid.ColumnSpan="2" Focusable="False" />
-
+        <view:ImageShow Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>
