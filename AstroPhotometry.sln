@@ -5,7 +5,11 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AstroPhotometry", "AstroPhotometry\AstroPhotometry.csproj", "{103DC630-EE06-4401-831C-C4146346290F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BE", "BE\BE.csproj", "{A1BA65B0-5C7E-4082-9723-CF84306DB41C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astrophotometry.BE", "BE\Astrophotometry.BE.csproj", "{A1BA65B0-5C7E-4082-9723-CF84306DB41C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astrophotometry.BL", "Astrophotometry.BL\Astrophotometry.BL.csproj", "{F048EA6B-4942-437D-AAAD-3825182772FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AstroPhotometry.DAL", "AstroPhotometry.DAL\AstroPhotometry.DAL.csproj", "{8998AA73-AC83-4B25-9AD1-BF5A83E0B968}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{A1BA65B0-5C7E-4082-9723-CF84306DB41C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1BA65B0-5C7E-4082-9723-CF84306DB41C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1BA65B0-5C7E-4082-9723-CF84306DB41C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F048EA6B-4942-437D-AAAD-3825182772FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F048EA6B-4942-437D-AAAD-3825182772FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F048EA6B-4942-437D-AAAD-3825182772FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F048EA6B-4942-437D-AAAD-3825182772FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8998AA73-AC83-4B25-9AD1-BF5A83E0B968}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8998AA73-AC83-4B25-9AD1-BF5A83E0B968}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8998AA73-AC83-4B25-9AD1-BF5A83E0B968}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8998AA73-AC83-4B25-9AD1-BF5A83E0B968}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
