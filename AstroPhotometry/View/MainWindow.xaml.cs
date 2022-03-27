@@ -28,7 +28,7 @@ namespace AstroPhotometry
         public MainWindow()
         {
             InitializeComponent();
-            InitializeFileSystemObjects();
+            InitializeFileSystemObjects(); // TODO: filter only folders images and fits
 
             photo = new PhotoVM();
             DataContext = photo;
@@ -155,6 +155,7 @@ namespace AstroPhotometry
 
         #endregion
 
+        // TODO: add class that construct with path object and use this function as command 
         private void StackPanel_MouseHandler(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2) // double click
@@ -164,12 +165,8 @@ namespace AstroPhotometry
                 {
                     return;
                 }
-
-                MessageBox.Show(file.FullName);
-                //TODO: connect it to image and show image (command to python)
+                photo.updateUri(file.FullName);
             }
-
-
         }
     }
 
