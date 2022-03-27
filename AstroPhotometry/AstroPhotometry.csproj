@@ -40,6 +40,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -70,7 +71,21 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BaseObject.cs" />
+    <Compile Include="Enums\FileAttribute.cs" />
+    <Compile Include="Enums\IconSize.cs" />
+    <Compile Include="Enums\ItemState.cs" />
+    <Compile Include="Enums\ItemType.cs" />
+    <Compile Include="Enums\ShellAttribute.cs" />
+    <Compile Include="FileManager.cs" />
+    <Compile Include="FolderManager.cs" />
+    <Compile Include="Interop.cs" />
+    <Compile Include="ProperyNotifier.cs" />
     <Compile Include="Models\PhotoM.cs" />
+    <Compile Include="ShellClasses\DummyFileSystemObjectInfo.cs" />
+    <Compile Include="ShellClasses\FileSystemObjectInfo.cs" />
+    <Compile Include="ShellManager.cs" />
+    <Compile Include="Structs\ShellFileInfo.cs" />
     <Compile Include="ViewModels\PhotoVM.cs" />
     <Compile Include="View\ImageShow.xaml.cs">
       <DependentUpon>ImageShow.xaml</DependentUpon>
