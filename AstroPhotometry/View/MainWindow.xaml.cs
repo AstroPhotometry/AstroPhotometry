@@ -84,6 +84,9 @@ namespace AstroPhotometry
                     fileSystemObject.AfterExplore += FileSystemObject_AfterExplore;
                     treeView.Items.Add(fileSystemObject);
                 });
+
+            // start in specific folder 
+            // TODO: make it start from desktop (one layer in)
             PreSelect(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
         }
 
@@ -98,8 +101,7 @@ namespace AstroPhotometry
             PreSelect(driveFileSystemObjectInfo, path);
         }
 
-        private void PreSelect(FileSystemObjectInfo fileSystemObjectInfo,
-            string path)
+        private void PreSelect(FileSystemObjectInfo fileSystemObjectInfo, string path)
         {
             foreach (var childFileSystemObjectInfo in fileSystemObjectInfo.Children)
             {
@@ -152,6 +154,20 @@ namespace AstroPhotometry
         }
 
         #endregion
+
+        private void StackPanel_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            FileSystemInfo file = (FileSystemInfo)((TextBlock)((StackPanel)sender).Children[1]).Tag;
+            if ((file is DirectoryInfo))
+            {
+                return;
+            }
+
+            MessageBox.Show(file.FullName);
+            //TODO: connect it to image and show image (command to python)
+
+
+        }
     }
 
 }
