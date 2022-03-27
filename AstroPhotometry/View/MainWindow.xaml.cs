@@ -155,16 +155,19 @@ namespace AstroPhotometry
 
         #endregion
 
-        private void StackPanel_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void StackPanel_MouseHandler(object sender, MouseButtonEventArgs e)
         {
-            FileSystemInfo file = (FileSystemInfo)((TextBlock)((StackPanel)sender).Children[1]).Tag;
-            if ((file is DirectoryInfo))
+            if (e.ClickCount == 2) // double click
             {
-                return;
-            }
+                FileSystemInfo file = (FileSystemInfo)((TextBlock)((StackPanel)sender).Children[1]).Tag;
+                if ((file is DirectoryInfo))
+                {
+                    return;
+                }
 
-            MessageBox.Show(file.FullName);
-            //TODO: connect it to image and show image (command to python)
+                MessageBox.Show(file.FullName);
+                //TODO: connect it to image and show image (command to python)
+            }
 
 
         }

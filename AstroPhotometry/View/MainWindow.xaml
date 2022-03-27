@@ -40,7 +40,7 @@
             </TreeView.ItemContainerStyle>
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type classes:FileSystemObjectInfo}" ItemsSource="{Binding Path=Children}">
-                    <StackPanel Orientation="Horizontal" MouseLeftButtonUp="StackPanel_MouseLeftButtonUp">
+                    <StackPanel Orientation="Horizontal" MouseDown="StackPanel_MouseHandler">
                         <Image Source="{Binding Path=ImageSource, UpdateSourceTrigger=PropertyChanged}" Margin="0,1,8,1"></Image>
                         <TextBlock Text="{Binding Path=FileSystemInfo.Name}" Tag="{Binding Path=FileSystemInfo}"></TextBlock>
                     </StackPanel>
