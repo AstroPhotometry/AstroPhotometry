@@ -8,20 +8,21 @@ namespace AstroPhotometry
 {
     public class PythonVM
     {
-        private string pytho_code_folder_full_path;
+        private string python_code_folder_full_path;
         private string output_folder_relative_path;
         
         public PythonVM(string python_code_folder_full_path, string output_folder_relative_path)
         {
-            this.pytho_code_folder_full_path = python_code_folder_full_path;
+            this.python_code_folder_full_path = python_code_folder_full_path;
             this.output_folder_relative_path = output_folder_relative_path;
         }
+
         public void run(string py_file, string arguments)
         {
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-            startInfo.FileName = this.pytho_code_folder_full_path + py_file;
+            startInfo.FileName = this.python_code_folder_full_path + py_file;
             startInfo.Arguments = arguments;
         
             //startInfo.Arguments = "/C copy /b Image1.jpg + Archive.rar Image2.jpg";
