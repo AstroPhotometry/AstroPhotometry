@@ -1,21 +1,13 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 using AstroPhotometry.ShellClasses;
+using System.Diagnostics;
 
 namespace AstroPhotometry
 {
@@ -32,6 +24,8 @@ namespace AstroPhotometry
 
             photo = new PhotoVM();
             DataContext = photo;
+            var py_runner = new PythonVM(@"C:\Users\ישי טרטנר\Desktop\astro_photometry\python\",".");
+            py_runner.run("helloworld.py", "teeeeeest");
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
