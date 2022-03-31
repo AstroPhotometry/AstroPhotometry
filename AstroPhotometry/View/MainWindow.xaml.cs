@@ -21,11 +21,17 @@ namespace AstroPhotometry
         {
             InitializeComponent();
             InitializeFileSystemObjects(); // TODO: filter only folders images and fits
-
+            
+            // TODO: find the pyhon folder no metter what (maybe copy the content to bin)
+            string base_path = System.IO.Path.GetFullPath("../../../python/");
+             
             photo = new PhotoVM();
             DataContext = photo;
-            var py_runner = new PythonVM(@"C:\Users\ישי טרטנר\Desktop\astro_photometry\python\",".");
-            py_runner.run("helloworld.py", "teeeeeest");
+            var py_runner = new PythonVM(base_path, @".\tmp\");
+            string[] files = { @"C:\Users\ישי טרטנר\Desktop\astro_photometry\data_test\flats\Cal-0002flat6.fit",
+                                @"C:\Users\ישי טרטנר\Desktop\astro_photometry\data_test\light\Light-0034EVLac.fit"};
+            py_runner.Avarage(files, "test.fits");
+            py_runner.run("helloworld.py", "qwer");
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
