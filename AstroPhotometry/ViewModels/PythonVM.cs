@@ -35,11 +35,12 @@ namespace AstroPhotometry
             throw new NotImplementedException();
         }
 
+        // TODO: add all the commands
         public void Avarage(string[] fits_files, string output_file_name)
         {
             string py_file = "FitsMath.py";
 
-            string arguments = "-A -d";
+            string arguments = "-A";
             foreach (string fits_file in fits_files)
             {
                 arguments += " " + fits_file;
@@ -52,8 +53,6 @@ namespace AstroPhotometry
 
         public void run(string py_file, string arguments)
         {
-            MessageBox.Show(py_file);
-            MessageBox.Show(arguments);
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
