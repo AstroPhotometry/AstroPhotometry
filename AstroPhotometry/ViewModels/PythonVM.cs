@@ -18,9 +18,9 @@ namespace AstroPhotometry
         { 
             this.python_code_folder_full_path = python_code_folder_full_path;
 
-            // full path of output folder
-            string output_full_path = System.IO.Path.GetFullPath(output_folder_relative_path);
-            this.output_folder_relative_path = output_full_path;
+            // full path of output folder - for later
+            //string output_full_path = System.IO.Path.GetFullPath(output_folder_relative_path);
+            this.output_folder_relative_path = output_folder_relative_path;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -46,7 +46,8 @@ namespace AstroPhotometry
                 arguments += " " + fits_file;
             }
 
-            arguments += " " + output_file_name;
+            // TODO: check if output needs folder to exist
+            arguments += " " + this.output_folder_relative_path + output_file_name;
 
             run(py_file, arguments);
         }
