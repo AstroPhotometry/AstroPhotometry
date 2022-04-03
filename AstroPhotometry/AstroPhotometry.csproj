@@ -80,6 +80,7 @@
     <Compile Include="FileManager.cs" />
     <Compile Include="FolderManager.cs" />
     <Compile Include="Interop.cs" />
+    <Compile Include="ViewModels\FileWatcherVM.cs" />
     <Compile Include="ViewModels\PythonVM.cs" />
     <Compile Include="ProperyNotifier.cs" />
     <Compile Include="Models\PhotoM.cs" />
