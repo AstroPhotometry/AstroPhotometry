@@ -1,21 +1,13 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 using AstroPhotometry.ShellClasses;
+using System.Diagnostics;
 
 namespace AstroPhotometry
 {
@@ -30,9 +22,23 @@ namespace AstroPhotometry
             InitializeComponent();
             InitializeFileSystemObjects(); // TODO: filter only folders images and fits
 
+            // TODO: find the pyhon folder no metter what (maybe copy the content to bin)
+            string base_path = System.IO.Path.GetFullPath("../../../python/");
+
             photo = new PhotoVM();
             DataContext = photo;
+            var py_runner = new PythonVM(base_path, @".\tmp\");
+            string[] files = { @"C:\Users\ישי טרטנר\Desktop\astro_photometry\data_test\flats\Cal-0002flat6.fit",
+                                @"C:\Users\ישי טרטנר\Desktop\astro_photometry\data_test\light\Light-0034EVLac.fit"};
+            py_runner.Avarage(files, "test.fits");
+            //py_runner.run("helloworld.py", "qwer");
+
+            // wather:
+            var watcher = new ViewModels.FileWatcherVM(".", "*.fit*");
+
         }
+
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
