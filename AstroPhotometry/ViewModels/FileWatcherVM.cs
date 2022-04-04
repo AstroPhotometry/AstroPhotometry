@@ -9,7 +9,7 @@ namespace AstroPhotometry.ViewModels
 {
     public class FileWatcherVM
     {
-
+        
         public FileWatcherVM(string relative_path, string filter)
         {
             var watcher = new FileSystemWatcher(System.IO.Path.GetFullPath(relative_path));
@@ -35,37 +35,51 @@ namespace AstroPhotometry.ViewModels
 
         }
 
+        // TODO: maybe use queue
+        private string last_change;
+        private string last_create;
 
+        public string lastChange
+        {
+            get { return last_change; }
+        }
+        public string lastCreate
+        {
+            get { return last_create; }
+        }
 
-        private static void OnChanged(object sender, FileSystemEventArgs e)
+        private void OnChanged(object sender, FileSystemEventArgs e)
         {
             if (e.ChangeType != WatcherChangeTypes.Changed)
             {
                 return;
             }
+            this.last_change = e.FullPath;
+
             Console.WriteLine($"Changed: {e.FullPath}");
         }
 
-        private static void OnCreated(object sender, FileSystemEventArgs e)
+        private void OnCreated(object sender, FileSystemEventArgs e)
         {
+            this.last_create = e.FullPath;
             string value = $"Created: {e.FullPath}";
             Console.WriteLine(value);
         }
 
-        private static void OnDeleted(object sender, FileSystemEventArgs e) =>
+        private void OnDeleted(object sender, FileSystemEventArgs e) =>
             Console.WriteLine($"Deleted: {e.FullPath}");
 
-        private static void OnRenamed(object sender, RenamedEventArgs e)
+        private void OnRenamed(object sender, RenamedEventArgs e)
         {
             Console.WriteLine($"Renamed:");
             Console.WriteLine($"    Old: {e.OldFullPath}");
             Console.WriteLine($"    New: {e.FullPath}");
         }
 
-        private static void OnError(object sender, ErrorEventArgs e) =>
+        private void OnError(object sender, ErrorEventArgs e) =>
             PrintException(e.GetException());
 
-        private static void PrintException(Exception ex)
+        private void PrintException(Exception ex)
         {
             if (ex != null)
             {
