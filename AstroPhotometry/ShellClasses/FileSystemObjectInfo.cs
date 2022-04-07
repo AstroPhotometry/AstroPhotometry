@@ -203,8 +203,10 @@ namespace AstroPhotometry.ShellClasses
                 var files = ((DirectoryInfo)FileSystemInfo).GetFiles();
                 foreach (var file in files.OrderBy(d => d.Name))
                 {
+                    // show only fits files and check for sys or hidden
                     if ((file.Attributes & FileAttributes.System) != FileAttributes.System &&
-                        (file.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
+                        (file.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden &&
+                        (file.Extension.ToLower() == ".fit" || file.Extension.ToLower() == ".fits"))
                     {
                         Children.Add(new FileSystemObjectInfo(file));
                     }
