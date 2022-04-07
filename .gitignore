@@ -195,3 +195,4 @@ git_stats/*
 StyleCop.Cache
 bin
 obj
+/python/__pycache__

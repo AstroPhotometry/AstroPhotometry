@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AstroPhotometry.ViewModels
 {
@@ -12,7 +8,8 @@ namespace AstroPhotometry.ViewModels
         
         public FileWatcherVM(string relative_path, string filter)
         {
-            var watcher = new FileSystemWatcher(System.IO.Path.GetFullPath(relative_path));
+            Directory.CreateDirectory(relative_path);
+            var watcher = new FileSystemWatcher(Path.GetFullPath(relative_path));
 
             watcher.NotifyFilter = NotifyFilters.Attributes
                                  | NotifyFilters.CreationTime
@@ -34,6 +31,14 @@ namespace AstroPhotometry.ViewModels
             watcher.EnableRaisingEvents = true;
 
         }
+        
+        // IOC for updating if file created or change
+        Action<string> IOCupdateUri = null;
+
+        public void Ioc(Action<string> updateUri)
+        {
+            this.IOCupdateUri = updateUri;
+        }
 
         // TODO: maybe use queue
         private string last_change;
@@ -54,6 +59,12 @@ namespace AstroPhotometry.ViewModels
             {
                 return;
             }
+
+            if (IOCupdateUri != null)
+            {
+                IOCupdateUri(e.FullPath);
+            }
+
             this.last_change = e.FullPath;
 
             Console.WriteLine($"Changed: {e.FullPath}");
@@ -61,7 +72,13 @@ namespace AstroPhotometry.ViewModels
 
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
+            if (IOCupdateUri != null)
+            {
+                IOCupdateUri(e.FullPath);
+            }
+
             this.last_create = e.FullPath;
+
             string value = $"Created: {e.FullPath}";
             Console.WriteLine(value);
         }

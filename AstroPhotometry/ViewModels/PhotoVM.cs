@@ -1,4 +1,5 @@
 ﻿using AstroPhotometry.Models;
+using AstroPhotometry.ViewModels;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -9,10 +10,17 @@ namespace AstroPhotometry
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private readonly FileWatcherVM fileWatcherVM;
         private PhotoM photoM;
 
         public PhotoVM()
         {
+            photoM = new PhotoM();
+        }
+
+        public PhotoVM(FileWatcherVM fileWatcher)
+        {
+            fileWatcher.Ioc(this.updateUri);
             photoM = new PhotoM();
         }
 

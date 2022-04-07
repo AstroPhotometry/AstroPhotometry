@@ -16,24 +16,27 @@ namespace AstroPhotometry
     public partial class MainWindow : Window
     {
         private PhotoVM photo;
+        private PythonVM py_runner;
+
         public MainWindow()
         {
             InitializeComponent();
             InitializeFileSystemObjects(); // TODO: filter only folders images and fits
 
+            // wather:
+            var watcher = new ViewModels.FileWatcherVM("./tmp/", "*.png");
+
+            photo = new PhotoVM(watcher);
+            DataContext = photo;
+
             // TODO: find the pyhon folder no metter what (maybe copy the content to bin)
             string base_path = System.IO.Path.GetFullPath("../../../python/");
 
-            photo = new PhotoVM();
-            DataContext = photo;
-            var py_runner = new PythonVM(base_path, @".\tmp\");
+            this.py_runner = new PythonVM(base_path, @".\tmp\");
             string[] files = { @"C:\Users\ישי טרטנר\Desktop\astro_photometry\data_test\flats\Cal-0002flat6.fit",
                                 @"C:\Users\ישי טרטנר\Desktop\astro_photometry\data_test\light\Light-0034EVLac.fit"};
-            py_runner.Avarage(files, "test.fits");
+            py_runner.FitsToPNG(files[0], @"test.png");
             //py_runner.run("helloworld.py", "qwer");
-
-            // wather:
-            var watcher = new ViewModels.FileWatcherVM(".", "*.fit*");
 
         }
 
@@ -56,10 +59,6 @@ namespace AstroPhotometry
             InitializeFileSystemObjects();
         }
 
-        //public Image getPicture()
-        //{
-
-        //}
         #region Events
 
         private void FileSystemObject_AfterExplore(object sender, System.EventArgs e)
@@ -170,7 +169,9 @@ namespace AstroPhotometry
                 {
                     return;
                 }
-                photo.updateUri(file.FullName);
+                py_runner.FitsToPNG(file.FullName, file.Name + @".png");
+
+                //photo.updateUri(file.FullName);
             }
         }
     }

@@ -1,3 +1,4 @@
+import StopInCaseOfError
 import matplotlib.pyplot as plt
 from astropy.visualization import astropy_mpl_style
 
@@ -16,8 +17,22 @@ def print_usage(file_name: str) -> None:
     split_filename = file_name.split(sep="\\")
     eprint(f"usage: {split_filename[-1]} <file or -p for piping> optional: <png output file>")
 
+def getArg(argv: list[str], arg:str) -> str:
+    flat:str = ""
+    for x in argv:
+        flat +=x + " "
+    arg_find:str = "-" + arg + "=\""
+    pos:int = flat.find(arg_find)
+    print(flat)
+    if pos != -1:
+        find_size:int = len(arg_find)
+        arg_end_find:int = flat.find('\"',start=find_size + pos)
+        return flat[find_size + pos:arg_end_find]
+    return None
 
 def main(argv: list[str]):
+    print(argv)
+
     if len(argv) < 2:
         print_usage(argv[0])
         exit(1)
@@ -32,7 +47,7 @@ def main(argv: list[str]):
     else:
         input_file = argv[-1]
 
-    first_file = fits.open(input_file.replace('/', '\\'), mode='readonly')
+    first_file = fits.open(argv[1].replace('/', '\\'), mode='readonly')
 
     first_file.info()
 
@@ -45,7 +60,8 @@ def main(argv: list[str]):
 
     if len(argv) > 1:
         plt.savefig(argv[2], format='png', bbox_inches='tight', dpi=80)
-    plt.show()
+    else: 
+        plt.show()
 
     first_file.close()
 
