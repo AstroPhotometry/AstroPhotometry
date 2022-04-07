@@ -7,7 +7,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using AstroPhotometry.ShellClasses;
-using System.Diagnostics;
 
 namespace AstroPhotometry
 {

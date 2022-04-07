@@ -19,7 +19,9 @@
             <RowDefinition Height="35px"/>
             <RowDefinition Height="25*"/>
         </Grid.RowDefinitions>
-        <Image Grid.Column="0" Source="/Assets/test.jpg" Grid.ColumnSpan="3"   Grid.Row="2" VerticalAlignment="Top"/>
+
+        <Image Grid.Column="0" Source="{Binding Path}" Grid.ColumnSpan="3"   Grid.Row="2" VerticalAlignment="Top"/>
         <Label Grid.Column="1" HorizontalAlignment="Center" FontSize="20" Foreground="White" Grid.Row="1" VerticalAlignment="Top" FontWeight="Normal">file name</Label>
+
     </Grid>
 </UserControl>

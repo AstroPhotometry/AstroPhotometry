@@ -1,10 +1,7 @@
 ﻿using AstroPhotometry.Models;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace AstroPhotometry
 {
@@ -13,10 +10,12 @@ namespace AstroPhotometry
         public event PropertyChangedEventHandler PropertyChanged;
 
         private PhotoM photoM;
+
         public PhotoVM()
         {
             photoM = new PhotoM();
         }
+
         public Uri Path
         {
             get
@@ -24,18 +23,31 @@ namespace AstroPhotometry
                 return photoM.Path;
             }
         }
+
         public void updateUri(String uri)
         {
             photoM.Path = new Uri(uri);
             NotifyPropertyChanged("Path");
-
         }
+
         public void NotifyPropertyChanged(string propName)
         {
             if (this.PropertyChanged != null)
             {
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
             }
+        }
+
+        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null)
+        {
+            if (!Equals(field, newValue))
+            {
+                field = newValue;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                return true;
+            }
+
+            return false;
         }
     }
 }

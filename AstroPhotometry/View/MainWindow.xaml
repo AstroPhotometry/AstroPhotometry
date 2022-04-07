@@ -16,22 +16,22 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20px"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="69*"/>
+            <RowDefinition Height="69*"/>
+            <RowDefinition Height="58*"/>
+            <RowDefinition Height="11*"/>
         </Grid.RowDefinitions>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="80,109,0,0" Grid.Row="1" VerticalAlignment="Top" Click="Button_Click"/>
-        <ProgressBar Grid.Column="1" HorizontalAlignment="Center" Height="10" Grid.Row="3" VerticalAlignment="Top" Width="200"/>
-        <TextBox HorizontalAlignment="Left" Grid.Row="1" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2">
-            <Image x:Name="ImageFrame" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                   Source="{Binding Path}" />
-        </Border>
-        <TextBox Name="txtEditor" Grid.Column="1" Grid.ColumnSpan="2" Focusable="False" />
-        <view:ImageShow Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
-        
+
+        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Center" Click="Button_Click" Height="20" Width="40"/>
+
+        <!--#region image-->
+        <view:ImageShow Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="2"/>
+        <!--#endregion image-->
+
+        <ProgressBar Grid.Column="1" HorizontalAlignment="Center" Height="10" Grid.Row="4" VerticalAlignment="Top" Width="200" Margin="0,0,0,0" Grid.RowSpan="2"/>
+
         <!--#region tree-->
-        <TreeView Name="treeView" Margin="5" Grid.Row="2" Grid.RowSpan="2">
+        <TreeView Name="treeView" Margin="5,5,5,5" Grid.Row="1" Grid.RowSpan="3">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
@@ -47,7 +47,7 @@
                 </HierarchicalDataTemplate>
             </TreeView.Resources>
         </TreeView>
-        <!--#endregion-->
+        <!--#endregion tree-->
     </Grid>
-    
+
 </Window>

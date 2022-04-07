@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 
 namespace AstroPhotometry
@@ -13,9 +8,9 @@ namespace AstroPhotometry
     {
         private string python_code_folder_full_path;
         private string output_folder_relative_path;
-        
+
         public PythonVM(string python_code_folder_full_path, string output_folder_relative_path)
-        { 
+        {
             this.python_code_folder_full_path = python_code_folder_full_path;
 
             // full path of output folder - for later
@@ -56,13 +51,13 @@ namespace AstroPhotometry
         {
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
             startInfo.FileName = this.python_code_folder_full_path + py_file;
             startInfo.Arguments = arguments;
-        
+
             process.StartInfo = startInfo;
             process.Start();
         }
     }
-    
+
 }
