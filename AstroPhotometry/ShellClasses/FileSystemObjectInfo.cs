@@ -170,7 +170,8 @@ namespace AstroPhotometry.ShellClasses
                 foreach (var directory in directories.OrderBy(d => d.Name))
                 {
                     if ((directory.Attributes & FileAttributes.System) != FileAttributes.System &&
-                        (directory.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
+                        (directory.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden &&
+                        directory.Name[0] != '.') // wont show hidden system or starting with .
                     {
                         var fileSystemObject = new FileSystemObjectInfo(directory);
                         fileSystemObject.BeforeExplore += FileSystemObject_BeforeExplore;
