@@ -54,9 +54,6 @@ namespace AstroPhotometry
                 photo.updateUri(openFileDialog.FileName);
             }
             //txtEditor.Text = File.ReadAllText(openFileDialog.FileName);
-
-
-            InitializeFileSystemObjects();
         }
 
         #region Events
