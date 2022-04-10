@@ -59,7 +59,7 @@ def main(argv: list[str]):
     plt.grid(False)
 
     if len(argv) > 1:
-        plt.savefig(argv[2], format='png', bbox_inches='tight', dpi=80)
+        plt.imsave(argv[2], first_file[0].data)
     else: 
         plt.show()
 
