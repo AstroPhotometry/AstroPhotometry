@@ -59,6 +59,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="View\FileTree.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ImageShow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -89,6 +93,9 @@
     <Compile Include="ShellManager.cs" />
     <Compile Include="Structs\ShellFileInfo.cs" />
     <Compile Include="ViewModels\PhotoVM.cs" />
+    <Compile Include="View\FileTree.xaml.cs">
+      <DependentUpon>FileTree.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ImageShow.xaml.cs">
       <DependentUpon>ImageShow.xaml</DependentUpon>
     </Compile>
