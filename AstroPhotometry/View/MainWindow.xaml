@@ -7,30 +7,46 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="2*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20px"/>
-            <RowDefinition Height="69*"/>
-            <RowDefinition Height="69*"/>
-            <RowDefinition Height="58*"/>
-            <RowDefinition Height="11*"/>
-        </Grid.RowDefinitions>
+        <TabControl>
+            <TabItem Header="View">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60*"/>
+                        <ColumnDefinition Width="5px" />
+                        <ColumnDefinition Width="159*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20px"/>
+                        <RowDefinition Height="69*"/>
+                        <RowDefinition Height="69*"/>
+                        <RowDefinition Height="58*"/>
+                        <RowDefinition Height="11*"/>
+                    </Grid.RowDefinitions>
 
-        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Center" Click="Button_Click" Height="20" Width="40"/>
+                    <Button Content="Button" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Click="Button_Click" Height="20" Width="40"/>
 
-        <!--#region image-->
-        <view:ImageShow Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="2"/>
-        <!--#endregion image-->
+                    <!--#region tree-->
+                    <view:FileTree Grid.Row="1" Grid.RowSpan="4" Margin="0,0,0,20"/>
+                    <!--#endregion tree-->
 
-        <ProgressBar Grid.Column="1" HorizontalAlignment="Center" Height="10" Grid.Row="4" VerticalAlignment="Top" Width="200" Margin="0,0,0,0" Grid.RowSpan="2"/>
+                    <GridSplitter Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Width="5px" HorizontalAlignment="Stretch" Panel.ZIndex="1"/>
 
-        <!--#region tree-->
-        <view:FileTree Grid.Row="1" Grid.RowSpan="3"/>
-        <!--#endregion tree-->
+                    <!--#region image-->
+                    <view:ImageShow Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="2" Margin="0,0,0,20"/>
+                    <!--#endregion image-->
+
+                    <ProgressBar Grid.Column="1" HorizontalAlignment="Center" Height="10" Grid.Row="4" VerticalAlignment="Top" Width="200"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Edit">
+
+            </TabItem>
+
+            <TabItem Header="Graphs">
+
+            </TabItem>
+        </TabControl>
+
     </Grid>
-
 </Window>
