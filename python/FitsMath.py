@@ -154,7 +154,7 @@ def main(argv: list[str]):
     operand: str = argv[1]
     if len(operand) < 2:
         print_usage(argv[0])
-        return(1)
+        return 1
 
     (show, input_files, output_file_name, operator, overwrite, debug) = parser(argv)
 
@@ -164,14 +164,14 @@ def main(argv: list[str]):
     if len(input_files) == 0:
         eprint("ERROR: no input file detected")
         print_usage(argv[0])
-        return(1)
+        return 1
 
     out_picture = []
     # open the files 
     # TODO: check if file exists
     if len(input_files) < 2:
         eprint(f"ERROR: not enough input files: {len(input_files)}")
-        return(1)
+        return 1
 
     with fits.open(input_files[0], mode='readonly') as base_file:
         out_picture = base_file[0].data[:, :]
