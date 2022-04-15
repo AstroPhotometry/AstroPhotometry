@@ -69,6 +69,7 @@ namespace AstroPhotometry
 
             process.StartInfo = startInfo;
             process.Start();
+            
         }
     }
 

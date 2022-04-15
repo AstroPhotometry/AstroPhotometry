@@ -5,8 +5,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
 using AstroPhotometry.ShellClasses;
+using System.ComponentModel;
 
 namespace AstroPhotometry
 {
@@ -49,7 +49,24 @@ namespace AstroPhotometry
                 photo.updateUri(openFileDialog.FileName);
             }
             //txtEditor.Text = File.ReadAllText(openFileDialog.FileName);
-        } 
+        }
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+           e.Cancel = true;
+           String path = "./tmp";
+           if (Directory.Exists(path))
+           {
+                // This path is a file
+                try
+                {
+                    Directory.Delete(path, true);
+                }
+                catch(Exception exception){ 
+                  Console.WriteLine(exception.ToString());
+                }
+           }
+           e.Cancel = false;
+        }
     }
 
 }

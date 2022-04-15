@@ -146,5 +146,6 @@
   <ItemGroup>
     <Resource Include="m32.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
