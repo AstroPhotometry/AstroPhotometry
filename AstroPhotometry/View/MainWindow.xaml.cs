@@ -54,19 +54,16 @@ namespace AstroPhotometry
         private void Window_Closing(object sender, CancelEventArgs e)
         {
            e.Cancel = true;
-           String path = "../../tmp";
-           String[] s = Directory.GetDirectories("../../");
-            MessageBox.Show(s[0] + " " + s[1]);
+           String path = "./tmp";
            if (Directory.Exists(path))
            {
                 // This path is a file
                 try
                 {
                     Directory.Delete(path, true);
-                    MessageBox.Show("did it");
                 }
                 catch(Exception exception){ 
-                  MessageBox.Show(exception.ToString());
+                  Console.WriteLine(exception.ToString());
                 }
            }
            e.Cancel = false;
