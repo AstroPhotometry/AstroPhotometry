@@ -196,3 +196,5 @@ StyleCop.Cache
 bin
 obj
 /python/__pycache__
+
+.idea
