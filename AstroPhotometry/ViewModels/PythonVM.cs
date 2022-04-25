@@ -31,21 +31,40 @@ namespace AstroPhotometry
             throw new NotImplementedException();
         }
 
-        // TODO: add all the commands
-        public void Avarage(string[] fits_files, string output_file_name)
+        public void MathActions(string[] fits_files, string output_file_name, string action)
         {
+            string argument = "";
+            if (action.Equals("Addition"))
+            {
+                argument = "-a";
+            }else if (action.Equals("Avarage"))
+            {
+                argument = "-A";
+            }
+            else if (action.Equals("Minus"))
+            {
+                argument = "-m";
+            }
+            else if (action.Equals("Multiplication"))
+            {
+                argument = "-M";
+            }
+            else if (action.Equals("Division"))
+            {
+                argument = "-d";
+            }
+
             string py_file = "FitsMath.py";
 
-            string arguments = "-A";
             foreach (string fits_file in fits_files)
             {
-                arguments += " " + "\"" + fits_file + "\"";
+                argument += " " + "\"" + fits_file + "\"";
             }
 
             // TODO: check if output needs folder to exist
-            arguments += " " + "\"" + this.output_folder_relative_path + output_file_name + "\"";
+            argument += " " + "\"" + this.output_folder_relative_path + output_file_name + "\"";
 
-            run(py_file, arguments);
+            run(py_file, argument);
         }
 
         public void FitsToPNG(string input_fits_file, string output_file_name)
