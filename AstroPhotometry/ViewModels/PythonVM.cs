@@ -69,11 +69,11 @@ namespace AstroPhotometry
 
         public void FitsToPNG(string input_fits_file, string output_file_name)
         {
-            string py_file = "showfits.py";
+            string py_file = "FitsToPNG.py";
 
-            string arguments = "\"" + input_fits_file + "\"";
+            string arguments = "-f \"" + input_fits_file + "\"";
 
-            arguments += " " + "\"" + this.output_folder_relative_path + output_file_name + "\"";
+            arguments += " " + "-o \"" + this.output_folder_relative_path + output_file_name + "\"";
 
             run(py_file, arguments);
         }
