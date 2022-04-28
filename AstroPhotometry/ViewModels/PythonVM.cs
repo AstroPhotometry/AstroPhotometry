@@ -6,9 +6,11 @@ namespace AstroPhotometry
     // TODO: connect it to real command
     public class PythonVM : ICommand
     {
-        private string python_code_folder_full_path;
+        private string python_code_folder_full_path; // the position of the python moduls
         private string output_folder_relative_path;
         private string output_full_path;
+
+        private string python_venv_relative_path; // the folder of python.exe
 
         public PythonVM(string python_code_folder_full_path, string output_folder_relative_path)
         {
@@ -17,6 +19,9 @@ namespace AstroPhotometry
             // full path of output folder - for later
             this.output_full_path = System.IO.Path.GetFullPath(output_folder_relative_path);
             this.output_folder_relative_path = output_folder_relative_path;
+
+            this.python_venv_relative_path = ".\\astro_env\\Scripts\\python";
+
         }
 
         public event EventHandler CanExecuteChanged;
@@ -63,9 +68,11 @@ namespace AstroPhotometry
         {
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+
+            // Will look like -> [path to python]\python.exe "[path to python modules][python file]" [arguments]
+            startInfo.FileName = this.python_venv_relative_path;
+            startInfo.Arguments = '\"' + this.python_code_folder_full_path + py_file + '\"' + " " +  arguments;
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-            startInfo.FileName = this.python_code_folder_full_path + py_file;
-            startInfo.Arguments = arguments;
 
             process.StartInfo = startInfo;
             process.Start();
