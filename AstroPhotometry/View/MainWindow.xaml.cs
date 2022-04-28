@@ -26,9 +26,16 @@ namespace AstroPhotometry
             photo = new PhotoVM(watcher);
             DataContext = photo;
 
+            var splashScreen = new SplashScreen("Assets/splash.jpg");
+            
+            splashScreen.Show(false);
+
             // TODO: find the pyhon folder no metter what (maybe copy the content to bin)
             string base_path = System.IO.Path.GetFullPath("../../../python/");
             createPyVenv(base_path);
+
+            splashScreen.Close(TimeSpan.FromSeconds(1));
+
 
             PythonVM py_runner = new PythonVM(base_path, @".\tmp\");
             string[] files = { @"C:\Users\ישי טרטנר\Desktop\astro_photometry\data_test\flats\Cal-0002flat6.fit",
