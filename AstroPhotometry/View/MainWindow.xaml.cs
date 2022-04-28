@@ -26,16 +26,8 @@ namespace AstroPhotometry
             photo = new PhotoVM(watcher);
             DataContext = photo;
 
-            // TODO: animate it
-            var splashScreen = new SplashScreen("Assets/splash.jpg");
-            splashScreen.Show(false);
-
             // TODO: find the pyhon folder no metter what (maybe copy the content to bin)
             string base_path = Path.GetFullPath("../../../python/");
-            createPyVenv(base_path);
-
-            splashScreen.Close(TimeSpan.FromSeconds(1));
-
 
             PythonVM py_runner = new PythonVM(base_path, @".\tmp\");
             string[] files = { @"C:\Users\ישי טרטנר\Desktop\astro_photometry\data_test\flats\Cal-0002flat6.fit",
@@ -43,24 +35,6 @@ namespace AstroPhotometry
             //py_runner.FitsToPNG(files[0], @"test.png");
             //py_runner.run("helloworld.py", "qwer");
 
-        }
-
-        /**
-         * This function creats venv
-         */
-        private void createPyVenv(string python_code_folder_full_path)
-        {
-            System.Diagnostics.Process process = new System.Diagnostics.Process();
-            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
-
-            string command =  python_code_folder_full_path + "";
-            startInfo.FileName = "\"" + python_code_folder_full_path + "\\installVenve.bat\"";
-            startInfo.Arguments = "\"" + command + "\""; 
-            process.StartInfo = startInfo;            
-            process.Start();
-
-            process.WaitForExit();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
