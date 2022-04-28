@@ -6,7 +6,7 @@ namespace AstroPhotometry
     // TODO: connect it to real command
     public class PythonVM : ICommand
     {
-        private string python_code_folder_full_path; // the position of the python moduls
+        private string python_code_folder_full_path; // the position of the python modules
         private string output_folder_relative_path;
         private string output_full_path;
 

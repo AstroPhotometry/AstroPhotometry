@@ -21,17 +21,17 @@ namespace AstroPhotometry
         {
             InitializeComponent();
 
-            // wather:
+            // watcher:
             var watcher = new ViewModels.FileWatcherVM("./tmp/", "*.png");
             photo = new PhotoVM(watcher);
             DataContext = photo;
 
+            // TODO: animate it
             var splashScreen = new SplashScreen("Assets/splash.jpg");
-            
             splashScreen.Show(false);
 
             // TODO: find the pyhon folder no metter what (maybe copy the content to bin)
-            string base_path = System.IO.Path.GetFullPath("../../../python/");
+            string base_path = Path.GetFullPath("../../../python/");
             createPyVenv(base_path);
 
             splashScreen.Close(TimeSpan.FromSeconds(1));
@@ -60,7 +60,6 @@ namespace AstroPhotometry
             process.StartInfo = startInfo;            
             process.Start();
 
-            // TODO: add loading screen
             process.WaitForExit();
         }
 
