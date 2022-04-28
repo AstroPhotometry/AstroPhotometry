@@ -18,27 +18,27 @@ namespace AstroPhotometry
         {
             base.OnStartup(e);
 
-            //initialize the splash screen and set it as the application main window
+            // Initialize the splash screen and set it as the application main window
             var splashScreen = new View.Splash();
             this.MainWindow = splashScreen;
             splashScreen.Show();
 
-            //in order to ensure the UI stays responsive, we need to
-            //do the work on a different thread
+            // In order to ensure the UI stays responsive, we need to do the work on a different thread
             Task.Factory.StartNew(() =>
             {
                 string base_path = Path.GetFullPath("../../../python/");
-                createPyVenv(base_path);
+                createPyVenv(base_path); // Wait to be done
 
-                //since we're not on the UI thread
-                //once we're done we need to use the Dispatcher
-                //to create and show the main window
+                // Since we're not on the UI thread
+                // once we're done we need to use the Dispatcher
+                // to create and show the main window
                 this.Dispatcher.Invoke(() =>
                 {
-                    //initialize the main window, set it as the application main window
-                    //and close the splash screen
+                    // Initialize the main window, set it as the application main window
+                    // and close the splash screen
                     var mainWindow = new MainWindow();
                     this.MainWindow = mainWindow;
+
                     mainWindow.Show();
                     splashScreen.Close();
                 });

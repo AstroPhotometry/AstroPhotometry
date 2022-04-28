@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:AstroPhotometry.View"
         mc:Ignorable="d"
         WindowStyle="None"
-        Title="Splash" 
+        Title="Splash"
+        ResizeMode="NoResize"
+        BorderThickness="0"
         WindowStartupLocation="CenterScreen"
         Height="300" Width="400">
     <Grid>
