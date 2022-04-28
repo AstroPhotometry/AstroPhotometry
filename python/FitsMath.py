@@ -1,235 +1,97 @@
-import numpy as np
-from astropy.io import fits
 import sys
+import os
+import argparse
+import datetime
+from astropy.io import fits
 
 
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
 
-def get_astropy_mpl_style():
-    # the setting for the graph that show on the screen
-    return {
-        # Lines
-        'lines.linewidth': 1.7,
-        'lines.antialiased': True,
-
-        # Patches
-        'patch.linewidth': 1.0,
-        'patch.facecolor': '#348ABD',
-        'patch.edgecolor': '#CCCCCC',
-        'patch.antialiased': True,
-
-        # Images
-        'image.cmap': 'gist_heat',
-        'image.origin': 'upper',
-
-        # Font
-        'font.size': 12.0,
-
-        # Axes
-        'axes.facecolor': '#FFFFFF',
-        'axes.edgecolor': '#AAAAAA',
-        'axes.linewidth': 1.0,
-        # 'axes.grid': True, # making an WARNING
-        'axes.titlesize': 'x-large',
-        'axes.labelsize': 'large',
-        'axes.labelcolor': 'k',
-        'axes.axisbelow': True,
-
-        # Ticks
-        'xtick.major.size': 0,
-        'xtick.minor.size': 0,
-        'xtick.major.pad': 6,
-        'xtick.minor.pad': 6,
-        'xtick.color': '#565656',
-        'xtick.direction': 'in',
-        'ytick.major.size': 0,
-        'ytick.minor.size': 0,
-        'ytick.major.pad': 6,
-        'ytick.minor.pad': 6,
-        'ytick.color': '#565656',
-        'ytick.direction': 'in',
-
-        # Legend
-        'legend.fancybox': True,
-        'legend.loc': 'best',
-
-        # Figure
-        'figure.figsize': [8, 6],
-        'figure.facecolor': '1.0',
-        'figure.edgecolor': '0.50',
-        'figure.subplot.hspace': 0.5,
-
-        # Other
-        'savefig.dpi': 72,
-    }
+def argument_handling():
+    """
+    Method to deal with arguments parsing
+    :return: file path to fits file and path to a new png file
+    """
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-o', help='Overwrite the existing files', action='store_true')
+    parser.add_argument('-folder',
+                        help='Insert a folder path with multiple files that we compute on', required=True)
+    parser.add_argument('-f',
+                        help='Filepath to output the outcome', required=True)
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('-A', help='Compute average', action='store_true')
+    group.add_argument('-a', help='Compute addition', action='store_true')
+    group.add_argument('-M', help='Compute multiplication', action='store_true')
+    group.add_argument('-m', help='Compute minus', action='store_true')
+    group.add_argument('-d', help='Compute division', action='store_true')
+    args = parser.parse_args()
+    return args
 
 
-def print_usage(file_name: str) -> None:
-    split_filename = file_name.split(sep="\\")
-    eprint(
-        f"""usage: {split_filename[-1]} -operand [file names... or -p for piping] <output file or -s for show>
-        operand can be:
-        -A      avarage
-        -a      addition
-        -m      minus
-        -M      multiplication
-        -d      division
-
-        can add:
-        -d for debug info
-        -o for overwrite output file
-        """)
-    # -<num>  divide by num #unary operand
+def get_filenames_from_folder(folder_path):
+    if os.path.exists(folder_path) and os.path.isdir(folder_path):
+        only_files = [file for file in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, file))]
+        # TODO: check that is a fit file
+        for file in only_files:
+            if file.endswith('.fit') is False:
+                eprint('File in folder is not in fit format')
+                sys.exit(1)
+        only_files = [(folder_path + '\\' + file) for file in only_files]
+        return only_files
+    eprint('Folder is not exist or its not a directory')
+    sys.exit(1)
 
 
-def parser(argv: list[str]):
-
-    if "-A" in argv:
-        argv.remove("-A")
-        operator = "avarage"
-    elif "-a" in argv:
-        argv.remove("-a")
-        operator = "addition"
-    elif "-m" in argv:
-        argv.remove("-m")
-        operator = "minus"
-    elif "-M" in argv:
-        argv.remove("-M")
-        operator = "multiplication"
-    elif "-d" in argv:
-        argv.remove("-d")
-        operator = "division"
-    else:
-        print_usage(argv[0])
-        exit(1)
-
-    if "-d" in argv:
-        argv.remove("-d")
-        debug = True
-    else:
-        debug = False
-
-    if "-o" in argv:
-        argv.remove("-o")
-        overwrite = True
-    else:
-        overwrite = False
-
-    show = "-s" in argv
-    if show:
-        argv.remove("-s")
-        output_file_name = None
-
-    # TODO: check if they are paths or exist or unary
-    input_files = []
-    pipeing = False
-    if "-p" in argv:
-        pipeing = True
-        argv.remove("-p")
-        for line in sys.stdin:
-            input_files.append(line.rstrip().removeprefix("\ufeff"))
-
-        if len(input_files) <= 1:
-            eprint("PIPING ERROR: did not received enough file names:")
-            eprint(f"{input_files}")
-            exit(1)
-
-    if not show:
-        output_file_name = argv[-1]
-        argv.remove(output_file_name)
-
-    if not pipeing:
-        for arg in argv[1:]:
-            input_files.append(arg)
-    return (show, input_files, output_file_name, operator, overwrite, debug)
-
-
-def main(argv: list[str]):
-    if len(argv) < 5:
-        print_usage(argv[0])
-        return(1)
-
-    operand: str = argv[1]
-    if len(operand) < 2:
-        print_usage(argv[0])
-        return(1)
-
-    (show, input_files, output_file_name, operator, overwrite, debug) = parser(argv)
-
-    if debug:
-        print(f"show:{show}\ninput_files: {input_files}\noutput_file_name: {output_file_name}\noperator: {operator}\noverwrite: {overwrite}\n")
-
-    if len(input_files) == 0:
+def compute_process():
+    args = argument_handling()
+    folder_path, output_file_path, overwrite_flag = args.folder, args.f, args.o
+    input_files = get_filenames_from_folder(folder_path)
+    files_amount = len(input_files)
+    if files_amount == 0:
         eprint("ERROR: no input file detected")
-        print_usage(argv[0])
-        return(1)
-
-    out_picture = []
-    # open the files 
-    # TODO: check if file exists
-    if len(input_files) < 2:
-        eprint(f"ERROR: not enough input files: {len(input_files)}")
-        return(1)
+        sys.exit(1)
 
     with fits.open(input_files[0], mode='readonly') as base_file:
         out_picture = base_file[0].data[:, :]
-
-    average: int = len(input_files)
     for input_file in input_files[1:]:
         with fits.open(input_file, mode='readonly') as next_file:
-            if operator == "avarage":
+            # Average
+            if args.A is True:
                 out_picture += next_file[0].data[:, :]
-            elif operator == "minus":
+            # Minus
+            elif args.m is True:
                 out_picture = base_file[0].data[:, :]
                 out_picture -= next_file[0].data[:, :]
-            elif operator == "multiplication":
+            # Multiplication
+            elif args.M is True:
                 out_picture *= next_file[0].data[:, :]
-            elif operator == "addition":
+            # Addition
+            elif args.a is True:
                 out_picture = base_file[0].data[:, :]
                 out_picture += next_file[0].data[:, :]
-            elif operator == "division":  # TODO: check for 0
+            # Division
+            elif args.d is True:
+                if next_file[0].data[:, :] == 0:
+                    eprint('Division by 0')
+                    sys.exit(1)
                 out_picture = base_file[0].data[:, :]
                 out_picture = out_picture / next_file[0].data[:, :]
             else:
-                print_usage(argv[0])
-                return(1)
+                sys.exit(1)
 
-    if operator == "avarage":
-        out_picture = out_picture[:, :] / average
+    if args.A is True:
+        out_picture = out_picture[:, :] / files_amount
 
-    # elif operand[0] == '-' and operand[1:].isdigit(): # unary operand
-    #     num: int = int(operand[1:])
-    #     if num == 0:
-    #         print("ERROR: can not divide by 0")
-    #         print_usage(argv[0])
-    #         exit(1)
-    #     out_picture = first_file[0].data[:, :]
-    #     out_picture = out_picture / num
-
-    if show:
-        import matplotlib.pyplot as plt
-        plt.style.use(get_astropy_mpl_style())
-        plt.figure()
-        plt.imshow(out_picture, cmap='gray')
-        plt.grid(False)
-        plt.colorbar()
-        plt.show()
-
-    else:
-        hdr = fits.Header()
-        import datetime
-        date = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
-        hdr['history'] = f"= edited on {date}"
-        hdr['COMMENT'] = f"= this is an {operator} of 2 fits files"
-        hdu = fits.PrimaryHDU(data=out_picture, header=hdr)
-
-        hdul = fits.HDUList([hdu])
-        hdul.writeto(output_file_name, overwrite=overwrite)  # check for errors
-        print(output_file_name)
+    hdr = fits.Header()
+    date = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
+    hdr['history'] = f"= edited on {date}"
+    hdu = fits.PrimaryHDU(data=out_picture, header=hdr)
+    hdul = fits.HDUList([hdu])
+    hdul.writeto(output_file_path, overwrite=overwrite_flag)  # check for errors
+    print(output_file_path)
 
 
 if __name__ == "__main__":
-    main(sys.argv)
-    input()
+    compute_process()
