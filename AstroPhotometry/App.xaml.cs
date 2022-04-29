@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using AstroPhotometry.ViewModels;
 
 namespace AstroPhotometry
 {
@@ -19,7 +16,7 @@ namespace AstroPhotometry
             base.OnStartup(e);
 
             // Initialize the splash screen and set it as the application main window
-            ViewModels.CmdString output = new ViewModels.CmdString();
+            CmdStringVM output = new CmdStringVM();
             var splashScreen = new View.Splash(output);
             this.MainWindow = splashScreen;
             splashScreen.Show();
@@ -49,12 +46,13 @@ namespace AstroPhotometry
         /**
          * This function creats venv
          */
-        private void createPyVenv(string python_code_folder_full_path, ViewModels.CmdString output)
+        private void createPyVenv(string python_code_folder_full_path, ViewModels.CmdStringVM output)
         {
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
 
+            // Path and command
             string command = python_code_folder_full_path + "";
             startInfo.FileName = "\"" + python_code_folder_full_path + "\\installVenve.bat\"";
             startInfo.Arguments = "\"" + command + "\"";
@@ -70,14 +68,33 @@ namespace AstroPhotometry
             // For async showing th progress
             async Task Main()
             {
+                output.Output = "loading...";
                 await ReadCharacters();
             }
 
             async Task ReadCharacters()
             {
-                while (process.Responding)
+                while (!process.HasExited)
                 {
-                    output.Output = await process.StandardOutput.ReadLineAsync();
+                    string tmp = await process.StandardOutput.ReadLineAsync();
+
+                    // TODO: remove long path
+                    // Cleaning the input
+                    if (tmp != null)
+                    {
+                        if (tmp.Contains("python -m") || tmp.Contains("python.exe"))
+                        {
+                            int charPos = tmp.IndexOf("python");
+                            tmp = tmp.Substring(charPos);
+                        }
+                        else if (tmp.Contains("set arg"))
+                        {
+                            int charPos = tmp.IndexOf("set arg");
+                            tmp = tmp.Substring(charPos);
+                        }
+                    }
+                    output.Output = tmp;
+                    Console.WriteLine(output.Output);
                 }
             }
             _ = Main();

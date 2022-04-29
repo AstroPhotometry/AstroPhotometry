@@ -1,30 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace AstroPhotometry.ViewModels
 {
-    public class CmdString : INotifyPropertyChanged
+    public class CmdStringVM : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         string str;
+
+        public CmdStringVM()
+        {
+            Output = "";
+        }
+
         public string Output
         {
             get { return str; }
+
             set
-            { 
-                str = value;
+            {
+                if (null == value)
+                {
+                    str = "";
+                }
+                else
+                {
+                    str = value;
+                }
+
                 NotifyPropertyChanged("Output");
             }
-        }
-
-        public CmdString()
-        {
-            Output = "";
         }
 
         public void NotifyPropertyChanged(string propName)

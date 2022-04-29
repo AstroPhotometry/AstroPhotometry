@@ -20,14 +20,10 @@ namespace AstroPhotometry.View
     /// </summary>
     public partial class Splash : Window
     {
-        public Splash(CmdString output)
+        public Splash(CmdStringVM output)
         {
             DataContext = output;
             InitializeComponent();
-            //var splashScreen = new SplashScreen("Assets/splash.jpg");
-            //splashScreen.Show(false);
-
-            //splashScreen.Close(TimeSpan.FromSeconds(1));
         }
 
     }
