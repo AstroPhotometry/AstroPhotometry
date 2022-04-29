@@ -19,7 +19,8 @@ namespace AstroPhotometry
             base.OnStartup(e);
 
             // Initialize the splash screen and set it as the application main window
-            var splashScreen = new View.Splash();
+            ViewModels.CmdString output = new ViewModels.CmdString();
+            var splashScreen = new View.Splash(output);
             this.MainWindow = splashScreen;
             splashScreen.Show();
 
@@ -27,7 +28,7 @@ namespace AstroPhotometry
             Task.Factory.StartNew(() =>
             {
                 string base_path = Path.GetFullPath("../../../python/");
-                createPyVenv(base_path); // Wait to be done
+                createPyVenv(base_path, output); // Wait to be done
 
                 // Since we're not on the UI thread
                 // once we're done we need to use the Dispatcher
@@ -48,7 +49,7 @@ namespace AstroPhotometry
         /**
          * This function creats venv
          */
-        private void createPyVenv(string python_code_folder_full_path)
+        private void createPyVenv(string python_code_folder_full_path, ViewModels.CmdString output)
         {
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
@@ -57,8 +58,29 @@ namespace AstroPhotometry
             string command = python_code_folder_full_path + "";
             startInfo.FileName = "\"" + python_code_folder_full_path + "\\installVenve.bat\"";
             startInfo.Arguments = "\"" + command + "\"";
+
+            // for redireting
+            startInfo.RedirectStandardOutput = true;
+            startInfo.UseShellExecute = false;
+            startInfo.CreateNoWindow = true;
+
             process.StartInfo = startInfo;
             process.Start();
+
+            // For async showing th progress
+            async Task Main()
+            {
+                await ReadCharacters();
+            }
+
+            async Task ReadCharacters()
+            {
+                while (process.Responding)
+                {
+                    output.Output = await process.StandardOutput.ReadLineAsync();
+                }
+            }
+            _ = Main();
 
             process.WaitForExit();
         }
