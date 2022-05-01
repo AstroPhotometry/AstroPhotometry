@@ -41,6 +41,9 @@ namespace AstroPhotometry.View
 
         #region Methods
 
+        /**
+        * Initialize and add all the drives to the treeview object 
+        */
         private void InitializeFileSystemObjects()
         {
             
@@ -65,6 +68,10 @@ namespace AstroPhotometry.View
             //PreSelect(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
         }
 
+        /**
+        * Pre select the folder that passed into it - 
+        *   Open all the path to the folder 
+        */
         private void PreSelect(string path)
         {
             if (!Directory.Exists(path))
