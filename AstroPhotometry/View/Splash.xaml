@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AstroPhotometry.View"
+        xmlns:astrophotometry="clr-namespace:AstroPhotometry.ViewModels"
+        d:DataContext="{d:DesignInstance Type=astrophotometry:CmdString}"
         mc:Ignorable="d"
         WindowStyle="None"
         Title="Splash"
@@ -21,6 +23,6 @@
 
         <ProgressBar Grid.Row="1" IsIndeterminate="True"/>
         <TextBlock Grid.Row="1" HorizontalAlignment="Center"
-                   VerticalAlignment="Center" >Loading...</TextBlock>
+                   VerticalAlignment="Center" Text="{Binding Output}" ></TextBlock>
     </Grid>
 </Window>

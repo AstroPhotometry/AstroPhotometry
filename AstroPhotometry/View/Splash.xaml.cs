@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AstroPhotometry.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,13 +20,10 @@ namespace AstroPhotometry.View
     /// </summary>
     public partial class Splash : Window
     {
-        public Splash()
+        public Splash(CmdStringVM output)
         {
+            DataContext = output;
             InitializeComponent();
-            //var splashScreen = new SplashScreen("Assets/splash.jpg");
-            //splashScreen.Show(false);
-
-            //splashScreen.Close(TimeSpan.FromSeconds(1));
         }
 
     }
