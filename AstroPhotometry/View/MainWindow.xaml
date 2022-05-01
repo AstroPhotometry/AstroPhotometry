@@ -5,8 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:view="clr-namespace:AstroPhotometry.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="1000"
-        Closing="Window_Closing">
+        Title="MainWindow" Height="500" Width="1000">
     <Grid>
         <TabControl>
             <TabItem Header="View">
