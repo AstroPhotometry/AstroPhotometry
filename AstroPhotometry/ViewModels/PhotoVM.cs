@@ -10,7 +10,6 @@ namespace AstroPhotometry
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private readonly FileWatcherVM fileWatcherVM;
         private PhotoM photoM;
 
         public PhotoVM()

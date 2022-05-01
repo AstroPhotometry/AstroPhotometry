@@ -76,12 +76,12 @@ namespace AstroPhotometry
             {
                 while (!process.HasExited)
                 {
-                    string tmp = await process.StandardOutput.ReadLineAsync();
 
-                    // TODO: remove long path
+                    string tmp = await process.StandardOutput.ReadLineAsync();
                     // Cleaning the input
                     if (tmp != null)
                     {
+                        tmp = tmp.Replace(Path.GetFullPath(".").ToLower(), "");
                         if (tmp.Contains("python -m") || tmp.Contains("python.exe"))
                         {
                             int charPos = tmp.IndexOf("python");
@@ -94,7 +94,7 @@ namespace AstroPhotometry
                         }
                     }
                     output.Output = tmp;
-                    Console.WriteLine(output.Output);
+                    Console.WriteLine(tmp);
                 }
             }
             _ = Main();
