@@ -11,7 +11,6 @@ namespace AstroPhotometry
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private readonly FileWatcherVM fileWatcherVM;
         private PhotoM photoM;
 
         public PhotoVM()
@@ -40,10 +39,23 @@ namespace AstroPhotometry
             }
         }
 
+        public string Name
+        {
+            get
+            {
+                if (Path.IsFile)
+                {
+                    return System.IO.Path.GetFileName(Path.LocalPath);
+                }
+                return "";
+            }
+        }
+
         public void updateUri(String uri)
         {
             photoM.Path = new Uri(uri);
             NotifyPropertyChanged("Path");
+            NotifyPropertyChanged("Name");
         }
 
         public void NotifyPropertyChanged(string propName)

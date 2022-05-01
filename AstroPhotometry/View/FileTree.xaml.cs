@@ -41,8 +41,17 @@ namespace AstroPhotometry.View
 
         #region Methods
 
+        /**
+        * Initialize and add all the drives to the treeview object 
+        */
         private void InitializeFileSystemObjects()
         {
+            
+            var desktop_path = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+            var desktop = new FileSystemObjectInfo(desktop_path);
+            //desktop.IsExpanded = true;
+            treeView.Items.Add(desktop);
+
             var drives = DriveInfo.GetDrives();
             DriveInfo
                 .GetDrives()
@@ -56,10 +65,13 @@ namespace AstroPhotometry.View
                 });
 
             // start in specific folder 
-            // TODO: make it start from desktop (one layer in)
-            PreSelect(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+            //PreSelect(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
         }
 
+        /**
+        * Pre select the folder that passed into it - 
+        *   Open all the path to the folder 
+        */
         private void PreSelect(string path)
         {
             if (!Directory.Exists(path))
@@ -81,6 +93,8 @@ namespace AstroPhotometry.View
                     if (string.Equals(childFileSystemObjectInfo.FileSystemInfo.FullName, path))
                     {
                         /* We found the item for pre-selection */
+                        childFileSystemObjectInfo.IsExpanded = true;
+
                     }
                     else
                     {
@@ -133,8 +147,10 @@ namespace AstroPhotometry.View
                 FileSystemInfo file = (FileSystemInfo)((TextBlock)((StackPanel)sender).Children[1]).Tag;
                 if ((file is DirectoryInfo))
                 {
+                    // This is a part to make fit file with math action and convert it to png
+                    /*
                     py_runner.MathActions(file.FullName, "uriya2.fit", "Addition");
-                    py_runner.FitsToPNG(".\\tmp\\uriya2.fit", @"uriya2.png");
+                    py_runner.FitsToPNG(".\\tmp\\uriya2.fit", @"uriya2.png");*/
                     return;
                 }
                 string png_file = file.Name.Substring(0, file.Name.IndexOf('.'));   

@@ -16,20 +16,18 @@ namespace AstroPhotometry
     public partial class MainWindow : Window
     {
         private PhotoVM photo;
-        ViewModels.FileWatcherVM watcher;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            // wather:
-            watcher = new ViewModels.FileWatcherVM("tmp", "*.png");
-            
+            // watcher:
+            var watcher = new ViewModels.FileWatcherVM("./tmp/", "*.png");
             photo = new PhotoVM(watcher);
             DataContext = photo;
 
             // TODO: find the pyhon folder no metter what (maybe copy the content to bin)
-            string base_path = System.IO.Path.GetFullPath("../../../python/");
+            string base_path = Path.GetFullPath("../../../python/");
 
             PythonVM py_runner = new PythonVM(base_path, @".\tmp\");
             string[] files = { @"C:\Users\ישי טרטנר\Desktop\astro_photometry\data_test\flats\Cal-0002flat6.fit",

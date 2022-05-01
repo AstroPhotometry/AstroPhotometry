@@ -197,4 +197,5 @@ bin
 obj
 /python/__pycache__
 
+*/astro_env
 .idea
