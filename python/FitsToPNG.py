@@ -1,6 +1,4 @@
 import argparse
-import os
-
 import matplotlib.pyplot as plt
 from astropy.visualization import astropy_mpl_style
 from astropy.io import fits
@@ -23,7 +21,6 @@ def argument_handling():
 def make_png():
     """
     Function to make a PNG file from fit file
-    :return:
     """
     fits_file, png_loc = argument_handling()
     first_file = fits.open(fits_file.replace('/', '\\'), mode='readonly')

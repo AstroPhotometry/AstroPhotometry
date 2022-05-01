@@ -3,6 +3,7 @@ using AstroPhotometry.ViewModels;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Media.Imaging;
 
 namespace AstroPhotometry
 {
@@ -21,6 +22,13 @@ namespace AstroPhotometry
         public PhotoVM(FileWatcherVM fileWatcher)
         {
             fileWatcher.Ioc(this.updateUri);
+            photoM = new PhotoM();
+        }
+
+        public void ReleaseImage()
+        {
+            
+            BitmapImage image = new BitmapImage();
             photoM = new PhotoM();
         }
 

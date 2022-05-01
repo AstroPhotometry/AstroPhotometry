@@ -56,18 +56,23 @@ namespace AstroPhotometry
         {
            e.Cancel = true;
            String path = "tmp";
-           if (Directory.Exists(path))
-           {
+           
+           e.Cancel = false;
+            if (Directory.Exists(path))
+            {
+
                 // This path is a file
                 try
                 {
+                    photo.ReleaseImage();
                     Directory.Delete(path, true);
                 }
-                catch(Exception exception){ 
-                  MessageBox.Show(exception.ToString());
+                catch (Exception exception)
+                {
+                    MessageBox.Show(exception.ToString());
                 }
-           }
-           e.Cancel = false;
+            }
+
         }
     }
 

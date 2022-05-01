@@ -26,6 +26,7 @@ namespace AstroPhotometry.Models
         public BitmapImage ImageUri
         {
             get { return image; }
+            set { image = value; }
         }
     }
 }

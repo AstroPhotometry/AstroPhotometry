@@ -38,9 +38,16 @@ namespace AstroPhotometry.ViewModels
         // IOC for updating if file created or change
         Action<string> IOCupdateUri = null;
 
+        public void stopWatcher()
+        {
+            watcher.EnableRaisingEvents = false;
+            watcher.Dispose();
+        }
+
         public void Ioc(Action<string> updateUri)
         {
             this.IOCupdateUri = updateUri;
+            
         }
 
         // TODO: maybe use queue
