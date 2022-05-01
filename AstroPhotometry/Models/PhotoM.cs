@@ -21,11 +21,11 @@ namespace AstroPhotometry.Models
         public Uri Path
         {
             get { return uri; }
+            set { uri = value; }
         }
         public BitmapImage ImageUri
         {
             get { return image; }
-            set { image = value; }
         }
     }
 }
