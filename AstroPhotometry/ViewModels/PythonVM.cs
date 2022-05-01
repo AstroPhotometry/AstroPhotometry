@@ -133,7 +133,7 @@ namespace AstroPhotometry
             // Will look like -> [path to python]\python.exe "[path to python modules][python file]" [arguments]
             startInfo.FileName = this.python_venv_relative_path;
             startInfo.Arguments = '\"' + this.python_code_folder_full_path + py_file + '\"' + " " +  arguments;
-            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
+            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
 
             process.StartInfo = startInfo;
             process.Start();
