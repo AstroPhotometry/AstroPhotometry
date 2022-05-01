@@ -50,28 +50,6 @@ namespace AstroPhotometry
             }
             //txtEditor.Text = File.ReadAllText(openFileDialog.FileName);
         }
-        private void Window_Closing(object sender, CancelEventArgs e)
-        {
-           e.Cancel = true;
-           String path = "tmp";
-           
-           e.Cancel = false;
-            if (Directory.Exists(path))
-            {
-
-                // This path is a file
-                try
-                {
-                    Directory.Delete(path, true);
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception.ToString());
-                   // MessageBox.Show(exception.ToString());
-                }
-            }
-
-        }
     }
 
 }
