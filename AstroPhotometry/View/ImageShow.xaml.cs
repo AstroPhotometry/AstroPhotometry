@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -10,6 +11,10 @@ namespace AstroPhotometry.View
     /// </summary>
     public partial class ImageShow : UserControl
     {
+        private bool mouse_enter;
+        private Point start;
+        private Point origin;
+
         public ImageShow()
         {
             InitializeComponent();
@@ -30,8 +35,6 @@ namespace AstroPhotometry.View
             tt.Y -= mouse_pos.Y * zoom;
         }
 
-        private Point start;
-        private Point origin;
         private void image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             image.CaptureMouse();
@@ -49,6 +52,10 @@ namespace AstroPhotometry.View
                 Vector v = start - e.GetPosition(border);
                 tt.X = origin.X - v.X;
                 tt.Y = origin.Y - v.Y;
+            }
+            if (mouse_enter)
+            {
+                lblCursorPosition.Text = String.Format("mouseX: {0:0.00} mouseY:{1:0.00}", e.GetPosition(image).X, e.GetPosition(image).Y);
             }
         }
 
@@ -68,6 +75,17 @@ namespace AstroPhotometry.View
             TranslateTransform tt = translate;
             tt.X = 0;
             tt.Y = 0;
+        }
+
+        private void image_MouseEnter(object sender, MouseEventArgs e)
+        {
+            mouse_enter = true;
+        }
+
+        private void image_MouseLeave(object sender, MouseEventArgs e)
+        {
+            mouse_enter = false;
+            lblCursorPosition.Text = "";
         }
     }
 }
