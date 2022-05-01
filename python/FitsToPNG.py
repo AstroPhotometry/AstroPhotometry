@@ -1,7 +1,10 @@
 import argparse
+import os
+
 import matplotlib.pyplot as plt
 from astropy.visualization import astropy_mpl_style
 from astropy.io import fits
+import StopInCaseOfError
 
 
 def argument_handling():
@@ -31,3 +34,5 @@ def make_png():
 if __name__ == "__main__":
     plt.style.use(astropy_mpl_style)
     make_png()
+    #ex = os.listdir(os.path.abspath('../'))
+    #raise Exception(ex)

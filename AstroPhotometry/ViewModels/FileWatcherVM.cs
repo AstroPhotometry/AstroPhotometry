@@ -1,15 +1,17 @@
 ﻿using System;
 using System.IO;
+using System.Windows;
 
 namespace AstroPhotometry.ViewModels
 {
     public class FileWatcherVM
     {
-        
+        FileSystemWatcher watcher;
         public FileWatcherVM(string relative_path, string filter)
         {
             Directory.CreateDirectory(relative_path);
-            var watcher = new FileSystemWatcher(Path.GetFullPath(relative_path));
+
+            watcher = new FileSystemWatcher(Path.GetFullPath(relative_path));
 
             watcher.NotifyFilter = NotifyFilters.Attributes
                                  | NotifyFilters.CreationTime
@@ -25,6 +27,7 @@ namespace AstroPhotometry.ViewModels
             watcher.Deleted += OnDeleted;
             watcher.Renamed += OnRenamed;
             watcher.Error += OnError;
+            
 
             watcher.Filter = filter; // The file to watch 
             watcher.IncludeSubdirectories = true;
@@ -52,7 +55,10 @@ namespace AstroPhotometry.ViewModels
         {
             get { return last_create; }
         }
-
+        public FileSystemWatcher getWatcher()
+        {
+            return watcher;
+        }
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
             if (e.ChangeType != WatcherChangeTypes.Changed)
@@ -83,8 +89,12 @@ namespace AstroPhotometry.ViewModels
             Console.WriteLine(value);
         }
 
-        private void OnDeleted(object sender, FileSystemEventArgs e) =>
+
+        private void OnDeleted(object sender, FileSystemEventArgs e)
+        {
+            MessageBox.Show("delete");
             Console.WriteLine($"Deleted: {e.FullPath}");
+        }
 
         private void OnRenamed(object sender, RenamedEventArgs e)
         {

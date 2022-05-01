@@ -16,13 +16,15 @@ namespace AstroPhotometry
     public partial class MainWindow : Window
     {
         private PhotoVM photo;
+        ViewModels.FileWatcherVM watcher;
 
         public MainWindow()
         {
             InitializeComponent();
 
             // wather:
-            var watcher = new ViewModels.FileWatcherVM("./tmp/", "*.png");
+            watcher = new ViewModels.FileWatcherVM("tmp", "*.png");
+            
             photo = new PhotoVM(watcher);
             DataContext = photo;
 
@@ -32,7 +34,7 @@ namespace AstroPhotometry
             PythonVM py_runner = new PythonVM(base_path, @".\tmp\");
             string[] files = { @"C:\Users\ישי טרטנר\Desktop\astro_photometry\data_test\flats\Cal-0002flat6.fit",
                                 @"C:\Users\ישי טרטנר\Desktop\astro_photometry\data_test\light\Light-0034EVLac.fit"};
-            py_runner.FitsToPNG(files[0], @"test.png");
+            //py_runner.FitsToPNG(files[0], @"test.png");
             //py_runner.run("helloworld.py", "qwer");
 
         }
@@ -53,7 +55,7 @@ namespace AstroPhotometry
         private void Window_Closing(object sender, CancelEventArgs e)
         {
            e.Cancel = true;
-           String path = "./tmp";
+           String path = "tmp";
            if (Directory.Exists(path))
            {
                 // This path is a file
@@ -62,7 +64,7 @@ namespace AstroPhotometry
                     Directory.Delete(path, true);
                 }
                 catch(Exception exception){ 
-                  Console.WriteLine(exception.ToString());
+                  MessageBox.Show(exception.ToString());
                 }
            }
            e.Cancel = false;

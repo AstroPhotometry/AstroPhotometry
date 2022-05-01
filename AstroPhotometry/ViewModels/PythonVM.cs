@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Windows;
 using System.Windows.Input;
 
 namespace AstroPhotometry
@@ -30,7 +32,38 @@ namespace AstroPhotometry
         {
             throw new NotImplementedException();
         }
+        public void MathActions(string dir_path, string output_file_name, string action)
+        {
+            string argument = "";
+            if (action.Equals("Addition"))
+            {
+                argument = "-a";
+            }
+            else if (action.Equals("Avarage"))
+            {
+                argument = "-A";
+            }
+            else if (action.Equals("Minus"))
+            {
+                argument = "-m";
+            }
+            else if (action.Equals("Multiplication"))
+            {
+                argument = "-M";
+            }
+            else if (action.Equals("Division"))
+            {
+                argument = "-d";
+            }
 
+            string py_file = "FitsMath.py";
+
+
+            // TODO: check if output needs folder to exist
+            argument = " -folder " + dir_path +" -f "+ "\"" + this.output_folder_relative_path + output_file_name + "\"" + argument;
+            MessageBox.Show(argument);
+            run(py_file, argument);
+        }
         public void MathActions(string[] fits_files, string output_file_name, string action)
         {
             string argument = "";
@@ -69,20 +102,26 @@ namespace AstroPhotometry
 
         public void FitsToPNG(string input_fits_file, string output_file_name)
         {
-            string py_file = "showfits.py";
 
-            string arguments = "\"" + input_fits_file + "\"";
-
-            arguments += " " + "\"" + this.output_folder_relative_path + output_file_name + "\"";
-
-            run(py_file, arguments);
+            if (File.Exists("tmp\\" + output_file_name))
+            {
+                MessageBox.Show("exist");
+            }
+            else
+            {
+                string py_file = "FitsToPNG.py";
+                string arguments = "-f " + "\"" + input_fits_file + "\"";
+                string tmp_loc = " -o \"tmp\\";
+                arguments += tmp_loc + output_file_name;
+                run(py_file, arguments);
+            }
         }
 
         public void run(string py_file, string arguments)
         {
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
             startInfo.FileName = this.python_code_folder_full_path + py_file;
             startInfo.Arguments = arguments;
 

@@ -133,9 +133,11 @@ namespace AstroPhotometry.View
                 FileSystemInfo file = (FileSystemInfo)((TextBlock)((StackPanel)sender).Children[1]).Tag;
                 if ((file is DirectoryInfo))
                 {
+                    py_runner.MathActions(file.FullName, "uriya.fit", "Addition");
                     return;
                 }
-                py_runner.FitsToPNG(file.FullName, file.Name + @".png");
+                string png_file = file.Name.Substring(0, file.Name.IndexOf('.'));   
+                py_runner.FitsToPNG(file.FullName, png_file + @".png");
 
                 //photo.updateUri(file.FullName);
             }
