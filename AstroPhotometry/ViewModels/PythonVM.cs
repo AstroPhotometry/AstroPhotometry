@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Windows;
 using System.Windows.Input;
 
 namespace AstroPhotometry
@@ -35,28 +37,62 @@ namespace AstroPhotometry
         {
             throw new NotImplementedException();
         }
-
-        public void MathActions(string[] fits_files, string output_file_name, string action)
+        public void MathActions(string dir_path, string output_file_name, string action)
         {
-            string argument = "";
+            string argument = " ";
             if (action.Equals("Addition"))
             {
-                argument = "-a";
-            }else if (action.Equals("Avarage"))
+                argument += "-a";
+            }
+            else if (action.Equals("Avarage"))
             {
-                argument = "-A";
+                argument += "-A";
             }
             else if (action.Equals("Minus"))
             {
-                argument = "-m";
+                argument += "-m";
             }
             else if (action.Equals("Multiplication"))
             {
-                argument = "-M";
+                argument += "-M";
             }
             else if (action.Equals("Division"))
             {
-                argument = "-d";
+                argument += "-d";
+            }
+
+            string py_file = "FitsMath.py";
+
+
+            // TODO: check if output needs folder to exist
+            argument = " -folder " +"\""+ dir_path+ "\"" + " -f " + "\"" + this.output_folder_relative_path + output_file_name + "\"" + argument;
+            MessageBox.Show(argument);
+            run(py_file, argument);
+        }
+
+
+
+        public void MathActions(string[] fits_files, string output_file_name, string action)
+        {
+            string argument = "FitsMath.py";
+            if (action.Equals("Addition"))
+            {
+                argument += "-a";
+            }else if (action.Equals("Avarage"))
+            {
+                argument += "-A";
+            }
+            else if (action.Equals("Minus"))
+            {
+                argument += "-m";
+            }
+            else if (action.Equals("Multiplication"))
+            {
+                argument += "-M";
+            }
+            else if (action.Equals("Division"))
+            {
+                argument += "-d";
             }
 
             string py_file = "FitsMath.py";
@@ -67,20 +103,26 @@ namespace AstroPhotometry
             }
 
             // TODO: check if output needs folder to exist
-            argument += " " + "\"" + this.output_folder_relative_path + output_file_name + "\"";
+            argument += " " + "\"" + this.output_folder_relative_path + output_file_name + ".py\"";
 
             run(py_file, argument);
         }
 
         public void FitsToPNG(string input_fits_file, string output_file_name)
         {
-            string py_file = "FitsToPNG.py";
 
-            string arguments = "-f \"" + input_fits_file + "\"";
-
-            arguments += " " + "-o \"" + this.output_folder_relative_path + output_file_name + "\"";
-
-            run(py_file, arguments);
+            /*if (File.Exists(this.output_folder_relative_path + output_file_name))
+            {
+                // TODO: show the existing picture 
+                MessageBox.Show("exist");
+            }
+            else*/
+            {
+                string py_file = "FitsToPNG.py";
+                string arguments = "-f \"" + input_fits_file + "\"";
+                arguments += " " + "-o \"" + this.output_folder_relative_path + output_file_name + "\"";
+                run(py_file, arguments);
+            }
         }
 
         public void run(string py_file, string arguments)
@@ -95,7 +137,12 @@ namespace AstroPhotometry
 
             process.StartInfo = startInfo;
             process.Start();
-            
+
+            process.WaitForExit();
+            if(process.ExitCode != 0)
+            {
+                MessageBox.Show("Procces exit code is "+ process.ExitCode);
+            }
         }
     }
 

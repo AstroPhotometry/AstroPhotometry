@@ -2,6 +2,7 @@ import sys
 import os
 import argparse
 import datetime
+import StopInCaseOfError
 from astropy.io import fits
 
 
@@ -16,9 +17,9 @@ def argument_handling():
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('-o', help='Overwrite the existing files', action='store_true')
-    parser.add_argument('-folder',
+    parser.add_argument('-folder', type=str,
                         help='Insert a folder path with multiple files that we compute on', required=True)
-    parser.add_argument('-f',
+    parser.add_argument('-f', type=str,
                         help='Filepath to output the outcome', required=True)
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('-A', help='Compute average', action='store_true')

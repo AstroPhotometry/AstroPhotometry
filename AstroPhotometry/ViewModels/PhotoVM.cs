@@ -3,6 +3,7 @@ using AstroPhotometry.ViewModels;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Media.Imaging;
 
 namespace AstroPhotometry
 {
