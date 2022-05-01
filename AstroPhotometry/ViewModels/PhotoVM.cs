@@ -24,13 +24,6 @@ namespace AstroPhotometry
             photoM = new PhotoM();
         }
 
-        public void ReleaseImage()
-        {
-            
-            BitmapImage image = new BitmapImage();
-            photoM = new PhotoM();
-        }
-
         public Uri Path
         {
             get

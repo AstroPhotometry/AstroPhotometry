@@ -62,12 +62,12 @@ namespace AstroPhotometry
                 // This path is a file
                 try
                 {
-                    photo.ReleaseImage();
                     Directory.Delete(path, true);
                 }
                 catch (Exception exception)
                 {
-                    MessageBox.Show(exception.ToString());
+                    Console.WriteLine(exception.ToString());
+                   // MessageBox.Show(exception.ToString());
                 }
             }
 
