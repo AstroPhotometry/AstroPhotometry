@@ -15,13 +15,21 @@
             <ColumnDefinition Width="20px"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="10px"/>
             <RowDefinition Height="35px"/>
             <RowDefinition Height="25*"/>
         </Grid.RowDefinitions>
+        <Border x:Name="border" Grid.Column="0"  Grid.ColumnSpan="3" Grid.Row="1" BorderBrush="#202020" BorderThickness="1" ClipToBounds="True">
+            <Image x:Name="image" Source="{Binding Path}" VerticalAlignment="Top" MouseWheel="image_MouseWheel" MouseLeftButtonDown="image_MouseLeftButtonDown" MouseLeftButtonUp="image_MouseLeftButtonUp" MouseMove="image_MouseMove">
+                <Image.RenderTransform>
 
-        <Image Grid.Column="0" Source="{Binding Path}" Grid.ColumnSpan="3"   Grid.Row="2" VerticalAlignment="Top"/>
-        <Label Grid.Column="1" HorizontalAlignment="Center" FontSize="20" Foreground="White" Grid.Row="1" VerticalAlignment="Top" FontWeight="Normal">file name</Label>
-
+                    <TransformGroup>
+                        <ScaleTransform x:Name="scale"/>
+                        <TranslateTransform x:Name="translate"/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
+        </Border>
+        <Label Background="LightGray"  Grid.Column="1" HorizontalAlignment="Center" FontSize="20" Foreground="Black" VerticalAlignment="Center" FontWeight="Normal">file name</Label>
+        <Button Grid.Column="1" HorizontalAlignment="Right" Click="Button_Click_Reset">reset</Button>
     </Grid>
 </UserControl>
