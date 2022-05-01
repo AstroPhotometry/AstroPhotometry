@@ -93,7 +93,6 @@ namespace AstroPhotometry.ViewModels
 
         private void OnDeleted(object sender, FileSystemEventArgs e)
         {
-            MessageBox.Show("delete");
             Console.WriteLine($"Deleted: {e.FullPath}");
         }
 
