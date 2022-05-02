@@ -43,7 +43,6 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="60*"/>
-                        <ColumnDefinition Width="5px" />
                         <ColumnDefinition Width="159*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -57,8 +56,6 @@
                     <!--#region image-->
                     <view:NodeEditor Grid.Column="0" Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="2" Margin="0,0,0,20"/>
                     <!--#endregion image-->
-
-                    <ProgressBar Grid.Column="1" HorizontalAlignment="Center" Height="10" Grid.Row="4" VerticalAlignment="Top" Width="200"/>
                 </Grid>
             </TabItem>
 

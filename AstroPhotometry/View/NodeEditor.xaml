@@ -16,33 +16,37 @@
                 <Border BorderBrush="Black" BorderThickness="1">
                     <StackPanel>
                         <TextBlock HorizontalAlignment="Center">Bias</TextBlock>
-                        <TextBlock HorizontalAlignment="Center">this is the path</TextBlock>
+                        <TextBlock x:Name="bias_text" HorizontalAlignment="Center">this is the path</TextBlock>
                         <Button Content="choose folder" Click="Button_Click_Bias"/>
                     </StackPanel>
                 </Border>
                 <Border BorderBrush="Black" BorderThickness="1">
                     <StackPanel>
                         <TextBlock HorizontalAlignment="Center">Dark</TextBlock>
-                        <TextBlock HorizontalAlignment="Center">this is the path</TextBlock>
+                        <TextBlock x:Name="dark_text" HorizontalAlignment="Center">this is the path</TextBlock>
                         <Button Content="choose folder" Click="Button_Click_Dark"/>
                     </StackPanel>
                 </Border>
                 <Border BorderBrush="Black" BorderThickness="1">
                     <StackPanel>
                         <TextBlock HorizontalAlignment="Center">Flat</TextBlock>
-                        <TextBlock HorizontalAlignment="Center">this is the path</TextBlock>
+                        <TextBlock x:Name="flat_text" HorizontalAlignment="Center">this is the path</TextBlock>
                         <Button Content="choose folder" Click="Button_Click_Flat"/>
                     </StackPanel>
                 </Border>
                 <Border BorderBrush="Black" BorderThickness="1">
                     <StackPanel>
                         <TextBlock HorizontalAlignment="Center">Light</TextBlock>
-                        <TextBlock HorizontalAlignment="Center">this is the path</TextBlock>
+                        <TextBlock x:Name="light_text" HorizontalAlignment="Center">this is the path</TextBlock>
                         <Button Content="choose folder" Click="Button_Click_Light"/>
                     </StackPanel>
                 </Border>
+                
                 <Separator/>
+                
                 <Button Content="run" Click="Button_Click_Run"/>
+                
+                <ProgressBar Height="10px"></ProgressBar>
             </StackPanel>
         </Border>
     </Grid>
