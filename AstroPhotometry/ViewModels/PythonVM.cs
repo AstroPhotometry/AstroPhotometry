@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -65,7 +66,7 @@ namespace AstroPhotometry
 
 
             // TODO: check if output needs folder to exist
-            argument = " -folder " +"\""+ dir_path+ "\"" + " -f " + "\"" + this.output_folder_relative_path + output_file_name + "\"" + argument;
+            argument = " -folder " + "\"" + dir_path + "\"" + " -f " + "\"" + this.output_folder_relative_path + output_file_name + "\"" + argument;
             MessageBox.Show(argument);
             run(py_file, argument);
         }
@@ -78,7 +79,8 @@ namespace AstroPhotometry
             if (action.Equals("Addition"))
             {
                 argument += "-a";
-            }else if (action.Equals("Avarage"))
+            }
+            else if (action.Equals("Avarage"))
             {
                 argument += "-A";
             }
@@ -132,16 +134,40 @@ namespace AstroPhotometry
 
             // Will look like -> [path to python]\python.exe "[path to python modules][python file]" [arguments]
             startInfo.FileName = this.python_venv_relative_path;
-            startInfo.Arguments = '\"' + this.python_code_folder_full_path + py_file + '\"' + " " +  arguments;
+            startInfo.Arguments = '\"' + this.python_code_folder_full_path + py_file + '\"' + " " + arguments;
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+
+            // for redireting output
+            startInfo.RedirectStandardOutput = true;
+            startInfo.UseShellExecute = false;
+            startInfo.CreateNoWindow = true;
 
             process.StartInfo = startInfo;
             process.Start();
 
-            process.WaitForExit();
-            if(process.ExitCode != 0)
+            // For async showing th progress
+            async Task Main()
             {
-                MessageBox.Show("Procces exit code is "+ process.ExitCode);
+                await ReadCharacters();
+            }
+
+            async Task ReadCharacters()
+            {
+                while (!process.HasExited)
+                {
+
+                    string tmp = await process.StandardOutput.ReadLineAsync();
+                    // Cleaning the input
+                    MessageBox.Show(tmp);
+                    Console.WriteLine(tmp);
+                }
+            }
+            _ = Main();
+
+            process.WaitForExit();
+            if (process.ExitCode != 0)
+            {
+                MessageBox.Show("Procces exit code is " + process.ExitCode);
             }
         }
     }
