@@ -17,8 +17,8 @@ def argument_handling():
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('-o', help='Overwrite the existing files', action='store_true')
-    parser.add_argument('-folder', type=str,
-                        help='Insert a folder path with multiple files that we compute on', required=True)
+    parser.add_argument('-i', type=str, nargs='+',
+                        help='Insert a folder path or files: -i <file> <file>...', required=True)
     parser.add_argument('-f', type=str,
                         help='Filepath to output the outcome', required=True)
     group = parser.add_mutually_exclusive_group(required=True)
@@ -28,6 +28,11 @@ def argument_handling():
     group.add_argument('-m', help='Compute minus', action='store_true')
     group.add_argument('-d', help='Compute division', action='store_true')
     args = parser.parse_args()
+
+    # For debug:
+    # for _, value in parser.parse_args()._get_kwargs():
+    #     if value is not None:
+    #         print(value)
     return args
 
 
@@ -44,11 +49,23 @@ def get_filenames_from_folder(folder_path):
     eprint('Folder is not exist or its not a directory')
     sys.exit(1)
 
+def fits_file(path:str) -> bool:
+    if(path[-4:].lower() == ".fit" or path[-5:].lower() == ".fits"):
+        return True
+    else:
+        return False
 
 def compute_process():
     args = argument_handling()
-    folder_path, output_file_path, overwrite_flag = args.folder, args.f, args.o
-    input_files = get_filenames_from_folder(folder_path)
+    paths, output_file_path, overwrite_flag = args.i, args.f, args.o
+    
+    input_files: list = []
+    for path in paths:
+        if(fits_file(path)):
+            input_files.append(path)
+        else:
+            input_files += get_filenames_from_folder(path)
+
     files_amount = len(input_files)
     if files_amount == 0:
         eprint("ERROR: no input file detected")
