@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using AstroPhotometry.ViewModels;
+using Microsoft.Win32;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -104,6 +105,7 @@ namespace AstroPhotometry.View
 
         private void Button_Click_Run(object sender, RoutedEventArgs e)
         {
+            ComputeEngine compute = new ComputeEngine(bias, dark, flat, light);
             if (bias != null && dark != null && flat != null && light != null)
             {
                 MessageBox.Show("running");

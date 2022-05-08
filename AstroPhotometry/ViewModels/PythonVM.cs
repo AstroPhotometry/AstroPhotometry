@@ -74,7 +74,8 @@ namespace AstroPhotometry
 
         public void MathActions(string[] fits_files, string output_file_name, string action)
         {
-            string argument = "FitsMath.py";
+            string argument = " ";
+
             if (action.Equals("Addition"))
             {
                 argument += "-a";
@@ -95,15 +96,20 @@ namespace AstroPhotometry
                 argument += "-d";
             }
 
-            string py_file = "FitsMath.py";
-
+            // Add files to the args
+            if(fits_files.Length != 0)
+            {
+                argument += " -i ";
+            }
             foreach (string fits_file in fits_files)
             {
                 argument += " " + "\"" + fits_file + "\"";
             }
 
             // TODO: check if output needs folder to exist
-            argument += " " + "\"" + this.output_folder_relative_path + output_file_name + ".py\"";
+            argument += " -f " + "\"" + this.output_folder_relative_path + output_file_name + ".fit\"";
+
+            string py_file = "FitsMath.py";
 
             run(py_file, argument);
         }
