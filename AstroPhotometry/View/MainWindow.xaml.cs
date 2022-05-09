@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using AstroPhotometry.ShellClasses;
 using System.ComponentModel;
+using AstroPhotometry.ViewModels;
 
 namespace AstroPhotometry
 {
@@ -27,28 +28,15 @@ namespace AstroPhotometry
             DataContext = photo;
 
             // TODO: find the pyhon folder no metter what (maybe copy the content to bin)
-            string base_path = Path.GetFullPath("../../../python/");
+            // string base_path = Path.GetFullPath("../../../python/");
+            // CmdStringVM cmdString = new CmdStringVM();
 
-            PythonVM py_runner = new PythonVM(base_path, @".\tmp\");
-            string[] files = { @"C:\Users\ישי טרטנר\Desktop\astro_photometry\data_test\flats\Cal-0002flat6.fit",
-                                @"C:\Users\ישי טרטנר\Desktop\astro_photometry\data_test\light\Light-0034EVLac.fit"};
+            // PythonVM py_runner = new PythonVM(base_path, @".\tmp\", cmdString);
+            // string[] files = { @"C:\Users\ישי טרטנר\Desktop\astro_photometry\data_test\flats\Cal-0002flat6.fit",
+            //                     @"C:\Users\ישי טרטנר\Desktop\astro_photometry\data_test\light\Light-0034EVLac.fit"};
             //py_runner.FitsToPNG(files[0], @"test.png");
             //py_runner.run("helloworld.py", "qwer");
 
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            // String filePos = textBox_file.Text.Replace("\\", "/");
-
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Fits files (*.fits)|*.fit;*.fits|All files (*.*)|*.*";
-            if (openFileDialog.ShowDialog() == true)
-            {
-                //txtEditor.Text = openFileDialog.FileName;
-                photo.updateUri(openFileDialog.FileName);
-            }
-            //txtEditor.Text = File.ReadAllText(openFileDialog.FileName);
         }
     }
 
