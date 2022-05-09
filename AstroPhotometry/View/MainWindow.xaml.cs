@@ -36,20 +36,6 @@ namespace AstroPhotometry
             //py_runner.run("helloworld.py", "qwer");
 
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            // String filePos = textBox_file.Text.Replace("\\", "/");
-
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Fits files (*.fits)|*.fit;*.fits|All files (*.*)|*.*";
-            if (openFileDialog.ShowDialog() == true)
-            {
-                //txtEditor.Text = openFileDialog.FileName;
-                photo.updateUri(openFileDialog.FileName);
-            }
-            //txtEditor.Text = File.ReadAllText(openFileDialog.FileName);
-        }
     }
 
 }
