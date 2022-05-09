@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AstroPhotometry.ViewModels;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -9,13 +10,14 @@ namespace AstroPhotometry
     // TODO: connect it to real command
     public class PythonVM : ICommand
     {
-        private string python_code_folder_full_path; // the position of the python modules
+        private string python_code_folder_full_path; // The position of the python modules
         private string output_folder_relative_path;
         private string output_full_path;
 
-        private string python_venv_relative_path; // the folder of python.exe
+        private string python_venv_relative_path; // The folder of python.exe
 
-        public PythonVM(string python_code_folder_full_path, string output_folder_relative_path)
+        private CmdStringVM cmdString;
+        public PythonVM(string python_code_folder_full_path, string output_folder_relative_path, CmdStringVM cmdString)
         {
             this.python_code_folder_full_path = python_code_folder_full_path;
 
@@ -24,6 +26,8 @@ namespace AstroPhotometry
             this.output_folder_relative_path = output_folder_relative_path;
 
             this.python_venv_relative_path = ".\\astro_env\\Scripts\\python";
+
+            this.cmdString = cmdString; // What bridge out the output of the pythons
 
         }
 
@@ -132,7 +136,7 @@ namespace AstroPhotometry
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
 
-            // Will look like -> [path to python]\python.exe "[path to python modules][python file]" [arguments]
+            // Will look like -> [path to python in venv]\python.exe "[path to python modules][python file]" [arguments]
             startInfo.FileName = this.python_venv_relative_path;
             startInfo.Arguments = '\"' + this.python_code_folder_full_path + py_file + '\"' + " " + arguments;
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
@@ -155,11 +159,12 @@ namespace AstroPhotometry
             {
                 while (!process.HasExited)
                 {
-
                     string tmp = await process.StandardOutput.ReadLineAsync();
-                    // Cleaning the input
-                    MessageBox.Show(tmp);
-                    Console.WriteLine(tmp);
+                    cmdString.Output = tmp; // TODO: parse and push message and progress
+
+                    // For debug
+                    //MessageBox.Show(tmp);
+                    //Console.WriteLine(tmp);
                 }
             }
             _ = Main();
