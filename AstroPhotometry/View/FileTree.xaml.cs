@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.IO;
 
 using AstroPhotometry.ShellClasses;
+using AstroPhotometry.ViewModels;
 
 namespace AstroPhotometry.View
 {
@@ -19,7 +20,8 @@ namespace AstroPhotometry.View
         {
             // TODO: find the pyhon folder no metter what (maybe copy the content to bin)
             string base_path = Path.GetFullPath("../../../python/");
-            this.py_runner = new PythonVM(base_path, @".\tmp\");
+            CmdStringVM cmd_string = new CmdStringVM(); // TODO: get that from outside for showing progress bar
+            this.py_runner = new PythonVM(base_path, @".\tmp\", cmd_string);
 
             InitializeComponent();
             InitializeFileSystemObjects();
