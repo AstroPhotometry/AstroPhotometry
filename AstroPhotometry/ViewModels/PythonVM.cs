@@ -12,6 +12,7 @@ namespace AstroPhotometry
         private string python_code_folder_full_path; // The position of the python modules
         private string output_folder_relative_path;
         private string output_full_path;
+        private bool running;
 
         private string python_venv_relative_path; // The folder of python.exe
 
@@ -27,7 +28,7 @@ namespace AstroPhotometry
             this.python_venv_relative_path = ".\\astro_env\\Scripts\\python";
 
             this.cmdString = cmdString; // What bridge out the output of the pythons
-
+            this.running = false;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -40,6 +41,11 @@ namespace AstroPhotometry
         public void Execute(object parameter)
         {
             throw new NotImplementedException();
+        }
+
+        public bool Running
+        {
+            get { return running; }
         }
 
         public void MathActions(string dir_path, string output_file_name, string action)
@@ -137,6 +143,7 @@ namespace AstroPhotometry
 
         public void run(string py_file, string arguments)
         {
+            running = true;
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
 
@@ -170,6 +177,7 @@ namespace AstroPhotometry
             {
                 MessageBox.Show("Python exit code is " + ((System.Diagnostics.Process)sender).ExitCode);
             }
+            running = false;
         }
 
         private void ReadCharacters(string data)

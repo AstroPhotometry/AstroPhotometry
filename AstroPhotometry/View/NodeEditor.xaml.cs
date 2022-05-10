@@ -106,6 +106,7 @@ namespace AstroPhotometry.View
         private void Button_Click_Run(object sender, RoutedEventArgs e)
         {
             ComputeEngine compute = new ComputeEngine(bias, dark, flat, light);
+            this.DataContext = compute.cmdString;
             if (bias != null && dark != null && flat != null && light != null)
             {
                 MessageBox.Show("running");
