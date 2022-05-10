@@ -1,4 +1,5 @@
 import argparse
+import sys
 import matplotlib.pyplot as plt
 from astropy.visualization import astropy_mpl_style
 from astropy.io import fits
@@ -12,8 +13,13 @@ def argument_handling():
     :return: file path to fits file and path to a new png file
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument('-f', required=True, type=str, help='Insert path file to the fits file')
-    parser.add_argument('-o', required=True, type=str,
+    parser.add_argument('-f',
+                        required=True,
+                        type=str,
+                        help='Insert path file to the fits file')
+    parser.add_argument('-o',
+                        required=True,
+                        type=str,
                         help='Insert location you want to save the file')
     args = parser.parse_args()
     return args.f, args.o
@@ -29,6 +35,14 @@ def make_png():
     progress.cprint("opening fit file")
     first_file = fits.open(fits_file.replace('/', '\\'), mode='readonly')
     progress.cprint("saving PNG")
+
+    # Check if file is empty
+    try:
+        _ = first_file[0].data
+    except:
+        progress.eprint("file is empty")
+        sys.exit(1)
+
     plt.imsave(png_loc, first_file[0].data)
     first_file.close()
     progress.cprint("done, saved in " + png_loc)

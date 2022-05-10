@@ -48,63 +48,35 @@ namespace AstroPhotometry
             get { return running; }
         }
 
+        /** Options:
+         * Addition
+         * Avarage
+         * Minus
+         * Multiplication
+         * Division
+         **/
         public void MathActions(string dir_path, string output_file_name, string action)
         {
-            string argument = " ";
-            if (action.Equals("Addition"))
-            {
-                argument += "-a";
-            }
-            else if (action.Equals("Avarage"))
-            {
-                argument += "-A";
-            }
-            else if (action.Equals("Minus"))
-            {
-                argument += "-m";
-            }
-            else if (action.Equals("Multiplication"))
-            {
-                argument += "-M";
-            }
-            else if (action.Equals("Division"))
-            {
-                argument += "-d";
-            }
+            string argument = Action(action);
 
             string py_file = "FitsMath.py";
 
-
+            argument += " -i " + "\"" + dir_path + "\"";
             // TODO: check if output needs folder to exist
-            argument = " -folder " + "\"" + dir_path + "\"" + " -f " + "\"" + this.output_folder_relative_path + output_file_name + "\"" + argument;
-            MessageBox.Show(argument);
+            argument += " -f " + "\"" + this.output_folder_relative_path + output_file_name + "\"" + argument;
             run(py_file, argument);
         }
 
+        /** Options:
+         * Addition
+         * Avarage
+         * Minus
+         * Multiplication
+         * Division
+         **/
         public void MathActions(string[] fits_files, string output_file_name, string action)
         {
-            string argument = " ";
-
-            if (action.Equals("Addition"))
-            {
-                argument += "-a";
-            }
-            else if (action.Equals("Avarage"))
-            {
-                argument += "-A";
-            }
-            else if (action.Equals("Minus"))
-            {
-                argument += "-m";
-            }
-            else if (action.Equals("Multiplication"))
-            {
-                argument += "-M";
-            }
-            else if (action.Equals("Division"))
-            {
-                argument += "-d";
-            }
+            string argument = Action(action);
 
             // Add files to the args
             if (fits_files.Length != 0)
@@ -122,6 +94,33 @@ namespace AstroPhotometry
             string py_file = "FitsMath.py";
 
             run(py_file, argument);
+        }
+
+        private string Action(string action)
+        {
+            string argument = " ";
+
+            if (action.Equals("Addition"))
+            {
+                argument += "-a";
+            }
+            else if (action.Equals("Avarage"))
+            {
+                argument += "-A";
+            }
+            else if (action.Equals("Minus"))
+            {
+                argument += "-m";
+            }
+            else if (action.Equals("Multiplication"))
+            {
+                argument += "-M";
+            }
+            else if (action.Equals("Division"))
+            {
+                argument += "-d";
+            }
+            return argument;
         }
 
         public void FitsToPNG(string input_fits_file, string output_file_name)
@@ -150,12 +149,12 @@ namespace AstroPhotometry
             // Will look like -> [path to python in venv]\python.exe "[path to python modules][python file]" [arguments]
             startInfo.FileName = this.python_venv_relative_path;
             startInfo.Arguments = '\"' + this.python_code_folder_full_path + py_file + '\"' + " " + arguments;
-            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
 
             // for redireting output
             startInfo.RedirectStandardOutput = true;
             startInfo.UseShellExecute = false;
-            startInfo.CreateNoWindow = true;
+            startInfo.CreateNoWindow = false;
 
             // Connecting the end and the readline functions
             process.EnableRaisingEvents = true;
