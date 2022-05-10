@@ -1,6 +1,6 @@
 ﻿using AstroPhotometry.ViewModels;
+using Newtonsoft.Json;
 using System;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -41,6 +41,7 @@ namespace AstroPhotometry
         {
             throw new NotImplementedException();
         }
+
         public void MathActions(string dir_path, string output_file_name, string action)
         {
             string argument = " ";
@@ -74,8 +75,6 @@ namespace AstroPhotometry
             run(py_file, argument);
         }
 
-
-
         public void MathActions(string[] fits_files, string output_file_name, string action)
         {
             string argument = " ";
@@ -102,7 +101,7 @@ namespace AstroPhotometry
             }
 
             // Add files to the args
-            if(fits_files.Length != 0)
+            if (fits_files.Length != 0)
             {
                 argument += " -i ";
             }
@@ -121,7 +120,7 @@ namespace AstroPhotometry
 
         public void FitsToPNG(string input_fits_file, string output_file_name)
         {
-
+            // NOTE: if not exist then the python will throw an error
             /*if (File.Exists(this.output_folder_relative_path + output_file_name))
             {
                 // TODO: show the existing picture 
@@ -151,35 +150,49 @@ namespace AstroPhotometry
             startInfo.UseShellExecute = false;
             startInfo.CreateNoWindow = true;
 
+            // Connecting the end and the readline functions
+            process.EnableRaisingEvents = true;
+            process.OutputDataReceived += (sender, args) => ReadCharacters(args.Data);
+            process.Exited += new EventHandler(Process_Exited);
+
+            // Start the process
             process.StartInfo = startInfo;
             process.Start();
 
-            // For async showing th progress
-            async Task Main()
-            {
-                await ReadCharacters();
-            }
+            process.BeginOutputReadLine();
+        }
 
-            async Task ReadCharacters()
+        // Handle Exited event and display process information.
+        private void Process_Exited(object sender, System.EventArgs e)
+        {
+            // Check for errors
+            if (((System.Diagnostics.Process)sender).ExitCode != 0)
             {
-                while (!process.StandardOutput.EndOfStream || !process.HasExited)
-                {
-                    string tmp = await process.StandardOutput.ReadLineAsync();
-                    cmdString.Output = tmp; // TODO: parse and push message and progress
-
-                    // For debug
-                    //MessageBox.Show(tmp);
-                    Console.WriteLine(tmp);
-                }
-            }
-            _ = Main();
-
-            process.WaitForExit();
-            if (process.ExitCode != 0)
-            {
-                MessageBox.Show("Procces exit code is " + process.ExitCode);
+                MessageBox.Show("Python exit code is " + ((System.Diagnostics.Process)sender).ExitCode);
             }
         }
-    }
 
+        private void ReadCharacters(string data)
+        {
+            if (data == null)
+            {
+                return;
+            }
+
+            Progress progress = JsonConvert.DeserializeObject<Progress>(data);
+            cmdString.Message = progress.message;
+            cmdString.Progress = progress.progress;
+
+            // For debug
+            Console.WriteLine(data);
+        }
+
+        // The parsed json from the python process
+        public class Progress
+        {
+            public string module_name { get; set; }
+            public string message { get; set; }
+            public float progress { get; set; }
+        }
+    }
 }

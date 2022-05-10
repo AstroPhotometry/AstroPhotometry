@@ -3,15 +3,18 @@ using System.Windows;
 
 namespace AstroPhotometry.ViewModels
 {
+    // This class is for computing the output fit by recipe
     public class ComputeEngine
     {
-        PythonVM py_runner;
-        static int batch_num = 0; // Running name of folders
+        public CmdStringVM cmdString;
+
+        private PythonVM py_runner;
+        private static int batch_num = 0; // Running name of folders
 
         public ComputeEngine(string[] bias, string[] dark, string[] flat, string[] light)
         {
             batch_num++;
-            CmdStringVM cmdString = new CmdStringVM();
+            cmdString = new CmdStringVM();
             Directory.CreateDirectory(@".\tmp\batch" + batch_num);
 
             string base_path = Path.GetFullPath("../../../python/");

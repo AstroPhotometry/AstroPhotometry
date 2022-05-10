@@ -1,24 +1,26 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace AstroPhotometry.ViewModels
 {
+    // This class is for bridging the command output
     public class CmdStringVM : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         string str;
-        int progress;
+        float progress;
 
         string last_str;
-        int last_progress;
+        float last_progress;
 
         public CmdStringVM()
         {
-            Output = "";
+            Message = "";
             progress = 0;
         }
 
-        public string Output
+        public string Message
         {
             get { return str; }
 
@@ -35,11 +37,11 @@ namespace AstroPhotometry.ViewModels
                     str = value;
                 }
 
-                NotifyPropertyChanged("Output");
+                NotifyPropertyChanged("Message");
             }
         }
 
-        public int Progress
+        public float Progress
         {
             get { return progress; }
             set
@@ -50,7 +52,7 @@ namespace AstroPhotometry.ViewModels
             }
         }
         
-        public int LastProgress
+        public float LastProgress
         {
             get { return last_progress; }
         }
@@ -66,6 +68,14 @@ namespace AstroPhotometry.ViewModels
             {
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
             }
+        }
+
+        public void clear()
+        {
+            str = "";
+            progress = 0;
+            Progress = 0;
+            Message = "";
         }
     }
 }

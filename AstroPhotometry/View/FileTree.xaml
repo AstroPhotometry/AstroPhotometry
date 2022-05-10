@@ -3,14 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:AstroPhotometry.View"
              xmlns:classes="clr-namespace:AstroPhotometry.ShellClasses"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="47*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+
         <!--#region tree-->
-        <TreeView Name="treeView">
+        <TreeView Name="treeView" Grid.RowSpan="2">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
@@ -27,5 +30,18 @@
             </TreeView.Resources>
         </TreeView>
         <!--#endregion tree-->
+        <!--#region progress bar-->
+        <ProgressBar Name="pbStatus" Grid.Row="1" Minimum="0" Maximum="100" Value="{Binding Progress}">
+            <ProgressBar.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Message}"/>
+                    </StackPanel>
+                </ToolTip>
+            </ProgressBar.ToolTip>
+        </ProgressBar>
+        <TextBlock  Grid.Row="1" Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <!--#endregion progress bar-->
+
     </Grid>
 </UserControl>

@@ -23,7 +23,7 @@ class Progress():
             data_set["progress"] = -1
 
         json_dump = json.dumps(data_set)
-        print(json_dump)
+        print(json_dump, flush=True)
 
 if __name__ == "__main__":
     test = Progress("me", 5)

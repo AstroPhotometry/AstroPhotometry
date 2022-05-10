@@ -11,17 +11,19 @@ namespace AstroPhotometry.View
 {
     /// <summary>
     /// Interaction logic for FileTree.xaml
+    /// This is showing the file tree
     /// </summary>
     public partial class FileTree : UserControl
     {
         private PythonVM py_runner;
-
+        private CmdStringVM cmd_string;
         public FileTree()
         {
             // TODO: find the pyhon folder no metter what (maybe copy the content to bin)
             string base_path = Path.GetFullPath("../../../python/");
-            CmdStringVM cmd_string = new CmdStringVM(); // TODO: get that from outside for showing progress bar
+            cmd_string = new CmdStringVM(); // TODO: get that from outside for showing progress bar
             this.py_runner = new PythonVM(base_path, @".\tmp\", cmd_string);
+            this.DataContext = cmd_string;
 
             InitializeComponent();
             InitializeFileSystemObjects();
@@ -48,7 +50,6 @@ namespace AstroPhotometry.View
         */
         private void InitializeFileSystemObjects()
         {
-            
             var desktop_path = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
             var desktop = new FileSystemObjectInfo(desktop_path);
             //desktop.IsExpanded = true;
@@ -155,10 +156,10 @@ namespace AstroPhotometry.View
                     py_runner.FitsToPNG(".\\tmp\\uriya2.fit", @"uriya2.png");*/
                     return;
                 }
-                string png_file = file.Name.Substring(0, file.Name.IndexOf('.'));   
+                string png_file = file.Name.Substring(0, file.Name.IndexOf('.'));
+                cmd_string.clear();
+                cmd_string.Message = "converting to image";
                 py_runner.FitsToPNG(file.FullName, png_file + @".png");
-
-                //photo.updateUri(file.FullName);
             }
         }
     }
