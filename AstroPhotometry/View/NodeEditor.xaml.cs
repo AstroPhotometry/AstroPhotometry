@@ -112,7 +112,7 @@ namespace AstroPhotometry.View
             }
             else
             {
-                MessageBox.Show("somthing missing");
+                //MessageBox.Show("somthing missing");
             }
         }
 

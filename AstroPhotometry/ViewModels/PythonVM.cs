@@ -1,6 +1,5 @@
 ﻿using AstroPhotometry.ViewModels;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -163,14 +162,14 @@ namespace AstroPhotometry
 
             async Task ReadCharacters()
             {
-                while (!process.HasExited)
+                while (!process.StandardOutput.EndOfStream || !process.HasExited)
                 {
                     string tmp = await process.StandardOutput.ReadLineAsync();
                     cmdString.Output = tmp; // TODO: parse and push message and progress
 
                     // For debug
                     //MessageBox.Show(tmp);
-                    //Console.WriteLine(tmp);
+                    Console.WriteLine(tmp);
                 }
             }
             _ = Main();

@@ -2,7 +2,8 @@ import argparse
 import matplotlib.pyplot as plt
 from astropy.visualization import astropy_mpl_style
 from astropy.io import fits
-import StopInCaseOfError
+from ProgressPrint import Progress
+# import StopInCaseOfError
 
 
 def argument_handling():
@@ -22,10 +23,15 @@ def make_png():
     """
     Function to make a PNG file from fit file
     """
+    progress = Progress("FIT to PNG", 3)
     fits_file, png_loc = argument_handling()
+    progress.cprint("started")
+    progress.cprint("opening fit file")
     first_file = fits.open(fits_file.replace('/', '\\'), mode='readonly')
+    progress.cprint("saving PNG")
     plt.imsave(png_loc, first_file[0].data)
     first_file.close()
+    progress.cprint("done, saved in " + png_loc)
 
 
 if __name__ == "__main__":
