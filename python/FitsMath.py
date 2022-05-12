@@ -87,6 +87,7 @@ def fits_file(path: str) -> bool:
 
 
 def compute_process():
+    global progress
     args = argument_handling()
     paths, output_file_path, overwrite_flag = args.i, args.f, args.o
 
