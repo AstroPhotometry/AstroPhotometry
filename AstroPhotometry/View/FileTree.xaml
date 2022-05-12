@@ -31,7 +31,7 @@
         </TreeView>
         <!--#endregion tree-->
         <!--#region progress bar-->
-        <ProgressBar Name="pbStatus" Grid.Row="1" Minimum="0" Maximum="100" Value="{Binding Progress}">
+            <ProgressBar Name="pbStatus" Grid.Row="1" Minimum="0" Maximum="100" Value="{Binding Progress}">
             <ProgressBar.ToolTip>
                 <ToolTip>
                     <StackPanel>
@@ -40,7 +40,7 @@
                 </ToolTip>
             </ProgressBar.ToolTip>
         </ProgressBar>
-        <TextBlock  Grid.Row="1" Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <TextBlock ToolTip="{Binding Message}" Grid.Row="1" Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" />
         <!--#endregion progress bar-->
 
     </Grid>
