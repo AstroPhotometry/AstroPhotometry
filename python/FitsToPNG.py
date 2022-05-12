@@ -6,6 +6,19 @@ from astropy.io import fits
 from ProgressPrint import Progress
 # import StopInCaseOfError
 
+progress = Progress(module_name="FtsMath", stages=1)
+
+def show_exception_and_exit(exc_type, exc_value, tb):
+    import traceback
+    error = ""
+    for e in traceback.format_exception(exc_type, exc_value, tb):
+        error += e
+        error += '\n'
+    progress.eprint(error)
+    sys.exit(-1)
+
+import sys
+sys.excepthook = show_exception_and_exit
 
 def argument_handling():
     """

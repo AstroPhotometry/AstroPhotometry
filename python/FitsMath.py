@@ -7,7 +7,19 @@ from astropy.io import fits
 from ProgressPrint import Progress
 # import StopInCaseOfError
 
-progress = None
+progress = Progress(module_name="FitsMath", stages=1)
+
+def show_exception_and_exit(exc_type, exc_value, tb):
+    import traceback
+    error = ""
+    for e in traceback.format_exception(exc_type, exc_value, tb):
+        error += e
+        error += '\n'
+    progress.eprint(error)
+    sys.exit(-1)
+
+import sys
+sys.excepthook = show_exception_and_exit
 
 
 def eprint(*args, **kwargs):
@@ -59,11 +71,11 @@ def get_filenames_from_folder(folder_path):
         # TODO: check that is a fit file
         for file in only_files:
             if file.endswith('.fit') is False:
-                eprint('File in folder is not in fit format')
+                progress.eprint('File in folder is not in fit format')
                 sys.exit(1)
         only_files = [(folder_path + '\\' + file) for file in only_files]
         return only_files
-    eprint('Folder is not exist or its not a directory')
+    progress.eprint('Folder is not exist or its not a directory')
     sys.exit(1)
 
 
@@ -87,7 +99,7 @@ def compute_process():
 
     files_amount = len(input_files)
     if files_amount == 0:
-        eprint("ERROR: no input file detected")
+        progress.eprint("no input file detected")
         sys.exit(1)
 
     module_name = ""
@@ -102,12 +114,16 @@ def compute_process():
     elif args.d is True:
         module_name = "Division"
     else:
+        progress.eprint("no module name")
         sys.exit(1)
 
     progress = Progress(
         module_name, stages=files_amount +
         3)  # Pass on all images + create save and done of fit file
     progress.cprint("started working")
+
+    progress.print(str(sys.argv),0)
+    progress.print(str(input_files),0)
 
     arr_of_images = []
     with fits.open(input_files[0], mode='readonly') as base_file:
@@ -138,11 +154,12 @@ def compute_process():
             # Division
             elif args.d is True:
                 if next_file[0].data[:, :] == 0:
-                    eprint('Division by 0')
+                    progress.eprint('Division by 0')
                     sys.exit(1)
                 out_picture = base_file[0].data[:, :]
                 out_picture = out_picture / next_file[0].data[:, :]
             else:
+                progress.eprint(f"no module name detected in: {args}")
                 sys.exit(1)
 
     if args.A is True:
