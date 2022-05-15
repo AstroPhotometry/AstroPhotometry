@@ -69,7 +69,7 @@ namespace AstroPhotometry
             // For async showing th progress
             async Task Main()
             {
-                output.Output = "loading...";
+                output.Message = "loading...";
                 await ReadCharacters();
             }
 
@@ -94,7 +94,7 @@ namespace AstroPhotometry
                             tmp = tmp.Substring(charPos);
                         }
                     }
-                    output.Output = tmp;
+                    output.Message = tmp;
                     Console.WriteLine(tmp);
                 }
             }
