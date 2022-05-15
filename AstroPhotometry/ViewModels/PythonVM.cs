@@ -63,7 +63,7 @@ namespace AstroPhotometry
 
             argument += " -i " + "\"" + dir_path + "\"";
             // TODO: check if output needs folder to exist
-            argument += " -f " + "\"" + this.output_folder_relative_path + output_file_name + "\"" + argument;
+            argument += " -f " + "\"" + this.output_folder_relative_path + output_file_name + ".fit\"" + argument;
             run(py_file, argument);
         }
 

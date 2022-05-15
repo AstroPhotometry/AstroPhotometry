@@ -150,8 +150,7 @@ def compute_process():
                 out_picture *= next_file[0].data[:, :]
             # Addition
             elif args.a is True:
-                out_picture = base_file[0].data[:, :]
-                out_picture += next_file[0].data[:, :]
+                arr_of_images.append(next_file[0].data[:, :])
             # Division
             elif args.d is True:
                 if next_file[0].data[:, :] == 0:
@@ -165,6 +164,8 @@ def compute_process():
 
     if args.A is True:
         out_picture = np.mean(arr_of_images, axis=0)
+    elif args.a is True:
+        out_picture = np.sum(arr_of_images, axis=0)
 
     progress.cprint("creating fit file")
     hdr = fits.Header()
