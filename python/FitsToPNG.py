@@ -1,9 +1,24 @@
 import argparse
+import sys
 import matplotlib.pyplot as plt
 from astropy.visualization import astropy_mpl_style
 from astropy.io import fits
-import StopInCaseOfError
+from ProgressPrint import Progress
+# import StopInCaseOfError
 
+progress = Progress(module_name="FtsMath", stages=1)
+
+def show_exception_and_exit(exc_type, exc_value, tb):
+    import traceback
+    error = ""
+    for e in traceback.format_exception(exc_type, exc_value, tb):
+        error += e
+        error += '\n'
+    progress.eprint(error)
+    sys.exit(-1)
+
+import sys
+sys.excepthook = show_exception_and_exit
 
 def argument_handling():
     """
@@ -11,8 +26,13 @@ def argument_handling():
     :return: file path to fits file and path to a new png file
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument('-f', required=True, type=str, help='Insert path file to the fits file')
-    parser.add_argument('-o', required=True, type=str,
+    parser.add_argument('-f',
+                        required=True,
+                        type=str,
+                        help='Insert path file to the fits file')
+    parser.add_argument('-o',
+                        required=True,
+                        type=str,
                         help='Insert location you want to save the file')
     args = parser.parse_args()
     return args.f, args.o
@@ -22,10 +42,23 @@ def make_png():
     """
     Function to make a PNG file from fit file
     """
+    progress = Progress("FIT to PNG", 3)
     fits_file, png_loc = argument_handling()
+    progress.cprint("started")
+    progress.cprint("opening fit file")
     first_file = fits.open(fits_file.replace('/', '\\'), mode='readonly')
+    progress.cprint("saving PNG")
+
+    # Check if file is empty
+    try:
+        _ = first_file[0].data
+    except:
+        progress.eprint("file is empty")
+        sys.exit(1)
+
     plt.imsave(png_loc, first_file[0].data)
     first_file.close()
+    progress.cprint("done, saved in " + png_loc)
 
 
 if __name__ == "__main__":
