@@ -1,6 +1,5 @@
 import sys
 import os
-import argparse
 import datetime
 import numpy as np
 from astropy.io import fits
@@ -24,42 +23,6 @@ sys.excepthook = show_exception_and_exit
 
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
-
-
-def argument_handling():
-    """
-    Method to deal with arguments parsing
-    :return: file path to fits file and path to a new png file
-    """
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-o',
-                        help='Overwrite the existing files',
-                        action='store_true')
-    parser.add_argument(
-        '-i',
-        type=str,
-        nargs='+',
-        help='Insert a folder path or files: -i <file> <file>...',
-        required=True)
-    parser.add_argument('-f',
-                        type=str,
-                        help='Filepath to output the outcome',
-                        required=True)
-    group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument('-A', help='Compute average', action='store_true')
-    group.add_argument('-a', help='Compute addition', action='store_true')
-    group.add_argument('-M',
-                       help='Compute multiplication',
-                       action='store_true')
-    group.add_argument('-m', help='Compute minus', action='store_true')
-    group.add_argument('-d', help='Compute division', action='store_true')
-    args = parser.parse_args()
-
-    # For debug:
-    # for _, value in parser.parse_args()._get_kwargs():
-    #     if value is not None:
-    #         print(value)
-    return args
 
 
 def get_filenames_from_folder(folder_path):
@@ -111,89 +74,78 @@ def fill_header():
     pass
 
 
-def compute_process():
+def calibration_compute_process(paths, output_master_bias, output_master_dark, output_master_flat,
+                                output_calibration_file, output_calibration_folder):
+    """
+    Function to compute calibration and output the wanted photos
+    :param paths:
+    :param output_master_bias:
+    :param output_master_dark:
+    :param output_master_flat:
+    :param output_calibration_file:
+    :param output_calibration_folder:
+    :return:
+    """
     global progress
-    args = argument_handling()
-    paths, output_file_path, overwrite_flag = args.i, args.f, args.o
 
-    input_files = convert_path_to_files(paths)
+    for path in paths:
+        paths[path] = convert_path_to_files(paths[path])
 
-    module_name = ""
-    if args.A is True:
-        module_name = "Average"
-    elif args.m is True:
-        module_name = "Minus"
-    elif args.M is True:
-        module_name = "Multiplication"
-    elif args.a is True:
-        module_name = "Addition"
-    elif args.d is True:
-        module_name = "Division"
-    else:
-        progress.eprint("no module name")
-        sys.exit(1)
+    # progress = Progress(
+    #     'calibration', stages=files_amount +
+    #                         3)  # Pass on all images + create save and done of fit file
+    # progress.cprint("started working")
+    #
+    #
+    # arr_of_images = []
+    # with fits.open(input_files[0], mode='readonly') as base_file:
+    #     out_picture = base_file[0].data[:, :]
+    #     arr_of_images.append(out_picture)
+    #
+    # progress.cprint("read file: " + input_files[0])
+    #
+    # for input_file in input_files[1:]:
+    #     with fits.open(input_file, mode='readonly') as next_file:
+    #         progress.cprint("read file: " + input_file)
+    #
+    #         # Average
+    #         if args.A is True:
+    #             arr_of_images.append(next_file[0].data[:, :])
+    #         # Minus
+    #         elif args.m is True:
+    #             tmp = out_picture - next_file[
+    #                                     0].data[:, :]  # Has tmp for mixing ints and floats array math
+    #             out_picture = tmp
+    #         # Multiplication
+    #         elif args.M is True:
+    #             out_picture *= next_file[0].data[:, :]
+    #         # Addition
+    #         elif args.a is True:
+    #             arr_of_images.append(next_file[0].data[:, :])
+    #         # Division
+    #         elif args.d is True:
+    #             if next_file[0].data[:, :] == 0:
+    #                 progress.eprint('Division by 0')
+    #                 sys.exit(1)
+    #             out_picture = base_file[0].data[:, :]
+    #             out_picture = out_picture / next_file[0].data[:, :]
+    #         else:
+    #             progress.eprint(f"no module name detected in: {args}")
+    #             sys.exit(1)
+    #
+    # if args.A is True:
+    #     out_picture = np.mean(arr_of_images, axis=0)
+    # elif args.a is True:
+    #     out_picture = np.sum(arr_of_images, axis=0)
 
-    progress = Progress(
-        module_name, stages=files_amount +
-                            3)  # Pass on all images + create save and done of fit file
-    progress.cprint("started working")
-
-    progress.print(str(sys.argv), 0)
-    progress.print(str(input_files), 0)
-
-    arr_of_images = []
-    with fits.open(input_files[0], mode='readonly') as base_file:
-        out_picture = base_file[0].data[:, :]
-        arr_of_images.append(out_picture)
-
-    progress.cprint("read file: " + input_files[0])
-
-    for input_file in input_files[1:]:
-        with fits.open(input_file, mode='readonly') as next_file:
-            progress.cprint("read file: " + input_file)
-
-            # Average
-            if args.A is True:
-                arr_of_images.append(next_file[0].data[:, :])
-            # Minus
-            elif args.m is True:
-                tmp = out_picture - next_file[
-                                        0].data[:, :]  # Has tmp for mixing ints and floats array math
-                out_picture = tmp
-            # Multiplication
-            elif args.M is True:
-                out_picture *= next_file[0].data[:, :]
-            # Addition
-            elif args.a is True:
-                arr_of_images.append(next_file[0].data[:, :])
-            # Division
-            elif args.d is True:
-                if next_file[0].data[:, :] == 0:
-                    progress.eprint('Division by 0')
-                    sys.exit(1)
-                out_picture = base_file[0].data[:, :]
-                out_picture = out_picture / next_file[0].data[:, :]
-            else:
-                progress.eprint(f"no module name detected in: {args}")
-                sys.exit(1)
-
-    if args.A is True:
-        out_picture = np.mean(arr_of_images, axis=0)
-    elif args.a is True:
-        out_picture = np.sum(arr_of_images, axis=0)
-
-    progress.cprint("creating fit file")
-    hdr = fits.Header()
-    date = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
-    hdr['history'] = f"= edited on {date}"
-    hdu = fits.PrimaryHDU(data=out_picture, header=hdr)
-    hdul = fits.HDUList([hdu])
-    progress.cprint("saving fit file")
-    hdul.writeto(output_file_path,
-                 overwrite=overwrite_flag)  # check for errors
-
-    progress.cprint("done, saved in " + output_file_path)
-
-
-if __name__ == "__main__":
-    compute_process()
+    # progress.cprint("creating fit file")
+    # hdr = fits.Header()
+    # date = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
+    # hdr['history'] = f"= edited on {date}"
+    # hdu = fits.PrimaryHDU(data=out_picture, header=hdr)
+    # hdul = fits.HDUList([hdu])
+    # progress.cprint("saving fit file")
+    # hdul.writeto(output_file_path,
+    #              overwrite=overwrite_flag)  # check for errors
+    #
+    # progress.cprint("done, saved in " + output_file_path)

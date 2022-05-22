@@ -21,24 +21,6 @@ def show_exception_and_exit(exc_type, exc_value, tb):
 sys.excepthook = show_exception_and_exit
 
 
-# def argument_handling():
-#     """
-#     Method to deal with arguments parsing
-#     :return: file path to fits file and path to a new png file
-#     """
-#     parser = argparse.ArgumentParser()
-#     parser.add_argument('-f',
-#                         required=True,
-#                         type=str,
-#                         help='Insert path file to the fits file')
-#     parser.add_argument('-o',
-#                         required=True,
-#                         type=str,
-#                         help='Insert location you want to save the file')
-#     args = parser.parse_args()
-#     return args.f, args.o
-
-
 def validate_file(file_path: str):
     if os.path.exists(file_path) is False:
         progress.eprint('file is not exist: ' + file_path)
@@ -74,5 +56,3 @@ def main_run(file: str, png_loc: str):
     validate_file(file)
     plt.style.use(astropy_mpl_style)
     make_png(file, png_loc)
-    # ex = os.listdir(os.path.abspath('../'))
-    # raise Exception(ex)
