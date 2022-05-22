@@ -63,6 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Utils.cs" />
     <Compile Include="ViewModels\CmdStringVM.cs" />
     <Compile Include="ViewModels\ComputeEngine.cs" />
     <Compile Include="View\NodeEditor.xaml.cs">

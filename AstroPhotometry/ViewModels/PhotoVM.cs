@@ -3,7 +3,6 @@ using AstroPhotometry.ViewModels;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows.Media.Imaging;
 
 namespace AstroPhotometry
 {
@@ -38,7 +37,7 @@ namespace AstroPhotometry
             {
                 if (Path.IsFile)
                 {
-                    return System.IO.Path.GetFileName(Path.LocalPath);
+                    return Utils.RemoveFromSubsting(System.IO.Path.GetFileName(Path.LocalPath), ".fit");
                 }
                 return "";
             }
