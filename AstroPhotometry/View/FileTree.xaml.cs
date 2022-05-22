@@ -17,6 +17,7 @@ namespace AstroPhotometry.View
     {
         private PythonVM py_runner;
         private CmdStringVM cmd_string;
+        private static int running_number = 0;
         public FileTree()
         {
             // TODO: find the pyhon folder no metter what (maybe copy the content to bin)
@@ -159,7 +160,7 @@ namespace AstroPhotometry.View
                 string png_file = file.Name.Substring(0, file.Name.IndexOf('.'));
                 cmd_string.clear();
                 cmd_string.Message = "converting to image";
-                py_runner.FitsToPNG(file.FullName, png_file + @".png");
+                py_runner.FitsToPNG(file.FullName, png_file + ".fit" + running_number++ + @".png");
             }
         }
     }
