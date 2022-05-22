@@ -5,9 +5,9 @@ import datetime
 import numpy as np
 from astropy.io import fits
 from ProgressPrint import Progress
-# import StopInCaseOfError
 
 progress = Progress(module_name="FitsMath", stages=1)
+
 
 def show_exception_and_exit(exc_type, exc_value, tb):
     import traceback
@@ -18,7 +18,7 @@ def show_exception_and_exit(exc_type, exc_value, tb):
     progress.eprint(error)
     sys.exit(-1)
 
-import sys
+
 sys.excepthook = show_exception_and_exit
 
 
@@ -68,9 +68,8 @@ def get_filenames_from_folder(folder_path):
             file for file in os.listdir(folder_path)
             if os.path.isfile(os.path.join(folder_path, file))
         ]
-        # TODO: check that is a fit file
         for file in only_files:
-            if file.endswith('.fit') is False:
+            if is_fit_file(file) is False:
                 progress.eprint('File in folder is not in fit format')
                 sys.exit(1)
         only_files = [(folder_path + '\\' + file) for file in only_files]
@@ -79,21 +78,20 @@ def get_filenames_from_folder(folder_path):
     sys.exit(1)
 
 
-def fits_file(path: str) -> bool:
-    if (path[-4:].lower() == ".fit" or path[-5:].lower() == ".fits"):
+def is_fit_file(path: str) -> bool:
+    """
+    check if file is in fit format
+    """
+    if path.endswith('.fit') or path.endswith('.fits') is True:
         return True
     else:
         return False
 
 
-def compute_process():
-    global progress
-    args = argument_handling()
-    paths, output_file_path, overwrite_flag = args.i, args.f, args.o
-
+def convert_path_to_files(paths):
     input_files: list = []
     for path in paths:
-        if (fits_file(path)):
+        if is_fit_file(path):
             input_files.append(path)
         else:
             input_files += get_filenames_from_folder(path)
@@ -102,6 +100,23 @@ def compute_process():
     if files_amount == 0:
         progress.eprint("no input file detected")
         sys.exit(1)
+    return input_files
+
+
+def fill_header():
+    """
+    TODO: fill the function
+    :return:
+    """
+    pass
+
+
+def compute_process():
+    global progress
+    args = argument_handling()
+    paths, output_file_path, overwrite_flag = args.i, args.f, args.o
+
+    input_files = convert_path_to_files(paths)
 
     module_name = ""
     if args.A is True:
@@ -120,11 +135,11 @@ def compute_process():
 
     progress = Progress(
         module_name, stages=files_amount +
-        3)  # Pass on all images + create save and done of fit file
+                            3)  # Pass on all images + create save and done of fit file
     progress.cprint("started working")
 
-    progress.print(str(sys.argv),0)
-    progress.print(str(input_files),0)
+    progress.print(str(sys.argv), 0)
+    progress.print(str(input_files), 0)
 
     arr_of_images = []
     with fits.open(input_files[0], mode='readonly') as base_file:
@@ -143,7 +158,7 @@ def compute_process():
             # Minus
             elif args.m is True:
                 tmp = out_picture - next_file[
-                    0].data[:, :]  # Has tmp for mixing ints and floats array math
+                                        0].data[:, :]  # Has tmp for mixing ints and floats array math
                 out_picture = tmp
             # Multiplication
             elif args.M is True:
