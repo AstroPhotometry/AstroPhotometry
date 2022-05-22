@@ -36,6 +36,8 @@ The calibration process goes like this:
 
 1. ((dark) - (master bias)) avg = master dark - MEDIAN averaging
 
-1. ((master dark) - (flat)) avg = master flat - MEDIAN averaging
+1. ((flat) - ((((master dark) * (flat time)) / (dark time)) + (master bias))) avg = master flat - MEDIAN averaging
 
-1. ((light) - ((master bias) + (master dark))) / (master flat) -> calibrated frames
+1. ((light) - ((master bias) + (((master dark) * (light time)) / (dark time)))) / (master flat) -> calibrated frames
+
+/ -> divide by will look - 200/0 -> None
