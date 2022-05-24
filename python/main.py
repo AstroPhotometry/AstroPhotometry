@@ -13,6 +13,7 @@ def argument_handling():
     parser = argparse.ArgumentParser()
     parser.add_argument('-j', '--json',
                         required=True,
+                        nargs='+',
                         type=str,
                         help='Insert json object by the pre-definition')
     args = parser.parse_args()
