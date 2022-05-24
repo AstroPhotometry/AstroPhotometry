@@ -101,7 +101,7 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
     # with fits.open(input_files[0], mode='readonly') as base_file:
     #     out_picture = base_file[0].data[:, :]
     #     arr_of_images.append(out_picture)
-    #
+    # 
     # progress.cprint("read file: " + input_files[0])
     #
     # for input_file in input_files[1:]:
