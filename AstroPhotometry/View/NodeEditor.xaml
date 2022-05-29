@@ -41,6 +41,13 @@
                         <Button Content="choose folder" Click="Button_Click_Light"/>
                     </StackPanel>
                 </Border>
+                <Border BorderBrush="Black" BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock HorizontalAlignment="Center">output</TextBlock>
+                        <TextBlock x:Name="output_text" HorizontalAlignment="Center">this is the path</TextBlock>
+                        <Button Content="output folder" Click="Button_Click_Out"/>
+                    </StackPanel>
+                </Border>
                 
                 <Separator/>
                 

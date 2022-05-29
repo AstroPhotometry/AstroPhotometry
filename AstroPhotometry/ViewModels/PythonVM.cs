@@ -123,6 +123,17 @@ namespace AstroPhotometry
             return argument;
         }
 
+        // TODO: make only one option
+        // Send to calibrate
+        public void calibrate(string json_path)
+        {
+            string py_file = "main.py";
+            string arguments = "-j \"" + json_path + "\"";
+
+            MessageBox.Show(arguments);
+            run(py_file, arguments);
+        }
+
         public void FitsToPNG(string input_fits_file, string output_file_name)
         {
             // NOTE: if not exist then the python will throw an error
@@ -153,7 +164,7 @@ namespace AstroPhotometry
 
             // for redireting output
             startInfo.RedirectStandardOutput = true;
-            startInfo.RedirectStandardError= false;
+            startInfo.RedirectStandardError = false;
             startInfo.UseShellExecute = false;
             startInfo.CreateNoWindow = true; // false for debug
 
@@ -180,16 +191,25 @@ namespace AstroPhotometry
             running = false;
         }
 
+        // convert string to messege
         private void ReadCharacters(string data)
         {
             if (data == null)
             {
                 return;
             }
-
-            Progress progress = JsonConvert.DeserializeObject<Progress>(data);
-            cmdString.Message = progress.message;
-            cmdString.Progress = progress.progress;
+            try
+            {
+                Progress progress = JsonConvert.DeserializeObject<Progress>(data);
+                cmdString.Message = progress.message;
+                cmdString.Progress = progress.progress;
+            }
+            catch
+            {
+                string err = "ERROR: could not Deserialize Object";
+                cmdString.Message = err;
+                Console.WriteLine(err);
+            }
 
             // For debug
             Console.WriteLine(data);
