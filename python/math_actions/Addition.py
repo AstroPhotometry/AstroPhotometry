@@ -4,12 +4,14 @@ from math_actions.BaseMath import BaseMath
 
 class Addition(BaseMath):
 
-    def __init__(self, files):
-        self.files = files
+    def __init__(self, image1, image2):
+        self.image1 = image1
+        self.image2 = image2
 
     def compute(self):
         """
         Method to compute addition
         :return:
         """
-        return np.sum(self.files, axis=0)
+        out = np.array([self.image1, self.image2])
+        return np.sum(out, axis=0)

@@ -5,9 +5,11 @@ import numpy as np
 from astropy.io import fits
 from ProgressPrint import Progress
 from math_actions.Addition import Addition
-from math_actions.Average import Average
+from math_actions.Median import Median
 from math_actions.Division import Division
 from math_actions.Minus import Minus
+from math_actions.Multiplication import Multiplication
+from datetime import datetime
 
 progress = Progress(module_name="FitsMath", stages=1)
 
@@ -70,25 +72,49 @@ def convert_path_to_files(paths):
     return input_files
 
 
-def fill_header():
+def fill_header(image_type: str, **kwargs: dict):
     """
-    TODO: fill the function
-    :return:
+    creates header by user args
+    :return: the header
     """
-    pass
+    header = fits.Header()
+
+    # Add history
+    date = datetime.now().strftime("%d/%m/%Y %H:%M")
+    header['history'] = f'= created on {date}'
+
+    # Write type of file
+    header['IMAGETYP'] = image_type
+
+    # Add dictionary
+    for key, value in kwargs.items():
+        header[key] = value
+
+    return header
 
 
-def open_fits_files(files):
-    """
-    Open fits files
-    :return: array of matrix that represent the images inside the fit files
-    """
-    arr_of_images = []
-    for file in files:
-        with fits.open(file, mode='readonly') as f_d_image:
-            out_picture = f_d_image[0].data[:, :]
-        arr_of_images.append(out_picture)
-    return arr_of_images
+def save_fit(save_path: str, image_data, base_header, copy_header: str = None, overwrite=True):
+    # Copy the header
+    if copy_header is not None:
+        hdr = fits.getheader(copy_header)
+        for key, value in hdr.items():
+            base_header[key] = value
+
+    # Save fits file
+    hdu = fits.PrimaryHDU(data=image_data, header=base_header)
+    hdul = fits.HDUList([hdu])
+    hdul.writeto(save_path, overwrite=overwrite)  # check for errors
+
+
+def time_from_path(path):
+    header = fits.getheader(path)
+    exposure_time = header['EXPOSURE']
+    return exposure_time
+
+
+def median_time(paths_list: list):
+    np_arr = np.array(paths_list)
+    return np.mean(np_arr)
 
 
 def calibration_compute_process(paths, output_master_bias, output_master_dark, output_master_flat,
@@ -109,71 +135,56 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
     for path in paths:
         paths[path] = convert_path_to_files(paths[path])
 
-    # open all files as array of matrix
-    arr_of_matrix = open_fits_files(paths)
+    # masterBias
+    if 'bias' in paths:
+        master_bias = Median(paths['bias']).compute()
+    else:
+        master_bias = None
 
-    # Examples of Math Actions:
-    image_arr = Addition(arr_of_matrix).compute()
-    image_arr = Average(arr_of_matrix).compute()
-    array_of_images = Minus(arr_of_matrix[1:], arr_of_matrix[0]).compute()
-    array_of_images = Division(arr_of_matrix[1:], arr_of_matrix[0]).compute()
+    # masterDark
+    if master_bias is not None:
+        array_of_images = Minus(paths['dark'], master_bias).compute()
+        master_dark = Median(array_of_images).compute()
+    elif 'dark' in paths:
+        master_dark = Median(paths['dark']).compute()
+    else:
+        master_dark = None
 
-    # progress = Progress(
-    #     'calibration', stages=files_amount +
-    #                         3)  # Pass on all images + create save and done of fit file
-    # progress.cprint("started working")
-    #
-    #
-    # arr_of_images = []
-    # with fits.open(input_files[0], mode='readonly') as base_file:
-    #     out_picture = base_file[0].data[:, :]
-    #     arr_of_images.append(out_picture)
-    #
-    # progress.cprint("read file: " + input_files[0])
-    #
-    # for input_file in input_files[1:]:
-    #     with fits.open(input_file, mode='readonly') as next_file:
-    #         progress.cprint("read file: " + input_file)
-    #
-    #         # Average
-    #         if args.A is True:
-    #             arr_of_images.append(next_file[0].data[:, :])
-    #         # Minus
-    #         elif args.m is True:
-    #             tmp = out_picture - next_file[
-    #                                     0].data[:, :]  # Has tmp for mixing ints and floats array math
-    #             out_picture = tmp
-    #         # Multiplication
-    #         elif args.M is True:
-    #             out_picture *= next_file[0].data[:, :]
-    #         # Addition
-    #         elif args.a is True:
-    #             arr_of_images.append(next_file[0].data[:, :])
-    #         # Division
-    #         elif args.d is True:
-    #             if next_file[0].data[:, :] == 0:
-    #                 progress.eprint('Division by 0')
-    #                 sys.exit(1)
-    #             out_picture = base_file[0].data[:, :]
-    #             out_picture = out_picture / next_file[0].data[:, :]
-    #         else:
-    #             progress.eprint(f"no module name detected in: {args}")
-    #             sys.exit(1)
-    #
-    # if args.A is True:
-    #     out_picture = np.mean(arr_of_images, axis=0)
-    # elif args.a is True:
-    #     out_picture = np.sum(arr_of_images, axis=0)
-    # np.subtract
+    if 'dark' in paths:
+        dark_time_in_header_average = median_time(paths['dark'])
+    # masterFlat
+    if 'flat' in paths:
+        outcome_array = []
+        for flat_path in paths['flat']:
+            # Normalization
+            flat = fits.getdata(flat_path)
+            flat_time_in_header = time_from_path(flat_path)
+            if master_dark is not None:
+                exposure_with_dark = Multiplication(master_dark, flat_time_in_header).compute()
+                mana = Division(exposure_with_dark, dark_time_in_header_average).compute()
+                if master_bias is not None:
+                    middle_score = Addition(mana, master_bias).compute()
+                    outcome = Minus(flat, middle_score).compute()
+                else:
+                    outcome = Minus(flat, mana).compute()
+                outcome_array.append(outcome)
+            elif master_bias is not None:
+                outcome_array = Minus(flat,master_bias).subtract_two_images()
+            else:
+                outcome_array.append(flat)
+        master_flat = Median(outcome_array).compute()
 
-    # progress.cprint("creating fit file")
-    # hdr = fits.Header()
-    # date = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
-    # hdr['history'] = f"= edited on {date}"
-    # hdu = fits.PrimaryHDU(data=out_picture, header=hdr)
-    # hdul = fits.HDUList([hdu])
-    # progress.cprint("saving fit file")
-    # hdul.writeto(output_file_path,
-    #              overwrite=overwrite_flag)  # check for errors
-    #
-    # progress.cprint("done, saved in " + output_file_path)
+    # TODO: check for varies scenarios
+    # Calibration
+    for light_path in paths['light']:
+        # Normalization
+        light_time_in_header = time_from_path(light_path)
+        first_phase = Multiplication(master_dark, light_time_in_header).compute()
+        normalization_per_light = Division(first_phase, dark_time_in_header_average).compute()
+
+        light = fits.getdata(light_path)
+        matrix_a = Addition(master_bias, normalization_per_light).compute()
+        matrix_b = Minus(light, matrix_a).subtract_two_images()
+        calibration_output = Division(matrix_b, master_flat).compute()
+        # TODO: save fit
+        save_fit()

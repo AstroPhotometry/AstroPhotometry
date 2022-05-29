@@ -3,7 +3,7 @@ from math_actions.BaseMath import BaseMath
 
 
 class Minus(BaseMath):
-    def __init__(self, files, pic):
+    def __init__(self, files, pic=None):
         self.pic = pic
         self.files = files
 
@@ -18,3 +18,6 @@ class Minus(BaseMath):
             files_after_subtraction.append(outcome_array)
 
         return files_after_subtraction
+
+    def subtract_two_images(self):
+        return np.subtract(self.files[0], self.files[1])

@@ -19,18 +19,14 @@ def div_matrix(a, b, fill=np.nan):
 
 
 class Division(BaseMath):
-    def __init__(self, files, pic):
-        self.pic = pic
-        self.files = files
+    def __init__(self, image, scalar):
+        self.scalar = scalar
+        self.image = image
 
     def compute(self):
         """
-        Method to compute division
+        Method to compute division - matrix / scalar
         :return:
         """
-        files_after_subtraction = []
-        for file in self.files:
-            outcome = div_matrix(self.pic, file)
-            files_after_subtraction.append(outcome)
-
-        return files_after_subtraction
+        outcome = div_matrix(self.image, self.scalar)
+        return outcome
