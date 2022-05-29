@@ -1,5 +1,4 @@
 import argparse
-
 from FitsToPNG import main_run
 from FitsMath import calibration_compute_process
 from JsonConvert import JsonConvert
@@ -13,9 +12,8 @@ def argument_handling():
     parser = argparse.ArgumentParser()
     parser.add_argument('-j', '--json',
                         required=True,
-                        nargs='+',
                         type=str,
-                        help='Insert json object by the pre-definition')
+                        help='Insert json file path')
     args = parser.parse_args()
     return args.json
 
@@ -46,11 +44,9 @@ def validate_files(bias_file, dark_file, flats_file, light_file) -> dict:
 
 
 if __name__ == '__main__':
-    #     sys.argv = ['main.py', '-j',
-    #                 '{"fitsToPNG":"","bias": ["file1", "file2", "file3"],"dark": ["file1", "file2", "file3"],"flats": ["file1", "file2", "file3"],"light": ["file1", "file2", "file3"],"outputMasterBias": "path","outputMasterDark": "path","outputMasterFlat": "path","outputCallibrationFile": "path","outputCallibratedFolder": "path"}']
-    json_data = argument_handling()
-    data = JsonConvert(json_data)
-    fits_to_png, bias, dark, flats, light, output_master_bias, output_master_dark, output_master_flat, output_calibration_file, output_calibration_folder = data.run()
+    json_file_path = argument_handling()
+    data = JsonConvert(json_file_path)
+    fits_to_png, bias, dark, flats, light, output_master_bias, output_master_dark, output_master_flat, output_calibration_file, output_calibration_folder = data.load_data()
     if fits_to_png != '':
         fits_to_png_proc(fits_to_png)
     else:
