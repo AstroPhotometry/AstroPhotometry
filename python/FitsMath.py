@@ -4,7 +4,10 @@ import datetime
 import numpy as np
 from astropy.io import fits
 from ProgressPrint import Progress
-from math_actions.BaseMath import BaseMath
+from math_actions.Addition import Addition
+from math_actions.Average import Average
+from math_actions.Division import Division
+from math_actions.Minus import Minus
 
 progress = Progress(module_name="FitsMath", stages=1)
 
@@ -110,7 +113,10 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
     arr_of_matrix = open_fits_files(paths)
 
     # Examples of Math Actions:
-    action = BaseMath()
+    image_arr = Addition(arr_of_matrix).compute()
+    image_arr = Average(arr_of_matrix).compute()
+    array_of_images = Minus(arr_of_matrix[1:], arr_of_matrix[0]).compute()
+    array_of_images = Division(arr_of_matrix[1:], arr_of_matrix[0]).compute()
 
     # progress = Progress(
     #     'calibration', stages=files_amount +

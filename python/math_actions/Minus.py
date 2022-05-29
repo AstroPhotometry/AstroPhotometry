@@ -1,9 +1,9 @@
 import numpy as np
-from astropy.io import fits
+from math_actions.BaseMath import BaseMath
 
 
-class Minus:
-    def __init__(self, pic, files):
+class Minus(BaseMath):
+    def __init__(self, files, pic):
         self.pic = pic
         self.files = files
 
