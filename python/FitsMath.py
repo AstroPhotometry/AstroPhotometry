@@ -4,6 +4,10 @@ import datetime
 import numpy as np
 from astropy.io import fits
 from ProgressPrint import Progress
+from math_actions.Addition import Addition
+from math_actions.Average import Average
+from math_actions.Division import Division
+from math_actions.Minus import Minus
 
 progress = Progress(module_name="FitsMath", stages=1)
 
@@ -74,6 +78,19 @@ def fill_header():
     pass
 
 
+def open_fits_files(files):
+    """
+    Open fits files
+    :return: array of matrix that represent the images inside the fit files
+    """
+    arr_of_images = []
+    for file in files:
+        with fits.open(file, mode='readonly') as f_d_image:
+            out_picture = f_d_image[0].data[:, :]
+        arr_of_images.append(out_picture)
+    return arr_of_images
+
+
 def calibration_compute_process(paths, output_master_bias, output_master_dark, output_master_flat,
                                 output_calibration_file, output_calibration_folder):
     """
@@ -88,8 +105,18 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
     """
     global progress
 
+    # convert path from argument to files
     for path in paths:
         paths[path] = convert_path_to_files(paths[path])
+
+    # open all files as array of matrix
+    arr_of_matrix = open_fits_files(paths)
+
+    # Examples of Math Actions:
+    image_arr = Addition(arr_of_matrix).compute()
+    image_arr = Average(arr_of_matrix).compute()
+    array_of_images = Minus(arr_of_matrix[1:], arr_of_matrix[0]).compute()
+    array_of_images = Division(arr_of_matrix[1:], arr_of_matrix[0]).compute()
 
     # progress = Progress(
     #     'calibration', stages=files_amount +
@@ -101,7 +128,7 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
     # with fits.open(input_files[0], mode='readonly') as base_file:
     #     out_picture = base_file[0].data[:, :]
     #     arr_of_images.append(out_picture)
-    # 
+    #
     # progress.cprint("read file: " + input_files[0])
     #
     # for input_file in input_files[1:]:
@@ -137,6 +164,7 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
     #     out_picture = np.mean(arr_of_images, axis=0)
     # elif args.a is True:
     #     out_picture = np.sum(arr_of_images, axis=0)
+    # np.subtract
 
     # progress.cprint("creating fit file")
     # hdr = fits.Header()
