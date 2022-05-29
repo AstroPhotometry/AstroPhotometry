@@ -11,10 +11,11 @@ namespace AstroPhotometry.View
     /// </summary>
     public partial class NodeEditor : UserControl
     {
-        private string[] bias;
-        private string[] dark;
-        private string[] flat;
-        private string[] light;
+        private string[] bias = new string[0];
+        private string[] dark = new string[0];
+        private string[] flat = new string[0];
+        private string[] light = new string[0];
+        private string output = "";
 
         private const int show_max = 2; // Max files to show
 
@@ -105,16 +106,8 @@ namespace AstroPhotometry.View
 
         private void Button_Click_Run(object sender, RoutedEventArgs e)
         {
-            ComputeEngine compute = new ComputeEngine(bias, dark, flat, light);
+            ComputeEngine compute = new ComputeEngine(bias, dark, flat, light, output);
             this.DataContext = compute.cmdString;
-            if (bias != null && dark != null && flat != null && light != null)
-            {
-                MessageBox.Show("running");
-            }
-            else
-            {
-                //MessageBox.Show("somthing missing");
-            }
         }
 
         private string[] fileDialog()
@@ -132,6 +125,27 @@ namespace AstroPhotometry.View
             {
                 return null;
             }
+        }
+        private string folderDialog()
+        {
+            System.Windows.Forms.FolderBrowserDialog openFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
+
+            System.Windows.Forms.DialogResult result = openFolderDialog.ShowDialog();
+
+            if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(openFolderDialog.SelectedPath))
+            {
+                return openFolderDialog.SelectedPath;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private void Button_Click_Out(object sender, RoutedEventArgs e)
+        {
+            this.output = folderDialog();
+            output_text.Text = output;
         }
     }
 }

@@ -16,8 +16,9 @@ namespace AstroPhotometry.ViewModels
         private string[] dark;
         private string[] flat;
         private string[] light;
+        private string output = "";
 
-        public ComputeEngine(string[] bias, string[] dark, string[] flat, string[] light)
+        public ComputeEngine(string[] bias, string[] dark, string[] flat, string[] light, string output)
         {
             cmdString = new CmdStringVM();
 
@@ -25,146 +26,39 @@ namespace AstroPhotometry.ViewModels
             this.dark = dark;
             this.flat = flat;
             this.light = light;
+            this.output = output;
             run();
         }
 
         private async void run()
         {
+            // Create folder
             batch_num++;
             string base_folder = @".\tmp\batch" + batch_num;
             Directory.CreateDirectory(base_folder);
 
+            // Json file path
+            string json_path = base_folder + @"/calibration.json";
+
+            // Add json to the file
+            string json = JsonSerialization.computeCalibrationJson(this.bias, this.dark, this.flat, this.light, this.output);
+            
+            // Save file
+            JsonSerialization.writeToFile(json_path, json);
+
+            // Run the json
             string base_path = Path.GetFullPath("../../../python/");
+            py_runner = new PythonVM(base_path, base_folder, cmdString);
+            string json_full_path = Path.GetFullPath(json_path);
+            py_runner.runByJsonPath(json_full_path);
 
-            // integrate (stack) the bias frames to create a master bias.
-            Directory.CreateDirectory(base_folder + @"\masterBias");
-            string masterBias = Path.GetFullPath(base_folder + @"\masterBias");
-            py_runner = new PythonVM(base_path, base_folder + @"\masterBias" + @"\", cmdString);
-            AvgMean(bias);
+            // Wait
             while (py_runner.Running)
             {
                 //Code waits until bool is set to false
                 await Task.Delay(100);
             }
-
-            // subtract the master bias from the dark frames.
-            Directory.CreateDirectory(base_folder + @"\darkAndBias");
-            string darkAndBias = Path.GetFullPath(base_folder + @"\darkAndBias");
-            py_runner = new PythonVM(base_path, base_folder + @"\darkAndBias" + @"\", cmdString);
-            Minus(dark, masterBias);
-            while (py_runner.Running)
-            {
-                //Code waits until bool is set to false
-                await Task.Delay(100);
-            }
-
-            // integrate (stack) the bias subtracted dark frames to create a master dark.
-            Directory.CreateDirectory(base_folder + @"\masterDark");
-            string masterDark = Path.GetFullPath(base_folder + @"\masterDark");
-            py_runner = new PythonVM(base_path, base_folder + @"\masterDark" + @"\", cmdString);
-            AvgMeanFolder(darkAndBias);
-            while (py_runner.Running)
-            {
-                //Code waits until bool is set to false
-                await Task.Delay(100);
-            }
-
-            // subtract the master bias from the flat frames.
-            Directory.CreateDirectory(base_folder + @"\flatAndMasterBias");
-            string flatAndMasterBias = Path.GetFullPath(base_folder + @"\flatAndMasterBias");
-            py_runner = new PythonVM(base_path, base_folder + @"\flatAndMasterBias" + @"\", cmdString);
-            Minus(flat, masterDark);
-            while (py_runner.Running)
-            {
-                //Code waits until bool is set to false
-                await Task.Delay(100);
-            }
-
-            // integrate(stack) the bias subtracted flat frames to create a master flat.
-            Directory.CreateDirectory(base_folder + @"\masterFlat");
-            string masterFlat = Path.GetFullPath(base_folder + @"\masterFlat");
-            py_runner = new PythonVM(base_path, base_folder + @"\masterFlat" + @"\", cmdString);
-            AvgMeanFolder(flatAndMasterBias);
-            while (py_runner.Running)
-            {
-                //Code waits until bool is set to false
-                await Task.Delay(100);
-            }
-
-            // subtract the master bias and the master dark from the light frames
-            // 1.
-            Directory.CreateDirectory(base_folder + @"\masterBiasPlusMasterDark");
-            string masterBiasPlusMasterDark = Path.GetFullPath(base_folder + @"\masterBiasPlusMasterDark");
-            py_runner = new PythonVM(base_path, base_folder + @"\masterBiasPlusMasterDark" + @"\", cmdString);
-            Addition(masterDark, masterBias);
-            while (py_runner.Running)
-            {
-                //Code waits until bool is set to false
-                await Task.Delay(100);
-            }
-            // 2.
-            Directory.CreateDirectory(base_folder + @"\masterBiasPlusMasterDarkMinusLight");
-            string masterBiasPlusMasterDarkMinusLight = Path.GetFullPath(base_folder + @"\masterBiasPlusMasterDarkMinusLight");
-            py_runner = new PythonVM(base_path, base_folder + @"\masterBiasPlusMasterDarkMinusLight" + @"\", cmdString);
-            Minus(light, masterBiasPlusMasterDark);
-            while (py_runner.Running)
-            {
-                //Code waits until bool is set to false
-                await Task.Delay(100);
-            }
-
-            // divide the result by the master flat
-            Directory.CreateDirectory(base_folder + @"\calibration");
-            string calibration = Path.GetFullPath(base_folder + @"\calibration");
-            py_runner = new PythonVM(base_path, base_folder + @"\calibration" + @"\", cmdString);
-            Divide(masterBiasPlusMasterDarkMinusLight, masterFlat);
-            while (py_runner.Running)
-            {
-                //Code waits until bool is set to false
-                await Task.Delay(100);
-            }
-        }
-
-        private bool Divide(string divide, string divider)
-        {
-            string[] tmp = { divide, divider };
-
-            py_runner.MathActions(tmp, "1", "Division");
-            return true;
-        }
-
-        private bool Addition(string file1, string file2)
-        {
-            string[] tmp = { file1, file2 };
-
-            py_runner.MathActions(tmp, "1", "Addition");
-            return true;
-        }
-
-        private bool AvgMeanFolder(string folder)
-        {
-            py_runner.MathActions(folder, "1", "Avarage");
-            return true;
-        }
-
-        private bool AvgMean(string[] photos)
-        {
-            py_runner.MathActions(photos, "1", "Avarage");
-            return true;
-        }
-
-        private bool Minus(string[] photos, string master_photo)
-        {
-            int count = 0;
-            foreach (var photo in photos)
-            {
-                string[] tmp = { photo, master_photo };
-
-                py_runner.MathActions(tmp, (count++).ToString(), "Minus");
-            }
-            return true;
 
         }
-        // func to compute all the nodes
     }
 }
