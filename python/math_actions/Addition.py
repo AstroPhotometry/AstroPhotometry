@@ -1,8 +1,10 @@
 import numpy as np
 from astropy.io import fits
+from math_actions import BaseMath
 
 
-class Addition:
+class Addition(BaseMath):
+
     def __init__(self, pic, files):
         self.pic = pic
         self.files = files
