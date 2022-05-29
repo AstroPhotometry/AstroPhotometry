@@ -163,7 +163,7 @@ namespace AstroPhotometry.View
 
                 // make the json
                 string json = JsonSerialization.fitsToPNG(file.FullName);
-                string json_path = @".\tmp\pics\";
+                string json_path = @".\tmp\pics\fitToPic.json";
                 JsonSerialization.writeToFile(json_path, json);
 
                 py_runner.runByJsonPath(file.FullName);

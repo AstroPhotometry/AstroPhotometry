@@ -26,11 +26,11 @@ namespace AstroPhotometry
         public static void writeToFile(string filename, string data)
         {
             // Create Json file
-            StreamWriter file = new StreamWriter(filename + "ToDo.json");
+            StreamWriter file = new StreamWriter(filename);
             file.Close();
 
             // Write data
-            File.WriteAllText(filename + "ToDo.json", data);
+            File.WriteAllText(filename, data);
         }
 
         /**
