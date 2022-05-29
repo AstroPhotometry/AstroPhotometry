@@ -8,17 +8,17 @@ from ProgressPrint import Progress
 progress = Progress(module_name="FtsMath", stages=1)
 
 
-def show_exception_and_exit(exc_type, exc_value, tb):
-    import traceback
-    error = ""
-    for e in traceback.format_exception(exc_type, exc_value, tb):
-        error += e
-        error += '\n'
-    progress.eprint(error)
-    sys.exit(-1)
+# def show_exception_and_exit(exc_type, exc_value, tb):
+#     import traceback
+#     error = ""
+#     for e in traceback.format_exception(exc_type, exc_value, tb):
+#         error += e
+#         error += '\n'
+#     progress.eprint(error)
+#     sys.exit(-1)
 
 
-sys.excepthook = show_exception_and_exit
+# sys.excepthook = show_exception_and_exit
 
 
 def validate_file(file_path: str):
@@ -44,7 +44,7 @@ def make_png(fits_file, png_loc):
         progress.eprint("file is empty: " + e.__str__())
         sys.exit(1)
     try:
-        plt.imsave(png_loc, first_file[0].data)
+        plt.imsave(png_loc + 'linear.png', first_file[0].data)
     except Exception as e:
         progress.eprint("saving PNG has failed " + e.__str__())
         sys.exit(1)

@@ -13,18 +13,18 @@ from datetime import datetime
 
 progress = Progress(module_name="FitsMath", stages=1)
 
-
-def show_exception_and_exit(exc_type, exc_value, tb):
-    import traceback
-    error = ""
-    for e in traceback.format_exception(exc_type, exc_value, tb):
-        error += e
-        error += '\n'
-    progress.eprint(error)
-    sys.exit(-1)
-
-
-sys.excepthook = show_exception_and_exit
+#
+# def show_exception_and_exit(exc_type, exc_value, tb):
+#     import traceback
+#     error = ""
+#     for e in traceback.format_exception(exc_type, exc_value, tb):
+#         error += e
+#         error += '\n'
+#     progress.eprint(error)
+#     sys.exit(-1)
+#
+#
+# sys.excepthook = show_exception_and_exit
 
 
 def eprint(*args, **kwargs):
