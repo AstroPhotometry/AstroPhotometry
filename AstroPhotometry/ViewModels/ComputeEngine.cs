@@ -37,20 +37,20 @@ namespace AstroPhotometry.ViewModels
             string base_folder = @".\tmp\batch" + batch_num;
             Directory.CreateDirectory(base_folder);
 
-            // Create Json file
+            // Json file path
             string json_path = base_folder + @"/calibration.json";
-            StreamWriter file = new StreamWriter(json_path);
-            file.Close();
 
             // Add json to the file
             string json = JsonSerialization.computeCalibrationJson(this.bias, this.dark, this.flat, this.light, this.output);
-            File.WriteAllText(json_path, json);
+            
+            // Save file
+            JsonSerialization.writeToFile(json_path, json);
 
             // Run the json
             string base_path = Path.GetFullPath("../../../python/");
             py_runner = new PythonVM(base_path, base_folder, cmdString);
             string json_full_path = Path.GetFullPath(json_path);
-            py_runner.calibrate(json_full_path);
+            py_runner.runByJsonPath(json_full_path);
 
             // Wait
             while (py_runner.Running)

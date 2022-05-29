@@ -48,107 +48,14 @@ namespace AstroPhotometry
             get { return running; }
         }
 
-        /** Options:
-         * Addition
-         * Avarage
-         * Minus
-         * Multiplication
-         * Division
-         **/
-        public void MathActions(string dir_path, string output_file_name, string action)
-        {
-            string argument = Action(action);
-
-            string py_file = "FitsMath.py";
-
-            argument += " -i " + "\"" + dir_path + "\"";
-            // TODO: check if output needs folder to exist
-            argument += " -f " + "\"" + this.output_folder_relative_path + output_file_name + ".fit\"" + argument;
-            run(py_file, argument);
-        }
-
-        /** Options:
-         * Addition
-         * Avarage
-         * Minus
-         * Multiplication
-         * Division
-         **/
-        public void MathActions(string[] fits_files, string output_file_name, string action)
-        {
-            string argument = Action(action);
-
-            // Add files to the args
-            if (fits_files.Length != 0)
-            {
-                argument += " -i ";
-            }
-            foreach (string fits_file in fits_files)
-            {
-                argument += " " + "\"" + fits_file + "\"";
-            }
-
-            // TODO: check if output needs folder to exist
-            argument += " -f " + "\"" + this.output_folder_relative_path + output_file_name + ".fit\"";
-
-            string py_file = "FitsMath.py";
-
-            run(py_file, argument);
-        }
-
-        private string Action(string action)
-        {
-            string argument = " ";
-
-            if (action.Equals("Addition"))
-            {
-                argument += "-a";
-            }
-            else if (action.Equals("Avarage"))
-            {
-                argument += "-A";
-            }
-            else if (action.Equals("Minus"))
-            {
-                argument += "-m";
-            }
-            else if (action.Equals("Multiplication"))
-            {
-                argument += "-M";
-            }
-            else if (action.Equals("Division"))
-            {
-                argument += "-d";
-            }
-            return argument;
-        }
-
-        // TODO: make only one option
         // Send to calibrate
-        public void calibrate(string json_path)
+        public void runByJsonPath(string json_path)
         {
             string py_file = "main.py";
             string arguments = "-j \"" + json_path + "\"";
 
             MessageBox.Show(arguments);
             run(py_file, arguments);
-        }
-
-        public void FitsToPNG(string input_fits_file, string output_file_name)
-        {
-            // NOTE: if not exist then the python will throw an error
-            /*if (File.Exists(this.output_folder_relative_path + output_file_name))
-            {
-                // TODO: show the existing picture 
-                MessageBox.Show("exist");
-            }
-            else*/
-            {
-                string py_file = "FitsToPNG.py";
-                string arguments = "-f \"" + input_fits_file + "\"";
-                arguments += " " + "-o \"" + this.output_folder_relative_path + output_file_name + "\"";
-                run(py_file, arguments);
-            }
         }
 
         public void run(string py_file, string arguments)

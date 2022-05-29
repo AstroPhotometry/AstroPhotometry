@@ -22,7 +22,8 @@ namespace AstroPhotometry.View
             // TODO: find the pyhon folder no metter what (maybe copy the content to bin)
             string base_path = Path.GetFullPath("../../../python/");
             cmd_string = new CmdStringVM(); // TODO: get that from outside for showing progress bar
-            this.py_runner = new PythonVM(base_path, @".\tmp\", cmd_string);
+            Directory.CreateDirectory(@".\tmp\pics\");
+            this.py_runner = new PythonVM(base_path, @".\tmp\pics\", cmd_string);
             this.DataContext = cmd_string;
 
             InitializeComponent();
@@ -159,7 +160,13 @@ namespace AstroPhotometry.View
                 string png_file = file.Name.Substring(0, file.Name.IndexOf('.'));
                 cmd_string.clear();
                 cmd_string.Message = "converting to image";
-                py_runner.FitsToPNG(file.FullName, png_file + @".png");
+
+                // make the json
+                string json = JsonSerialization.fitsToPNG(file.FullName);
+                string json_path = @".\tmp\pics\";
+                JsonSerialization.writeToFile(json_path, json);
+
+                py_runner.runByJsonPath(file.FullName);
             }
         }
     }

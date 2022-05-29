@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.IO;
 
 namespace AstroPhotometry
 {
@@ -22,16 +23,26 @@ namespace AstroPhotometry
             return json;
         }
 
+        public static void writeToFile(string filename, string data)
+        {
+            // Create Json file
+            StreamWriter file = new StreamWriter(filename + "ToDo.json");
+            file.Close();
+
+            // Write data
+            File.WriteAllText(filename + "ToDo.json", data);
+        }
+
         /**
          * Json object for output
          */
         private class Calibration
         {
             public string fitsToPNG = "";
-            public string[] bias;
-            public string[] dark;
-            public string[] flat;
-            public string[] light;
+            public string[] bias = new string[0];
+            public string[] dark = new string[0];
+            public string[] flat = new string[0];
+            public string[] light = new string[0];
             public string outputMasterBias = "";
             public string outputMasterDark = "";
             public string outputMasterFlat = "";
