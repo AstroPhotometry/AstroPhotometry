@@ -28,5 +28,10 @@ class Division(BaseMath):
         Method to compute division - matrix / scalar
         :return:
         """
-        outcome = div_matrix(self.image, self.scalar)
-        return outcome
+        if self.image is None:
+            return None
+        elif self.scalar is None:
+            return self.image
+        else:
+            outcome = div_matrix(self.image, self.scalar)
+            return outcome

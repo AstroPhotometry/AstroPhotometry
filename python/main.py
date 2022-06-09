@@ -54,5 +54,6 @@ if __name__ == '__main__':
         fits_to_png_proc(fits_to_png)
     else:
         files = validate_files(bias, dark, flats, light)
+        # print(files)
         calibration_compute_process(files, output_master_bias, output_master_dark, output_master_flat,
                                     output_calibration_file, output_calibration_folder)
