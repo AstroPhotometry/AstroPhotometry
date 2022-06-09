@@ -15,10 +15,10 @@ namespace AstroPhotometry
         }
 
         // Add data for image creation process
-        public static string fitsToPNG(string fit_file, string output_folder)
+        public static string fitsToPNG(string input_fit_file, string output_file_name)
         {
             Calibration cal = new Calibration();
-            cal.fitConvertion(fit_file, output_folder);
+            cal.fitConvertion(input_fit_file, output_file_name);
             string json = JsonConvert.SerializeObject(cal);
             return json;
         }
@@ -60,11 +60,10 @@ namespace AstroPhotometry
                 this.outputCallibratedFolder = output;
             }
 
-            public void fitConvertion(string fit_file,string output_folder)
+            public void fitConvertion(string input_fit_file, string output_file_name)
             {
-                this.fitsToPNG = new string[2];
-                this.fitsToPNG[0] = fit_file;
-                this.fitsToPNG[1] = output_folder;
+                string[] tmp = { input_fit_file, output_file_name };
+                this.fitsToPNG = tmp;
             }
 
         }

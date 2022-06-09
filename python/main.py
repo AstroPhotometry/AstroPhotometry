@@ -1,4 +1,5 @@
 import argparse
+import sys
 from FitsToPNG import main_run
 from FitsMath import calibration_compute_process
 from JsonConvert import JsonConvert
@@ -44,10 +45,11 @@ def validate_files(bias_file, dark_file, flats_file, light_file) -> dict:
 
 
 if __name__ == '__main__':
+    # sys.argv = ['main.py', '-j', './stam.json']
     json_file_path = argument_handling()
     data = JsonConvert(json_file_path)
     fits_to_png, bias, dark, flats, light, output_master_bias, output_master_dark, output_master_flat, output_calibration_file, output_calibration_folder = data.load_data()
-    if fits_to_png != '':
+    if fits_to_png:
         fits_to_png_proc(fits_to_png)
     else:
         files = validate_files(bias, dark, flats, light)
