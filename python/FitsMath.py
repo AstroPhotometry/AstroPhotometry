@@ -108,6 +108,8 @@ def save_fit(save_path: str, image_data, base_header, copy_header: str = None, o
 
 
 def time_from_path(path):
+    if path is None:
+        return None
     header = fits.getheader(path)
     exposure_time = header['EXPOSURE']
     return exposure_time
@@ -168,14 +170,15 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
     if 'flat' in paths:
         outcome_array = []
         for flat_path in paths['flat']:
-            # Normalization
-            flat = fits.getdata(flat_path)
+            # Setup
+            flat = fits.getdata(flat_path, ext=0)
             flat_time_in_header = time_from_path(flat_path)
-            exposure_with_dark = Multiplication(master_dark,
-                                                flat_time_in_header if flat_time_in_header is not None else None).compute()
+
+            # Normalization
+            exposure_with_dark = Multiplication(master_dark, flat_time_in_header).compute()
             mana = Division(exposure_with_dark, dark_time_in_header_average).compute()
             middle_score = Addition(mana, master_bias).compute()
-            outcome = Minus(flat, middle_score).compute()
+            outcome = Minus(flat, middle_score).subtract_two_images()
             outcome_array.append(outcome)
     master_flat = Median(outcome_array).compute()
     if output_master_flat != '' and master_flat is not None:

@@ -35,7 +35,7 @@ class Minus(BaseMath):
         elif self.pic is None:
             return self.files
         else:
-            return np.subtract(self.files[0], self.files[1])
+            return self.files - self.pic
 
 
 
