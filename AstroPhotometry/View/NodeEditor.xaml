@@ -48,6 +48,13 @@
                     </StackPanel>
                 </Border>
                 
+                
+                <Separator/>
+
+                <CheckBox Content="output master bias" Name="output_master_bias_check" Checked="checkbox" Unchecked="checkbox"/>
+                <CheckBox Content="output master dark" Name="output_master_dark_check" Checked="checkbox" Unchecked="checkbox"/>
+                <CheckBox Content="output master flat" Name="output_master_flat_check" Checked="checkbox" Unchecked="checkbox"/>
+
                 <Separator/>
                 
                 <Button Content="run" Click="Button_Click_Run"/>

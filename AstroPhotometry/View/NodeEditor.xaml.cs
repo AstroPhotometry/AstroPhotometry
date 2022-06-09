@@ -15,7 +15,12 @@ namespace AstroPhotometry.View
         private string[] dark = new string[0];
         private string[] flat = new string[0];
         private string[] light = new string[0];
+
+        private bool output_master_bias = false;
+        private bool output_master_dark = false;
+        private bool output_master_flat = false;
         private string output = "";
+
 
         private const int show_max = 2; // Max files to show
 
@@ -106,7 +111,10 @@ namespace AstroPhotometry.View
 
         private void Button_Click_Run(object sender, RoutedEventArgs e)
         {
-            ComputeEngine compute = new ComputeEngine(bias, dark, flat, light, output);
+
+            ComputeEngine compute = new ComputeEngine(bias, dark, flat, light, output,this.output_master_dark, this.output_master_bias, this.output_master_flat);
+
+            compute.run();
             this.DataContext = compute.cmdString;
         }
 
@@ -126,6 +134,7 @@ namespace AstroPhotometry.View
                 return null;
             }
         }
+
         private string folderDialog()
         {
             System.Windows.Forms.FolderBrowserDialog openFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
@@ -146,6 +155,13 @@ namespace AstroPhotometry.View
         {
             this.output = folderDialog();
             output_text.Text = output;
+        }
+
+        private void checkbox(object sender, RoutedEventArgs e)
+        {
+            this.output_master_bias = (bool)output_master_bias_check.IsChecked;
+            this.output_master_dark = (bool)output_master_dark_check.IsChecked;
+            this.output_master_flat = (bool)output_master_flat_check.IsChecked;
         }
     }
 }
