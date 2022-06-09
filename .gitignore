@@ -195,7 +195,8 @@ git_stats/*
 StyleCop.Cache
 bin
 obj
-/python/__pycache__
 
 */astro_env
 .idea
+
+*__pycache__
