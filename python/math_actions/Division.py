@@ -35,3 +35,13 @@ class Division(BaseMath):
         else:
             outcome = div_matrix(self.image, self.scalar)
             return outcome
+
+if __name__ == '__main__':
+    a = [
+        [1, 1, 1],
+        [1, 1, 1]
+    ]
+    print(Division(a, 2).compute())
+    print(Division(None, 0).compute())
+    print(Division(None, None).compute())
+    print(Division(a, None).compute())

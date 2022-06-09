@@ -151,6 +151,7 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
     if output_master_bias != '' and master_bias is not None:
         save_fit(output_master_bias, master_bias, fill_header('masterBias'))
 
+
     outcome_array = None
     # masterDark
     if 'dark' in paths:

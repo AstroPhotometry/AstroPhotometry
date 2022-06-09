@@ -1,1 +1,14 @@
-{"fitsToPNG":[".\\test_photo.fits",".\\"],"bias":[],"dark":[],"flat":[],"light":[],"outputMasterBias":"","outputMasterDark":"","outputMasterFlat":"","outputCallibrationFile":"","outputCallibratedFolder":""}
+{
+  "fitsToPNG": [],
+  "bias": [],
+  "dark": [],
+  "flat": [],
+  "light": [
+    "C:\\Users\\1\\Desktop\\ldn1369\\Cal-0001G5.fit"
+  ],
+  "outputMasterBias": "",
+  "outputMasterDark": "",
+  "outputMasterFlat": "",
+  "outputCallibrationFile": "",
+  "outputCallibratedFolder": "C:\\Users\\1\\Desktop"
+}

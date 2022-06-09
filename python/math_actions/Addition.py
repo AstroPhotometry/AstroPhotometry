@@ -36,3 +36,4 @@ if __name__ == '__main__':
     print(Addition(None, 0).compute())
     print(Addition(None, None).compute())
     print(Addition(a, None).compute())
+    print(Addition(None, a).compute())

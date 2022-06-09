@@ -33,14 +33,14 @@ def validate_files(bias_file, dark_file, flats_file, light_file) -> dict:
     :return: dict with the existing files array as values and keys as names
     """
     dict_files = {}
-    if bias_file:
+    if len(bias_file) > 0:
         dict_files['bias'] = bias_file
-    if dark_file:
-        dict_files['dark'] = bias_file
-    if flats_file:
-        dict_files['flat'] = bias_file
-    if light_file:
-        dict_files['light'] = bias_file
+    if len(dark_file) > 0:
+        dict_files['dark'] = dark_file
+    if len(flats_file) > 0:
+        dict_files['flat'] = flats_file
+    if len(light_file) > 0:
+        dict_files['light'] = light_file
     return dict_files
 
 
