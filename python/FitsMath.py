@@ -142,7 +142,7 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
     outcome_array = None
     if 'bias' in paths:
         outcome_array = []
-        for bias_path in paths:
+        for bias_path in paths['bias']:
             bias = fits.getdata(bias_path)
             outcome_array.append(bias)
     master_bias = Median(outcome_array).compute()
@@ -153,7 +153,7 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
     # masterDark
     if 'dark' in paths:
         outcome_array = []
-        for dark_path in paths:
+        for dark_path in paths['dark']:
             dark = fits.getdata(dark_path)
             outcome_array.append(dark)
     array_of_images = Minus(outcome_array, master_bias).compute()

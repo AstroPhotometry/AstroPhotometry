@@ -162,11 +162,12 @@ namespace AstroPhotometry.View
                 cmd_string.Message = "converting to image";
 
                 // make the json
-                string json = JsonSerialization.fitsToPNG(file.FullName);
+                string out_path_png = Path.GetFullPath(@".\tmp\pics\");
+                string json = JsonSerialization.fitsToPNG(file.FullName, out_path_png);
                 string json_path = @".\tmp\pics\fitToPic.json";
                 JsonSerialization.writeToFile(json_path, json);
 
-                py_runner.runByJsonPath(file.FullName);
+                py_runner.runByJsonPath(json_path);
             }
         }
     }

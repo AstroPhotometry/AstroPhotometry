@@ -1,6 +1,7 @@
 import os
 import sys
 import matplotlib.pyplot as plt
+from datetime import datetime
 from astropy.visualization import astropy_mpl_style
 from astropy.io import fits
 from ProgressPrint import Progress
@@ -19,6 +20,12 @@ progress = Progress(module_name="FtsMath", stages=1)
 
 
 # sys.excepthook = show_exception_and_exit
+
+
+def name_the_file():
+    date_string = datetime.now().strftime('%m-%d-%Y-%H-%M-%S')
+    date_string += '.png'
+    return date_string
 
 
 def validate_file(file_path: str):
@@ -44,7 +51,8 @@ def make_png(fits_file, png_loc):
         progress.eprint("file is empty: " + e.__str__())
         sys.exit(1)
     try:
-        plt.imsave(png_loc + 'linear.png', first_file[0].data)
+
+        plt.imsave(png_loc + name_the_file(), first_file[0].data)
     except Exception as e:
         progress.eprint("saving PNG has failed " + e.__str__())
         sys.exit(1)

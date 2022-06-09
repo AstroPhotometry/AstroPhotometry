@@ -44,7 +44,7 @@ if __name__ == '__main__':
         [1, 1, 1],
         [1, 1, 1]
     ]
-    print(Multiplication(a, 2).compute())
-    print(Multiplication(None, 0).compute())
-    print(Multiplication(None, None).compute())
-    print(Multiplication(a, None).compute())
+    print(Minus(a, 2).compute())
+    print(Minus(None, 0).compute())
+    print(Minus(None, None).compute())
+    print(Minus(a, None).compute())
