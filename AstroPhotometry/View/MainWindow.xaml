@@ -7,60 +7,42 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="1000">
     <Grid>
-        <TabControl>
-            <TabItem Header="View">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="60*"/>
-                        <ColumnDefinition Width="5px" />
-                        <ColumnDefinition Width="159*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="20px"/>
-                        <RowDefinition Height="69*"/>
-                        <RowDefinition Height="69*"/>
-                        <RowDefinition Height="58*"/>
-                        <RowDefinition Height="11*"/>
-                    </Grid.RowDefinitions>
 
-                    <!--#region tree-->
-                    <view:FileTree Grid.Row="1" Grid.RowSpan="4" Margin="0,0,0,20"/>
-                    <!--#endregion tree-->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60*"/>
+                <ColumnDefinition Width="5px" />
+                <ColumnDefinition Width="170*"/>
+                <ColumnDefinition Width="5px" />
+                <ColumnDefinition Width="100*"/>
+            </Grid.ColumnDefinitions>
 
-                    <GridSplitter Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Width="5px" HorizontalAlignment="Stretch" Panel.ZIndex="1"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20px"/>
+                <RowDefinition Height="69*"/>
+                <RowDefinition Height="69*"/>
+                <RowDefinition Height="58*"/>
+                <RowDefinition Height="11*"/>
+            </Grid.RowDefinitions>
 
-                    <!--#region image-->
-                    <view:ImageShow Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="2" Margin="0,0,0,20"/>
-                    <!--#endregion image-->
+            <!--#region tree-->
+            <view:FileTree Grid.Row="1" Grid.RowSpan="4" Margin="0,0,0,20"/>
+            <!--#endregion tree-->
 
-                    <ProgressBar Grid.Column="1" HorizontalAlignment="Center" Height="10" Grid.Row="4" VerticalAlignment="Top" Width="200"/>
-                </Grid>
-            </TabItem>
+            <GridSplitter Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Width="5px" HorizontalAlignment="Stretch" Panel.ZIndex="1"/>
 
-            <TabItem Header="Edit">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="60*"/>
-                        <ColumnDefinition Width="159*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="20px"/>
-                        <RowDefinition Height="69*"/>
-                        <RowDefinition Height="69*"/>
-                        <RowDefinition Height="58*"/>
-                        <RowDefinition Height="11*"/>
-                    </Grid.RowDefinitions>
+            <!--#region image-->
+            <view:ImageShow Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="2" Margin="0,0,0,20"/>
+            <!--#endregion image-->
 
-                    <!--#region image-->
-                    <view:NodeEditor Grid.Column="0" Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="2" Margin="0,0,0,20"/>
-                    <!--#endregion image-->
-                </Grid>
-            </TabItem>
+            <ProgressBar Grid.Column="1" HorizontalAlignment="Center" Height="10" Grid.Row="4" VerticalAlignment="Top" Width="200"/>
 
-            <TabItem Header="Graphs">
+            <GridSplitter Grid.Column="3" Grid.Row="1" Grid.RowSpan="3" Width="5px" HorizontalAlignment="Stretch" Panel.ZIndex="1"/>
 
-            </TabItem>
-        </TabControl>
+            <!--#region image-->
+            <view:NodeEditor Grid.Column="4" Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="2" Margin="0,0,0,20"/>
+            <!--#endregion image-->
 
+        </Grid>
     </Grid>
 </Window>

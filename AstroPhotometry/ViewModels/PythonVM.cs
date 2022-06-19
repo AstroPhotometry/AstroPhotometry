@@ -54,7 +54,7 @@ namespace AstroPhotometry
             string py_file = "main.py";
             string arguments = "-j \"" + json_path + "\"";
 
-            MessageBox.Show(arguments);
+            //MessageBox.Show(arguments); // debug
             run(py_file, arguments);
         }
 
@@ -67,7 +67,7 @@ namespace AstroPhotometry
             // Will look like -> [path to python in venv]\python.exe "[path to python modules][python file]" [arguments]
             startInfo.FileName = this.python_venv_relative_path;
             startInfo.Arguments = '\"' + this.python_code_folder_full_path + py_file + '\"' + " " + arguments;
-            MessageBox.Show(startInfo.Arguments);
+            //MessageBox.Show(startInfo.Arguments); // debug
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden; // Normal for debug
 
             // for redireting output

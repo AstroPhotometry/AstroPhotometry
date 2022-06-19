@@ -6,10 +6,10 @@ namespace AstroPhotometry
     public static class JsonSerialization
     {
         // Add data for calibration process
-        public static string computeCalibrationJson(string[] bias, string[] dark, string[] flat, string[] light, string output)
+        public static string computeCalibrationJson(string[] bias, string[] dark, string[] flat, string[] light, string output, string output_master_bias_path, string output_master_dark_path, string output_master_flat_path)
         {
             Calibration cal = new Calibration();
-            cal.calibrate(bias, dark, flat, light, output);
+            cal.calibrate(bias, dark, flat, light, output, output_master_bias_path, output_master_dark_path, output_master_flat_path);
             string json = JsonConvert.SerializeObject(cal);
             return json;
         }
@@ -51,13 +51,17 @@ namespace AstroPhotometry
 
             public Calibration() { }
 
-            public void calibrate(string[] bias, string[] dark, string[] flat, string[] light, string output)
+            public void calibrate(string[] bias, string[] dark, string[] flat, string[] light, string output, string output_master_bias_path, string output_master_dark_path, string output_master_flat_path)
             {
                 this.bias = bias;
                 this.dark = dark;
                 this.flat = flat;
                 this.light = light;
                 this.outputCallibratedFolder = output;
+
+                this.outputMasterBias = output_master_bias_path;
+                this.outputMasterDark = output_master_dark_path;
+                this.outputMasterFlat = output_master_flat_path;
             }
 
             public void fitConvertion(string input_fit_file, string output_file_name)

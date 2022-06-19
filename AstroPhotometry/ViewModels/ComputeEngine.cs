@@ -16,9 +16,13 @@ namespace AstroPhotometry.ViewModels
         private string[] dark;
         private string[] flat;
         private string[] light;
+
+        private bool output_master_bias = false;
+        private bool output_master_dark = false;
+        private bool output_master_flat = false;
         private string output = "";
 
-        public ComputeEngine(string[] bias, string[] dark, string[] flat, string[] light, string output)
+        public ComputeEngine(string[] bias, string[] dark, string[] flat, string[] light, string output, bool output_masterdark, bool output_masterbias, bool output_masterflat)
         {
             cmdString = new CmdStringVM();
 
@@ -27,10 +31,14 @@ namespace AstroPhotometry.ViewModels
             this.flat = flat;
             this.light = light;
             this.output = output;
-            run();
+
+            this.output_master_bias = output_masterbias;
+            this.output_master_dark = output_masterdark;
+            this.output_master_flat = output_masterflat;
+
         }
 
-        private async void run()
+        public async void run()
         {
             // Create folder
             batch_num++;
@@ -40,9 +48,15 @@ namespace AstroPhotometry.ViewModels
             // Json file path
             string json_path = base_folder + @"/calibration.json";
 
+            // Output manage
+            string output_master_bias_path = output_master_bias ? this.output : "";
+            string output_master_dark_path = output_master_dark ? this.output : "";
+            string output_master_flat_path = output_master_flat ? this.output : "";
+
+
             // Add json to the file
-            string json = JsonSerialization.computeCalibrationJson(this.bias, this.dark, this.flat, this.light, this.output);
-            
+            string json = JsonSerialization.computeCalibrationJson(this.bias, this.dark, this.flat, this.light, this.output, output_master_bias_path, output_master_dark_path, output_master_flat_path);
+
             // Save file
             JsonSerialization.writeToFile(json_path, json);
 
