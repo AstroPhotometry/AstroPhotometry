@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,13 +12,19 @@ namespace AstroPhotometry.View
     /// </summary>
     public partial class ImageShow : UserControl
     {
+        private PhotoVM photo;
+
         private bool mouse_enter;
         private Point start;
         private Point origin;
-
+        private string selected_mode;
         public ImageShow()
         {
             InitializeComponent();
+            // watcher:
+            var watcher = new ViewModels.FileWatcherVM("./tmp/", "*.png");
+            photo = new PhotoVM(watcher);
+            DataContext = photo;
         }
 
         private void image_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -86,6 +93,15 @@ namespace AstroPhotometry.View
         {
             mouse_enter = false;
             lblCursorPosition.Text = "";
+        }
+
+        /**
+        * selection box function
+        */
+        private void viewSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            selected_mode = ((ContentControl)view_box.SelectedValue).Content.ToString();
+            photo.changeMode(selected_mode);
         }
     }
 }

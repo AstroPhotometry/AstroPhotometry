@@ -9,6 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="610">
     <Grid>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20px"/>
             <ColumnDefinition Width="155*"/>
@@ -18,6 +19,7 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        
         <Border x:Name="border" Grid.Column="0"  Grid.ColumnSpan="3" Grid.Row="0" BorderBrush="#202020" BorderThickness="1" ClipToBounds="True" Grid.RowSpan="2">
             <Image x:Name="image" Source="{Binding Path}" VerticalAlignment="Top" MouseWheel="image_MouseWheel" MouseLeftButtonDown="image_MouseLeftButtonDown" MouseLeftButtonUp="image_MouseLeftButtonUp" MouseMove="image_MouseMove" MouseEnter="image_MouseEnter" MouseLeave="image_MouseLeave">
                 <Image.RenderTransform>
@@ -28,13 +30,27 @@
                 </Image.RenderTransform>
             </Image>
         </Border>
+        
         <StatusBar Grid.Row="2" Grid.ColumnSpan="3">
+            <Separator/>
+            <ComboBox Name="view_box" IsEditable="False" SelectionChanged="viewSelectionChanged">
+                <ComboBoxItem>linear</ComboBoxItem>
+                <ComboBoxItem>logarithm</ComboBoxItem>
+                <ComboBoxItem>exponential</ComboBoxItem>
+            </ComboBox>
+            
+            <Separator/>
             <TextBlock></TextBlock>
             <Button HorizontalAlignment="Left" Click="Button_Click_Reset">reset</Button>
+            
             <Separator/>
             <TextBlock HorizontalAlignment="Center" Foreground="Black" FontWeight="Normal" Text="{Binding Name}"></TextBlock>
+            
             <Separator/>
             <TextBlock Name="lblCursorPosition" />
+            
+
         </StatusBar>
+        
     </Grid>
 </UserControl>
