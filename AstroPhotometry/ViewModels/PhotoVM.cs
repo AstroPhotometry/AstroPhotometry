@@ -69,5 +69,15 @@ namespace AstroPhotometry
 
             return false;
         }
+
+        /**
+         * replace the name of the uri to one with the mode - /path/to/file_linear.png -> /path/to/file_{mode}.png
+         */
+        public void changeMode(string mode)
+        {
+            photoM.changeMode(mode);
+            NotifyPropertyChanged("Path");
+            NotifyPropertyChanged("Name");
+        }
     }
 }

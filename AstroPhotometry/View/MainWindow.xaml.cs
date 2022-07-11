@@ -16,16 +16,9 @@ namespace AstroPhotometry
     /// </summary>
     public partial class MainWindow : Window
     {
-        private PhotoVM photo;
-
         public MainWindow()
         {
             InitializeComponent();
-
-            // watcher:
-            var watcher = new ViewModels.FileWatcherVM("./tmp/", "*.png");
-            photo = new PhotoVM(watcher);
-            DataContext = photo;
         }
     }
 

@@ -5,6 +5,7 @@ from datetime import datetime
 from astropy.visualization import astropy_mpl_style
 from astropy.io import fits
 from ProgressPrint import Progress
+import numpy as np
 
 progress = Progress(module_name="FtsMath", stages=1)
 
@@ -22,8 +23,9 @@ progress = Progress(module_name="FtsMath", stages=1)
 # sys.excepthook = show_exception_and_exit
 
 
-def name_the_file():
-    date_string = datetime.now().strftime('%m-%d-%Y-%H-%M-%S')
+def name_the_file(time, mode = "linear"):
+    date_string = time
+    date_string += f'_{mode}'
     date_string += '.png'
     return date_string
 
@@ -38,11 +40,10 @@ def make_png(fits_file, png_loc):
     """
     Function to make a PNG file from fit file
     """
-    progress = Progress("FIT to PNG", 3)
+    progress = Progress("FIT to PNG", 5)
     progress.cprint("started")
     progress.cprint("opening fit file")
     first_file = fits.open(fits_file.replace('/', '\\'), mode='readonly')
-    progress.cprint("saving PNG")
 
     # Check if file is empty
     try:
@@ -51,8 +52,16 @@ def make_png(fits_file, png_loc):
         progress.eprint("file is empty: " + e.__str__())
         sys.exit(1)
     try:
+        now = datetime.now().strftime('%m-%d-%Y-%H-%M-%S')
+        progress.cprint("saving linear PNG")
+        plt.imsave(png_loc + name_the_file(now, "linear"), first_file[0].data)
 
-        plt.imsave(png_loc + name_the_file(), first_file[0].data)
+        progress.cprint("saving logarithm PNG")
+        plt.imsave(png_loc + name_the_file(now, "logarithm"), np.log(first_file[0].data))
+        
+        progress.cprint("saving exponential PNG")
+        plt.imsave(png_loc + name_the_file(now, "exponential"), np.exp(first_file[0].data))
+
     except Exception as e:
         progress.eprint("saving PNG has failed " + e.__str__())
         sys.exit(1)

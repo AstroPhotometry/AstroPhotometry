@@ -12,10 +12,10 @@
 
 | file             | description                   |
 | :--------------- | :---------------------------- |
-| AstroPhotography | WPF view model, view layers   |
+| AstroPhotography | WPF project                   |
+| Python           | All the python implementation |
 | BE               | WPF Business layer            |
 | !TODO!           | WPF Data layer                |
-| Python           | all the python implementation |
 | data_test        | fits files for testing        |
 | study            | test study and tries          |
 

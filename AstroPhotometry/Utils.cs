@@ -3,6 +3,9 @@ namespace AstroPhotometry
 {
     public static class Utils
     {
+        /**
+         * remove suffix if exists - example.txt -> example
+         */
         public static string RemoveFromEnd(string s, string suffix)
         {
             if (s.EndsWith(suffix))
