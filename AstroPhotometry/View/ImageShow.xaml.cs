@@ -100,6 +100,10 @@ namespace AstroPhotometry.View
         */
         private void viewSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if(photo == null)
+            {
+                return;
+            }
             selected_mode = ((ContentControl)view_box.SelectedValue).Content.ToString();
             photo.changeMode(selected_mode);
         }

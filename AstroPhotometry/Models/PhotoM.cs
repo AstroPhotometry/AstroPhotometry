@@ -6,7 +6,7 @@ namespace AstroPhotometry.Models
     {
         private Uri uri;
         private string base_name;
-        private string mode = "linear";
+        private string mode = "logarithm";
 
         public PhotoM()
         {

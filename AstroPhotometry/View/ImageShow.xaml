@@ -33,7 +33,7 @@
         
         <StatusBar Grid.Row="2" Grid.ColumnSpan="3">
             <Separator/>
-            <ComboBox Name="view_box" IsEditable="False" SelectionChanged="viewSelectionChanged">
+            <ComboBox Name="view_box" IsEditable="False" SelectionChanged="viewSelectionChanged" SelectedIndex="1">
                 <ComboBoxItem>linear</ComboBoxItem>
                 <ComboBoxItem>logarithm</ComboBoxItem>
                 <ComboBoxItem>exponential</ComboBoxItem>
