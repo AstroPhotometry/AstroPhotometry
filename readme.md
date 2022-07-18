@@ -16,10 +16,13 @@ of all stars inside.
 
 ```mermaid
 graph LR
-
     biasF(Bias files):::input --> biasM(master Bias)
+    biasM --> darkM
+    darkM --> flatM
     darkF(Dark files):::input --> darkM(master Dark)
     flatF(Flat files):::input --> flatM(master Flat)
+
+
     lightF(Light files):::input
     classDef input fill:grey;
 
