@@ -74,14 +74,14 @@ graph TD
     imageShow--> PhotoVM
     photoM --> Filewatcher(file watcher)
     end
-    PythonVM --> main
+    PythonVM <---> |json| main
     installVenve(installVenve)
-    splash --> installVenve
+    splash ---> installVenve
 
     subgraph Python[Python]
         main(main) -->FitsMath
         main(main) -->FitsToPNG
-        main(main) -->JsonConvert
+        main(main) --->JsonConvert
         FitsMath(FitsMath)
         FitsToPNG(FitsToPNG)
         JsonConvert(JsonConvert)
