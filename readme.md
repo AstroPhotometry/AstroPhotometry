@@ -1,32 +1,101 @@
 # Astro Photometry
 
-<!-- ## The tools in this repo:
+Its a tool for
+astronomers to calibrate the raw
+telescope exposures, and tag locations
+of all stars inside.
 
-| file         | description                            |
-| :----------- | :------------------------------------- |
-| FitsMath.py  | creat picture by math of other picture |
-| showfits.py  | show the picture with pyplot           |
-| histogram.py | creat histogram                        | -->
+### Tool goals:
+
+1. Reduce photometry noise and
+   increase signal to noise ratio.
+1. Resolve astronomical object's
+   identity using standard catalogs.
+
+## Calibration process:
+
+```mermaid
+graph LR
+
+    biasF(Bias files):::input --> biasM(master Bias)
+    darkF(Dark files):::input --> darkM(master Dark)
+    flatF(Flat files):::input --> flatM(master Flat)
+    lightF(Light files):::input
+    classDef input fill:grey;
+
+    calibration(Calibration frame)
+    biasM --> calibration
+    darkM --> calibration
+    flatM --> calibration
+
+    calibrated(Calibrated file)
+    lightF --> calibrated
+    calibration --> calibrated
+```
 
 ## The files:
 
 | file             | description                   |
 | :--------------- | :---------------------------- |
-| AstroPhotography | WPF project                   |
+| AstroPhotography | WPF project using MVVM        |
 | Python           | All the python implementation |
-| BE               | WPF Business layer            |
-| !TODO!           | WPF Data layer                |
 | data_test        | fits files for testing        |
-| study            | test study and tries          |
 
-![image](https://morecoding.files.wordpress.com/2015/01/3tier_2.jpg)
+## General explanation using a graph:
 
-## packages:
+```mermaid
+graph TD
+    subgraph WPF
+        subgraph viewModel
+            PythonVM
+            cmdString
+            computeEngine --> cmdString
+            computeEngine --> PythonVM
+            PhotoVM
+        end
+        PhotoVM --> photoM
+        subgraph model
+            photoM
+        end
+        subgraph view
+            fileTree
+            imageShow
+            mainWindow --> imageShow
+            mainWindow --> fileTree
+            mainWindow --> nodeEditor
+            nodeEditor
+            splash --> mainWindow
+        end
+    nodeEditor --> computeEngine
+    fileTree --> computeEngine
+    imageShow--> PhotoVM
+    photoM --> Filewatcher(file watcher)
+    end
+    PythonVM --> main
+    installVenve(installVenve)
+    splash --> installVenve
+
+    subgraph Python[Python]
+        main(main) -->FitsMath
+        main(main) -->FitsToPNG
+        main(main) -->JsonConvert
+        FitsMath(FitsMath)
+        FitsToPNG(FitsToPNG)
+        JsonConvert(JsonConvert)
+        ProgressPrint(ProgressPrint)
+        FitsMath --> ProgressPrint
+        FitsToPNG --> ProgressPrint
+    end
+```
+
+## Python Side:
+
+### packages used:
 
 - astropy
 - Numpy
 
-## venv installation
+### venv installation
 
 <details>
   <summary>code:</summary>
@@ -55,7 +124,10 @@ $ Set-ExecutionPolicy Unrestricted -Scope Process
 
 </details>
 
-## packages
+### packages
+
+<details>
+  <summary>code:</summary>
 
 - update:
 
@@ -88,6 +160,8 @@ if its not installing type without the `python -m `
 ```shell
 $ python -m pip install mypy
 ```
+
+</details>
 
 ## reference
 
