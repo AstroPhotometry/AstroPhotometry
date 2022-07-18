@@ -37,7 +37,7 @@ namespace AstroPhotometry
             {
                 if (Path != null && Path.IsAbsoluteUri && Path.IsFile) // TODO: find a way to get rid of IsAbsoluteUri
                 {
-                    return Utils.RemoveFromSubsting(System.IO.Path.GetFileName(Path.LocalPath), ".fit");
+                    return Utils.RemoveFromSubstring(System.IO.Path.GetFileName(Path.LocalPath), ".fit");
                 }
                 return "";
             }

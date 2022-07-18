@@ -64,8 +64,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="JsonSerialization.cs" />
-    <Compile Include="Utils.cs" />
+    <Compile Include="common\JsonSerialization.cs" />
+    <Compile Include="common\Utils.cs" />
     <Compile Include="ViewModels\CmdStringVM.cs" />
     <Compile Include="ViewModels\ComputeEngine.cs" />
     <Compile Include="View\NodeEditor.xaml.cs">
@@ -90,23 +90,23 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BaseObject.cs" />
-    <Compile Include="Enums\FileAttribute.cs" />
-    <Compile Include="Enums\IconSize.cs" />
-    <Compile Include="Enums\ItemState.cs" />
-    <Compile Include="Enums\ItemType.cs" />
-    <Compile Include="Enums\ShellAttribute.cs" />
-    <Compile Include="FileManager.cs" />
-    <Compile Include="FolderManager.cs" />
-    <Compile Include="Interop.cs" />
+    <Compile Include="Models\FileTree\BaseObject.cs" />
+    <Compile Include="Models\FileTree\Enums\FileAttribute.cs" />
+    <Compile Include="Models\FileTree\Enums\IconSize.cs" />
+    <Compile Include="Models\FileTree\Enums\ItemState.cs" />
+    <Compile Include="Models\FileTree\Enums\ItemType.cs" />
+    <Compile Include="Models\FileTree\Enums\ShellAttribute.cs" />
+    <Compile Include="Models\FileTree\FileManager.cs" />
+    <Compile Include="Models\FileTree\FolderManager.cs" />
+    <Compile Include="Models\FileTree\Interop.cs" />
     <Compile Include="ViewModels\FileWatcherVM.cs" />
     <Compile Include="ViewModels\PythonVM.cs" />
-    <Compile Include="ProperyNotifier.cs" />
+    <Compile Include="common\ProperyNotifier.cs" />
     <Compile Include="Models\PhotoM.cs" />
-    <Compile Include="ShellClasses\DummyFileSystemObjectInfo.cs" />
-    <Compile Include="ShellClasses\FileSystemObjectInfo.cs" />
-    <Compile Include="ShellManager.cs" />
-    <Compile Include="Structs\ShellFileInfo.cs" />
+    <Compile Include="Models\FileTree\ShellClasses\DummyFileSystemObjectInfo.cs" />
+    <Compile Include="Models\FileTree\ShellClasses\FileSystemObjectInfo.cs" />
+    <Compile Include="Models\FileTree\ShellManager.cs" />
+    <Compile Include="Models\FileTree\Structs\ShellFileInfo.cs" />
     <Compile Include="ViewModels\PhotoVM.cs" />
     <Compile Include="View\FileTree.xaml.cs">
       <DependentUpon>FileTree.xaml</DependentUpon>
@@ -153,16 +153,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Astrophotometry.BL\Astrophotometry.BL.csproj">
-      <Project>{f048ea6b-4942-437d-aaad-3825182772fc}</Project>
-      <Name>Astrophotometry.BL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BE\Astrophotometry.BE.csproj">
-      <Project>{a1ba65b0-5c7e-4082-9723-cf84306db41c}</Project>
-      <Name>Astrophotometry.BE</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\test.jpg" />

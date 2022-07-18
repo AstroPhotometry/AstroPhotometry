@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -100,7 +99,7 @@ namespace AstroPhotometry.View
         */
         private void viewSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(photo == null)
+            if (photo == null)
             {
                 return;
             }

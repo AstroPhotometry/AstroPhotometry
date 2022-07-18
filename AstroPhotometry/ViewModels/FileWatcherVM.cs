@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Windows;
 
 namespace AstroPhotometry.ViewModels
 {
@@ -27,21 +26,21 @@ namespace AstroPhotometry.ViewModels
             watcher.Deleted += OnDeleted;
             watcher.Renamed += OnRenamed;
             watcher.Error += OnError;
-            
+
 
             watcher.Filter = filter; // The file to watch 
             watcher.IncludeSubdirectories = true;
             watcher.EnableRaisingEvents = true;
 
         }
-        
+
         // IOC for updating if file created or change
         Action<string> IOCupdateUri = null;
 
         public void Ioc(Action<string> updateUri)
         {
             this.IOCupdateUri = updateUri;
-            
+
         }
 
         // TODO: maybe use queue

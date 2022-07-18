@@ -161,7 +161,7 @@ namespace AstroPhotometry.View
                 string png_file = file.Name.Substring(0, file.Name.IndexOf('.'));
                 cmd_string.clear();
                 cmd_string.Message = "converting to image";
-                
+
                 // make the json
                 string out_path_png = Path.GetFullPath(@".\tmp\pics\");
                 string json = JsonSerialization.fitsToPNG(file.FullName, out_path_png);

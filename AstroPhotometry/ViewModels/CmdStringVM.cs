@@ -1,9 +1,8 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace AstroPhotometry.ViewModels
 {
-    // This class is for bridging the command output
+    // This class is for bridging the command output from the outside to the WPF
     public class CmdStringVM : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -51,7 +50,7 @@ namespace AstroPhotometry.ViewModels
                 NotifyPropertyChanged("Progress");
             }
         }
-        
+
         public float LastProgress
         {
             get { return last_progress; }

@@ -17,7 +17,11 @@ namespace AstroPhotometry
                 return s;
             }
         }
-        public static string RemoveFromSubsting(string s, string substring)
+
+        /**
+         * remove after first substring if exists - example123.txt , "12" -> example12
+         */
+        public static string RemoveFromSubstring(string s, string substring)
         {
             if (s.IndexOf(substring) != -1)
             {

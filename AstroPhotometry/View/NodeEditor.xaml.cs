@@ -112,7 +112,7 @@ namespace AstroPhotometry.View
         private void Button_Click_Run(object sender, RoutedEventArgs e)
         {
 
-            ComputeEngine compute = new ComputeEngine(bias, dark, flat, light, output,this.output_master_dark, this.output_master_bias, this.output_master_flat);
+            ComputeEngine compute = new ComputeEngine(bias, dark, flat, light, output, this.output_master_dark, this.output_master_bias, this.output_master_flat);
 
             compute.run();
             this.DataContext = compute.cmdString;
