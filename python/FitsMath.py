@@ -137,8 +137,12 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
     global progress
 
     # convert path from argument to files
+    files_amount = 0
     for path in paths:
         paths[path] = convert_path_to_files(paths[path])
+        files_amount += len(paths[path])
+
+    file_process_progress = Progress(module_name="compute_engine", stages=files_amount-1)
 
     # masterBias
     outcome_array = None
@@ -147,6 +151,7 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
         for bias_path in paths['bias']:
             bias = fits.getdata(bias_path)
             outcome_array.append(bias)
+            file_process_progress.cprint("One more bias complete")
     master_bias = Median(outcome_array).compute()
     if output_master_bias != '' and master_bias is not None:
         output_master_bias_name = output_master_bias + '/' + "master_bias" + '.fit'
@@ -160,6 +165,7 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
         for dark_path in paths['dark']:
             dark = fits.getdata(dark_path)
             outcome_array.append(dark)
+            file_process_progress.cprint("One more dark complete")
     array_of_images = Minus(outcome_array, master_bias).compute()
     master_dark = Median(array_of_images).compute()
     if output_master_dark != '' and master_dark is not None:
@@ -183,6 +189,7 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
             middle_score = Addition(mana, master_bias).compute()
             outcome = Minus(flat, middle_score).subtract_two_images()
             outcome_array.append(outcome)
+            file_process_progress.cprint("One more flat complete")
     master_flat = Median(outcome_array).compute()
     if output_master_flat != '' and master_flat is not None:
         output_master_flat_name = output_master_flat + '/' + "master_flat" + '.fit'
@@ -199,6 +206,7 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
             matrix_a = Addition(master_bias, normalization_per_light).compute()
             matrix_b = Minus(light, matrix_a).subtract_two_images()
             calibration_output = Division(matrix_b, master_flat).compute()
+            file_process_progress.cprint("One more light complete")
 
             # outcome image and save
             output_file_name = output_calibration_folder + '/' + str(i) + '.fit'
