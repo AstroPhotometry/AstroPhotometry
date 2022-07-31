@@ -149,7 +149,8 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
             outcome_array.append(bias)
     master_bias = Median(outcome_array).compute()
     if output_master_bias != '' and master_bias is not None:
-        save_fit(output_master_bias, master_bias, fill_header('masterBias'))
+        output_master_bias_name = output_master_bias + '/' + "master_bias" + '.fit'
+        save_fit(output_master_bias_name, master_bias, fill_header('masterBias'))
 
 
     outcome_array = None
@@ -162,7 +163,8 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
     array_of_images = Minus(outcome_array, master_bias).compute()
     master_dark = Median(array_of_images).compute()
     if output_master_dark != '' and master_dark is not None:
-        save_fit(output_master_dark, master_dark, fill_header('masterDark'))
+        output_master_dark_name = output_master_dark + '/' + "master_dark" + '.fit'
+        save_fit(output_master_dark_name, master_dark, fill_header('masterDark'))
 
     dark_time_in_header_average = median_time(outcome_array)
 
@@ -183,7 +185,8 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
             outcome_array.append(outcome)
     master_flat = Median(outcome_array).compute()
     if output_master_flat != '' and master_flat is not None:
-        save_fit(output_master_flat, master_flat, fill_header('masterFlat'))
+        output_master_flat_name = output_master_flat + '/' + "master_flat" + '.fit'
+        save_fit(output_master_flat_name, master_flat, fill_header('masterFlat'))
 
     # Calibration
     if 'light' in paths:
