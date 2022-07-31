@@ -28,6 +28,10 @@ class Progress():
         if (stage < 0 or stage > self.stages):
             data_set["progress"] = -1
 
+        # Start at 1 so its easer to see something moving
+        if data_set["progress"] == 0:
+            data_set["progress"] = 1.0
+
         json_dump = json.dumps(data_set)
         print(json_dump, flush=True)
 
