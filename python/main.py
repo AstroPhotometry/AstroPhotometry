@@ -48,10 +48,10 @@ if __name__ == '__main__':
     # sys.argv = ['main.py', '-j', './stam.json']
     json_file_path = argument_handling()
     data = JsonConvert(json_file_path)
-    fits_to_png, bias, dark, flats, light, output_master_bias, output_master_dark, output_master_flat, output_calibration_file, output_calibration_folder = data.load_data()
+    fits_to_png, bias, dark, flats, light, output_master_bias, output_master_dark, output_master_flat, output_calibration_file, output_calibration_folder, solve_stars_plate = data.load_data()
     if fits_to_png:
         fits_to_png_proc(fits_to_png)
     else:
         files = validate_files(bias, dark, flats, light)
         calibration_compute_process(files, output_master_bias, output_master_dark, output_master_flat,
-                                    output_calibration_file, output_calibration_folder)
+                                    output_calibration_file, output_calibration_folder, solve_stars_plate)

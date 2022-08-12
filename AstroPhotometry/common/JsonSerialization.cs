@@ -6,10 +6,10 @@ namespace AstroPhotometry
     public static class JsonSerialization
     {
         // Add data for calibration process
-        public static string computeCalibrationJson(string[] bias, string[] dark, string[] flat, string[] light, string output, string output_master_bias_path, string output_master_dark_path, string output_master_flat_path)
+        public static string computeCalibrationJson(string[] bias, string[] dark, string[] flat, string[] light, string output, string output_master_bias_path, string output_master_dark_path, string output_master_flat_path, bool solve_stars_plate)
         {
             Calibration cal = new Calibration();
-            cal.calibrate(bias, dark, flat, light, output, output_master_bias_path, output_master_dark_path, output_master_flat_path);
+            cal.calibrate(bias, dark, flat, light, output, output_master_bias_path, output_master_dark_path, output_master_flat_path, solve_stars_plate);
             string json = JsonConvert.SerializeObject(cal);
             return json;
         }
@@ -48,10 +48,11 @@ namespace AstroPhotometry
             public string outputMasterFlat = "";
             public string outputCallibrationFile = "";
             public string outputCallibratedFolder = "";
+            public bool solve_stars_plate = false;
 
             public Calibration() { }
 
-            public void calibrate(string[] bias, string[] dark, string[] flat, string[] light, string output, string output_master_bias_path, string output_master_dark_path, string output_master_flat_path)
+            public void calibrate(string[] bias, string[] dark, string[] flat, string[] light, string output, string output_master_bias_path, string output_master_dark_path, string output_master_flat_path, bool solve_stars_plate)
             {
                 this.bias = bias;
                 this.dark = dark;
@@ -62,6 +63,7 @@ namespace AstroPhotometry
                 this.outputMasterBias = output_master_bias_path;
                 this.outputMasterDark = output_master_dark_path;
                 this.outputMasterFlat = output_master_flat_path;
+                this.solve_stars_plate = solve_stars_plate;
             }
 
             public void fitConvertion(string input_fit_file, string output_file_name)

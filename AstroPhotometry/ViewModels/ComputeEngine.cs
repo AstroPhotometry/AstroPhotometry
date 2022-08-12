@@ -19,9 +19,11 @@ namespace AstroPhotometry.ViewModels
         private bool output_master_bias = false;
         private bool output_master_dark = false;
         private bool output_master_flat = false;
+        private bool solve_stars_plate = false;
+
         private string output = "";
 
-        public ComputeEngine(string[] bias, string[] dark, string[] flat, string[] light, string output, bool output_masterdark, bool output_masterbias, bool output_masterflat)
+        public ComputeEngine(string[] bias, string[] dark, string[] flat, string[] light, string output, bool output_masterdark, bool output_masterbias, bool output_masterflat, bool solve_stars_plate)
         {
             cmdString = new CmdStringVM();
 
@@ -34,11 +36,12 @@ namespace AstroPhotometry.ViewModels
             this.output_master_bias = output_masterbias;
             this.output_master_dark = output_masterdark;
             this.output_master_flat = output_masterflat;
-
+            this.solve_stars_plate = solve_stars_plate;
         }
 
         public async void run()
         {
+            cmdString.Progress = 1;
             // Create folder
             batch_num++;
             string base_folder = @".\tmp\batch" + batch_num;
@@ -52,9 +55,8 @@ namespace AstroPhotometry.ViewModels
             string output_master_dark_path = output_master_dark ? this.output : "";
             string output_master_flat_path = output_master_flat ? this.output : "";
 
-
             // Add json to the file
-            string json = JsonSerialization.computeCalibrationJson(this.bias, this.dark, this.flat, this.light, this.output, output_master_bias_path, output_master_dark_path, output_master_flat_path);
+            string json = JsonSerialization.computeCalibrationJson(this.bias, this.dark, this.flat, this.light, this.output, output_master_bias_path, output_master_dark_path, output_master_flat_path, solve_stars_plate);
 
             // Save file
             JsonSerialization.writeToFile(json_path, json);

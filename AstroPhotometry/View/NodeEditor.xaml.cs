@@ -19,6 +19,7 @@ namespace AstroPhotometry.View
         private bool output_master_bias = false;
         private bool output_master_dark = false;
         private bool output_master_flat = false;
+        private bool solve_stars_plate = false;
         private string output = "";
 
 
@@ -47,6 +48,16 @@ namespace AstroPhotometry.View
 
                 bias_text.Text = tmp;
             }
+            else
+            {
+                bias = new string[0];
+            }
+        }
+
+        private void Button_Click_Remove_Bias(object sender, RoutedEventArgs e)
+        {
+            bias = new string[0];
+            bias_text.Text = "no files selected";
         }
 
         private void Button_Click_Dark(object sender, RoutedEventArgs e)
@@ -67,6 +78,16 @@ namespace AstroPhotometry.View
 
                 dark_text.Text = tmp;
             }
+            else
+            {
+                bias = new string[0];
+            }
+        }
+
+        private void Button_Click_Remove_Dark(object sender, RoutedEventArgs e)
+        {
+            dark = new string[0];
+            dark_text.Text = "no files selected";
         }
 
         private void Button_Click_Flat(object sender, RoutedEventArgs e)
@@ -87,6 +108,16 @@ namespace AstroPhotometry.View
 
                 flat_text.Text = tmp;
             }
+            else
+            {
+                bias = new string[0];
+            }
+        }
+
+        private void Button_Click_Remove_Flat(object sender, RoutedEventArgs e)
+        {
+            flat = new string[0];
+            flat_text.Text = "no files selected";
         }
 
         private void Button_Click_Light(object sender, RoutedEventArgs e)
@@ -107,12 +138,54 @@ namespace AstroPhotometry.View
 
                 light_text.Text = tmp;
             }
+            else
+            {
+                bias = new string[0];
+            }
         }
+
+        private void Button_Click_Remove_Light(object sender, RoutedEventArgs e)
+        {
+            light = new string[0];
+            light_text.Text = "no files selected";
+        }
+
+        private void showMessegeAndClearBar(string message)
+        {
+            this.DataContext = new CmdStringVM();
+            MessageBox.Show(message);
+        }
+
 
         private void Button_Click_Run(object sender, RoutedEventArgs e)
         {
+            if (bias.Length == 0 && dark.Length == 0 && flat.Length == 0 && light.Length == 0)
+            {
+                showMessegeAndClearBar("Please select files");
+                return;
+            }
+            if (bias.Length == 0 && this.output_master_bias)
+            {
+                showMessegeAndClearBar("Choose bias files or dont choose output of master bias");
+                return;
+            }
+            if (dark.Length == 0 && this.output_master_dark)
+            {
+                showMessegeAndClearBar("Choose dark files or dont choose output of master dark");
+                return;
+            }
+            if (flat.Length == 0 && this.output_master_flat)
+            {
+                showMessegeAndClearBar("Choose flat files or dont choose output of master flat");
+                return;
+            }
+            if (output.Length == 0)
+            {
+                showMessegeAndClearBar("Choose output folder");
+                return;
+            }
 
-            ComputeEngine compute = new ComputeEngine(bias, dark, flat, light, output, this.output_master_dark, this.output_master_bias, this.output_master_flat);
+            ComputeEngine compute = new ComputeEngine(bias, dark, flat, light, output, this.output_master_dark, this.output_master_bias, this.output_master_flat, this.solve_stars_plate);
 
             compute.run();
             this.DataContext = compute.cmdString;
@@ -153,8 +226,16 @@ namespace AstroPhotometry.View
 
         private void Button_Click_Out(object sender, RoutedEventArgs e)
         {
+            string tmp = output;
             this.output = folderDialog();
-            output_text.Text = output;
+            if (this.output == null)
+            {
+                this.output = tmp;
+            }
+            else
+            {
+                output_text.Text = output;
+            }
         }
 
         private void checkbox(object sender, RoutedEventArgs e)
@@ -162,6 +243,7 @@ namespace AstroPhotometry.View
             this.output_master_bias = (bool)output_master_bias_check.IsChecked;
             this.output_master_dark = (bool)output_master_dark_check.IsChecked;
             this.output_master_flat = (bool)output_master_flat_check.IsChecked;
+            this.solve_stars_plate = (bool)solve_stars_plate_check.IsChecked;
         }
     }
 }

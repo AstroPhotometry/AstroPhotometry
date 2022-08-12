@@ -15,35 +15,47 @@
                 <Border BorderBrush="Black" BorderThickness="1">
                     <StackPanel>
                         <TextBlock HorizontalAlignment="Center">Bias</TextBlock>
-                        <TextBlock x:Name="bias_text" HorizontalAlignment="Center">this is the path</TextBlock>
-                        <Button Content="choose folder" Click="Button_Click_Bias"/>
+                        <TextBlock x:Name="bias_text" HorizontalAlignment="Center">no files selected</TextBlock>
+                        <DockPanel LastChildFill="True">
+                            <Button Content="remove selection" Click="Button_Click_Remove_Bias" DockPanel.Dock="Right"/>
+                            <Button Content="choose files" Click="Button_Click_Bias"/>
+                        </DockPanel>
                     </StackPanel>
                 </Border>
                 <Border BorderBrush="Black" BorderThickness="1">
                     <StackPanel>
                         <TextBlock HorizontalAlignment="Center">Dark</TextBlock>
-                        <TextBlock x:Name="dark_text" HorizontalAlignment="Center">this is the path</TextBlock>
-                        <Button Content="choose folder" Click="Button_Click_Dark"/>
+                        <TextBlock x:Name="dark_text" HorizontalAlignment="Center">no files selected</TextBlock>
+                        <DockPanel LastChildFill="True">
+                            <Button Content="remove selection" Click="Button_Click_Remove_Dark" DockPanel.Dock="Right"/>
+                            <Button Content="choose files" Click="Button_Click_Dark"/>
+                        </DockPanel>
                     </StackPanel>
                 </Border>
                 <Border BorderBrush="Black" BorderThickness="1">
                     <StackPanel>
                         <TextBlock HorizontalAlignment="Center">Flat</TextBlock>
-                        <TextBlock x:Name="flat_text" HorizontalAlignment="Center">this is the path</TextBlock>
-                        <Button Content="choose folder" Click="Button_Click_Flat"/>
+                        <TextBlock x:Name="flat_text" HorizontalAlignment="Center">no files selected</TextBlock>
+                        <DockPanel LastChildFill="True">
+                            <Button Content="remove selection" Click="Button_Click_Remove_Flat" DockPanel.Dock="Right"/>
+                            <Button Content="choose files" Click="Button_Click_Flat"/>
+                        </DockPanel>
                     </StackPanel>
                 </Border>
                 <Border BorderBrush="Black" BorderThickness="1">
                     <StackPanel>
                         <TextBlock HorizontalAlignment="Center">Light</TextBlock>
-                        <TextBlock x:Name="light_text" HorizontalAlignment="Center">this is the path</TextBlock>
-                        <Button Content="choose folder" Click="Button_Click_Light"/>
+                        <TextBlock x:Name="light_text" HorizontalAlignment="Center">no files selected</TextBlock>
+                        <DockPanel LastChildFill="True">
+                            <Button Content="remove selection" Click="Button_Click_Remove_Light" DockPanel.Dock="Right"/>
+                            <Button Content="choose files" Click="Button_Click_Light"/>
+                        </DockPanel>
                     </StackPanel>
                 </Border>
                 <Border BorderBrush="Black" BorderThickness="1">
                     <StackPanel>
                         <TextBlock HorizontalAlignment="Center">output</TextBlock>
-                        <TextBlock x:Name="output_text" HorizontalAlignment="Center">this is the path</TextBlock>
+                        <TextBlock x:Name="output_text" HorizontalAlignment="Center">no output folder selected</TextBlock>
                         <Button Content="output folder" Click="Button_Click_Out"/>
                     </StackPanel>
                 </Border>
@@ -54,6 +66,7 @@
                 <CheckBox Content="output master bias" Name="output_master_bias_check" Checked="checkbox" Unchecked="checkbox"/>
                 <CheckBox Content="output master dark" Name="output_master_dark_check" Checked="checkbox" Unchecked="checkbox"/>
                 <CheckBox Content="output master flat" Name="output_master_flat_check" Checked="checkbox" Unchecked="checkbox"/>
+                <CheckBox Content="solve star plate" Name="solve_stars_plate_check" Checked="checkbox" Unchecked="checkbox"/>
 
                 <Separator/>
                 

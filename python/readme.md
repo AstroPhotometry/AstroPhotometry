@@ -17,7 +17,8 @@ The json is this:
   "outputMasterDark": "",
   "outputMasterFlat": "",
   "outputCallibrationFile": "",
-  "outputCallibratedFolder": ""
+  "outputCallibratedFolder": "",
+  "solve_stars_plate": false
 }
 ```
 
@@ -33,3 +34,4 @@ The json is this:
 - _outputMasterFlat_ output folder for the files in case you want it.
 - _outputCallibrationFile_ output folder for the files in case you want it.
 - _outputCallibratedFolder_ folder for the finale files.
+- _solve_stars_plate_ is if to solve star plate.

@@ -11,4 +11,4 @@ class JsonConvert:
 
         return data['fitsToPNG'], data['bias'], data['dark'], data['flat'], data['light'], data['outputMasterBias'], \
                data['outputMasterDark'], data['outputMasterFlat'], data['outputCallibrationFile'], \
-               data['outputCallibratedFolder']
+               data['outputCallibratedFolder'], data['solve_stars_plate']

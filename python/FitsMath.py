@@ -123,7 +123,7 @@ def median_time(paths_list: list):
 
 
 def calibration_compute_process(paths, output_master_bias, output_master_dark, output_master_flat,
-                                output_calibration_file, output_calibration_folder):
+                                output_calibration_file, output_calibration_folder, solve_stars_plate):
     """
     Function to compute calibration and output the wanted photos
     :param paths:
@@ -132,6 +132,7 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
     :param output_master_flat:
     :param output_calibration_file:
     :param output_calibration_folder:
+    :param solve_stars_plate: # TODO: Implement this
     :return:
     """
     global progress
@@ -142,7 +143,7 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
         paths[path] = convert_path_to_files(paths[path])
         files_amount += len(paths[path])
 
-    file_process_progress = Progress(module_name="compute_engine", stages=files_amount-1)
+    file_process_progress = Progress(module_name="compute_engine", stages=files_amount)
 
     # masterBias
     outcome_array = None

@@ -11,8 +11,8 @@ class Progress():
         self.on_stage: int = 0
 
     def cprint(self, message: str):
-        self.print(message, self.on_stage)
         self.on_stage += 1
+        self.print(message, self.on_stage)
 
     def eprint(self, message: str):
         message = "ERROR: " + message

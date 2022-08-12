@@ -16,7 +16,7 @@ namespace AstroPhotometry.ViewModels
         public CmdStringVM()
         {
             Message = "";
-            progress = 1;
+            progress = 0;
         }
 
         public string Message
