@@ -1,4 +1,5 @@
-﻿using AstroPhotometry.ViewModels;
+﻿using AstroPhotometry.common;
+using AstroPhotometry.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Windows;
@@ -25,7 +26,7 @@ namespace AstroPhotometry
             this.output_full_path = System.IO.Path.GetFullPath(output_folder_relative_path);
             this.output_folder_relative_path = output_folder_relative_path;
 
-            this.python_venv_relative_path = ".\\astro_env\\Scripts\\python";
+            this.python_venv_relative_path = Global.PYTHON_VENV_RELATIVE_PATH;
 
             this.cmdString = cmdString; // What bridge out the output of the pythons
             this.running = false;
@@ -51,7 +52,7 @@ namespace AstroPhotometry
         // Send to calibrate
         public void runByJsonPath(string json_path)
         {
-            string py_file = "main.py";
+            string py_file = Global.MAIN_PYTHON_FILE;
             string arguments = "-j \"" + json_path + "\"";
 
             //MessageBox.Show(arguments); // debug

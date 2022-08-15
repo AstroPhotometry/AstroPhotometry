@@ -40,7 +40,7 @@ def make_png(fits_file, png_loc):
     """
     Function to make a PNG file from fit file
     """
-    progress = Progress("FIT to PNG", 5)
+    progress = Progress("FIT to PNG", 6)
     progress.cprint("started")
     progress.cprint("opening fit file")
     first_file = fits.open(fits_file.replace('/', '\\'), mode='readonly')

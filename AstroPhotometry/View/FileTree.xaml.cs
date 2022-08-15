@@ -1,11 +1,11 @@
-﻿using System;
+﻿using AstroPhotometry.common;
+using AstroPhotometry.ShellClasses;
+using AstroPhotometry.ViewModels;
+using System;
+using System.IO;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.IO;
-
-using AstroPhotometry.ShellClasses;
-using AstroPhotometry.ViewModels;
 
 namespace AstroPhotometry.View
 {
@@ -17,14 +17,14 @@ namespace AstroPhotometry.View
     {
         private PythonVM py_runner;
         private CmdStringVM cmd_string;
-        private static int running_number = 0;
+
         public FileTree()
         {
             // TODO: find the pyhon folder no metter what (maybe copy the content to bin)
-            string base_path = Path.GetFullPath("../../../python/");
+            string base_path = Path.GetFullPath(Global.PYTHON_PATH);
             cmd_string = new CmdStringVM(); // TODO: get that from outside for showing progress bar
-            Directory.CreateDirectory(@".\tmp\pics\");
-            this.py_runner = new PythonVM(base_path, @".\tmp\pics\", cmd_string);
+            Directory.CreateDirectory(Global.PICS_PATH);
+            this.py_runner = new PythonVM(base_path, Global.PICS_PATH, cmd_string);
             this.DataContext = cmd_string;
 
             InitializeComponent();
@@ -164,13 +164,12 @@ namespace AstroPhotometry.View
                 cmd_string.Progress = 1;
 
                 // make the json
-                string out_path_png = Path.GetFullPath(@".\tmp\pics\");
+                string out_path_png = Path.GetFullPath(Global.PICS_PATH);
                 string json = JsonSerialization.fitsToPNG(file.FullName, out_path_png);
 
-                string json_path = @".\tmp\pics\fitToPic.json";
-                JsonSerialization.writeToFile(json_path, json);
+                JsonSerialization.writeToFile(Global.JSON_PATH, json);
 
-                py_runner.runByJsonPath(json_path);
+                py_runner.runByJsonPath(Global.JSON_PATH);
             }
         }
     }

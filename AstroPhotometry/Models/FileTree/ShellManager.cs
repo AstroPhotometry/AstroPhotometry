@@ -1,9 +1,9 @@
 ﻿
+using AstroPhotometry.Enums;
+using AstroPhotometry.Structs;
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using AstroPhotometry.Enums;
-using AstroPhotometry.Structs;
 
 namespace AstroPhotometry
 {

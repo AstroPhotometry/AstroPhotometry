@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AstroPhotometry.common;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -21,7 +22,7 @@ namespace AstroPhotometry.View
         {
             InitializeComponent();
             // watcher:
-            var watcher = new ViewModels.FileWatcherVM("./tmp/", "*.png");
+            var watcher = new ViewModels.FileWatcherVM(Global.TMP_PATH, Global.IMG_TYPE);
             photo = new PhotoVM(watcher);
             DataContext = photo;
         }

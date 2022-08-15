@@ -1,9 +1,9 @@
-﻿using System;
-using System.ComponentModel;
+﻿using AstroPhotometry.common;
+using AstroPhotometry.ViewModels;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using AstroPhotometry.ViewModels;
 
 namespace AstroPhotometry
 {
@@ -25,7 +25,7 @@ namespace AstroPhotometry
             // In order to ensure the UI stays responsive, we need to do the work on a different thread
             Task.Factory.StartNew(() =>
             {
-                string base_path = Path.GetFullPath("../../../python/");
+                string base_path = Path.GetFullPath(Global.PYTHON_PATH);
                 createPyVenv(base_path, output); // Wait to be done
 
                 // Since we're not on the UI thread

@@ -64,6 +64,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="common\Global.cs" />
     <Compile Include="common\JsonSerialization.cs" />
     <Compile Include="common\Utils.cs" />
     <Compile Include="ViewModels\CmdStringVM.cs" />

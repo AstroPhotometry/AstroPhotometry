@@ -1,6 +1,6 @@
-﻿using System;
+﻿using AstroPhotometry.Structs;
+using System;
 using System.Runtime.InteropServices;
-using AstroPhotometry.Structs;
 
 namespace AstroPhotometry
 {

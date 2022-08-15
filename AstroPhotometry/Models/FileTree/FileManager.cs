@@ -1,9 +1,9 @@
-﻿using System.Drawing;
+﻿using AstroPhotometry.Enums;
+using System.Drawing;
 using System.IO;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using AstroPhotometry.Enums;
 
 namespace AstroPhotometry
 {

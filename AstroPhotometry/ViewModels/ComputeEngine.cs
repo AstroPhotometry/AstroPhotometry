@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using AstroPhotometry.common;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace AstroPhotometry.ViewModels
@@ -44,7 +45,7 @@ namespace AstroPhotometry.ViewModels
             cmdString.Progress = 1;
             // Create folder
             batch_num++;
-            string base_folder = @".\tmp\batch" + batch_num;
+            string base_folder = Global.BATCH_FOLDER + batch_num;
             Directory.CreateDirectory(base_folder);
 
             // Json file path
@@ -62,7 +63,7 @@ namespace AstroPhotometry.ViewModels
             JsonSerialization.writeToFile(json_path, json);
 
             // Run the json
-            string base_path = Path.GetFullPath("../../../python/");
+            string base_path = Path.GetFullPath(Global.PYTHON_PATH);
             py_runner = new PythonVM(base_path, base_folder, cmdString);
             string json_full_path = Path.GetFullPath(json_path);
             py_runner.runByJsonPath(json_full_path);

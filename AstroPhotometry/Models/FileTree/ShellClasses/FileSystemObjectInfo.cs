@@ -1,10 +1,10 @@
-﻿using System;
+﻿using AstroPhotometry.Enums;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Media;
-using AstroPhotometry.Enums;
 
 namespace AstroPhotometry.ShellClasses
 {
