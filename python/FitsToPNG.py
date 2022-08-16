@@ -57,7 +57,7 @@ def make_png(fits_file, png_loc):
         plt.imsave(png_loc + name_the_file(now, "linear"), first_file[0].data)
 
         progress.cprint("saving logarithm PNG")
-        plt.imsave(png_loc + name_the_file(now, "logarithm"), np.log(first_file[0].data))
+        plt.imsave(png_loc + name_the_file(now, "logarithm"), np.log(np.clip(np.array(first_file[0].data),1,np.max(np.array(first_file[0].data)))))
         
         progress.cprint("saving exponential PNG")
         plt.imsave(png_loc + name_the_file(now, "exponential"), np.exp(first_file[0].data))
