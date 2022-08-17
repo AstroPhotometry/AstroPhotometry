@@ -58,7 +58,7 @@ def make_png(fits_file, png_loc):
         sys.exit(1)
     try:
         now = datetime.now().strftime('%m-%d-%Y-%H-%M-%S')
-        progress.cprint(f"saving linear PNG {image_pos}")
+        progress.cprint("saving linear PNG")
         plt.imsave(png_loc + name_the_file(now, "linear"), first_file[image_pos].data)
 
         progress.cprint("saving logarithm PNG")
