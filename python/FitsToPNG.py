@@ -46,21 +46,26 @@ def make_png(fits_file, png_loc):
     first_file = fits.open(fits_file.replace('/', '\\'), mode='readonly')
 
     # Check if file is empty
+    image_pos = 0
     try:
         _ = first_file[0].data
+        for i in range(len(first_file)):
+            if first_file[i].data is not None:
+                image_pos = i
+                break
     except Exception as e:
         progress.eprint("file is empty: " + e.__str__())
         sys.exit(1)
     try:
         now = datetime.now().strftime('%m-%d-%Y-%H-%M-%S')
-        progress.cprint("saving linear PNG")
-        plt.imsave(png_loc + name_the_file(now, "linear"), first_file[0].data)
+        progress.cprint(f"saving linear PNG {image_pos}")
+        plt.imsave(png_loc + name_the_file(now, "linear"), first_file[image_pos].data)
 
         progress.cprint("saving logarithm PNG")
-        plt.imsave(png_loc + name_the_file(now, "logarithm"), np.log(np.clip(np.array(first_file[0].data),1,np.max(np.array(first_file[0].data)))))
+        plt.imsave(png_loc + name_the_file(now, "logarithm"), np.log1p(np.array(first_file[image_pos].data)))
         
         progress.cprint("saving exponential PNG")
-        plt.imsave(png_loc + name_the_file(now, "exponential"), np.exp(first_file[0].data))
+        plt.imsave(png_loc + name_the_file(now, "exponential"), np.exp(first_file[image_pos].data))
 
     except Exception as e:
         progress.eprint("saving PNG has failed " + e.__str__())
