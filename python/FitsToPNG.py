@@ -48,7 +48,6 @@ def make_png(fits_file, png_loc):
     # Check if file is empty
     image_pos = 0
     try:
-        _ = first_file[0].data
         for i in range(len(first_file)):
             if first_file[i].data is not None:
                 image_pos = i
