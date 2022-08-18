@@ -16,7 +16,7 @@ class Progress():
 
     def eprint(self, message: str):
         message = "ERROR: " + message
-        self.print(message, self.stages)
+        self.print(message, -1)
 
     def print(self, message: str, stage: int):
         data_set = {

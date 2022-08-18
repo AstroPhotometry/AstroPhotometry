@@ -10,8 +10,7 @@ namespace AstroPhotometry.ViewModels
         string str;
         float progress;
 
-        string last_str;
-        float last_progress;
+        string last_error;
 
         public CmdStringVM()
         {
@@ -27,13 +26,15 @@ namespace AstroPhotometry.ViewModels
             {
                 if (null == value)
                 {
-                    last_str = str;
                     str = "";
                 }
                 else
                 {
-                    last_str = str;
                     str = value;
+                }
+                if (progress == -1)
+                {
+                    last_error = str;
                 }
 
                 NotifyPropertyChanged("Message");
@@ -45,20 +46,18 @@ namespace AstroPhotometry.ViewModels
             get { return progress; }
             set
             {
-                last_progress = progress;
                 progress = value;
+                if (progress == -1)
+                {
+                    last_error = str;
+                }
                 NotifyPropertyChanged("Progress");
             }
         }
 
-        public float LastProgress
+        public string LastError
         {
-            get { return last_progress; }
-        }
-
-        public string LastStr
-        {
-            get { return last_str; }
+            get { return last_error; }
         }
 
         public void NotifyPropertyChanged(string propName)

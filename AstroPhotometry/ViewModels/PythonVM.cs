@@ -18,6 +18,7 @@ namespace AstroPhotometry
         private string python_venv_relative_path; // The folder of python.exe
 
         private CmdStringVM cmdString;
+
         public PythonVM(string python_code_folder_full_path, string output_folder_relative_path, CmdStringVM cmdString)
         {
             this.python_code_folder_full_path = python_code_folder_full_path;
@@ -95,7 +96,7 @@ namespace AstroPhotometry
             // Check for errors
             if (((System.Diagnostics.Process)sender).ExitCode != 0)
             {
-                MessageBox.Show("Python exit code is " + ((System.Diagnostics.Process)sender).ExitCode);
+                MessageBox.Show("Please press ctrl+c and paste it in a new issue in astroPhotometry repository \n\nError was:\n\n" + cmdString.LastError, "Python exit code is " + ((System.Diagnostics.Process)sender).ExitCode, MessageBoxButton.OK, MessageBoxImage.Error);
             }
             running = false;
         }

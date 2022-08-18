@@ -10,17 +10,17 @@ import numpy as np
 progress = Progress(module_name="FtsMath", stages=1)
 
 
-# def show_exception_and_exit(exc_type, exc_value, tb):
-#     import traceback
-#     error = ""
-#     for e in traceback.format_exception(exc_type, exc_value, tb):
-#         error += e
-#         error += '\n'
-#     progress.eprint(error)
-#     sys.exit(-1)
+def show_exception_and_exit(exc_type, exc_value, tb):
+    import traceback
+    error = ""
+    for e in traceback.format_exception(exc_type, exc_value, tb):
+        error += e
+        error += '\n'
+    progress.eprint(error)
+    sys.exit(-1)
 
 
-# sys.excepthook = show_exception_and_exit
+sys.excepthook = show_exception_and_exit
 
 
 def name_the_file(time, mode = "linear"):
