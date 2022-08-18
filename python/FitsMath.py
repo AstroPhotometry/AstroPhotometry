@@ -13,6 +13,13 @@ from datetime import datetime
 
 progress = Progress(module_name="FitsMath", stages=1)
 
+# Disable
+def blockPrint():
+    sys.stdout = open(os.devnull, 'w')
+
+# Restore
+def enablePrint():
+    sys.stdout = sys.__stdout__
 
 #
 # def show_exception_and_exit(exc_type, exc_value, tb):
@@ -143,7 +150,10 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
         paths[path] = convert_path_to_files(paths[path])
         files_amount += len(paths[path])
 
-    file_process_progress = Progress(module_name="compute_engine", stages=files_amount)
+    file_process_progress = Progress(module_name="compute_engine", stages=(files_amount + 1))
+    if solve_stars_plate:
+        if 'light' in paths:
+            file_process_progress.stages += 2 * len(paths['light'])
 
     # masterBias
     outcome_array = None
@@ -211,4 +221,22 @@ def calibration_compute_process(paths, output_master_bias, output_master_dark, o
 
             # outcome image and save
             output_file_name = output_calibration_folder + '/' + str(i) + '.fit'
-            save_fit(output_file_name, calibration_output, fill_header('calibration - part ' + str(i)))
+            save_fit(output_file_name, calibration_output, fill_header('calibration - part ' + str(i)), )
+
+            if solve_stars_plate:
+                file_process_progress.cprint("plate solving, it will take time...")
+
+                blockPrint()
+                from astroquery.astrometry_net import AstrometryNet
+                AstrometryNet.key = 'gjopgwtessxhcmbl'
+                ast = AstrometryNet()
+                ast.api_key = 'gjopgwtessxhcmbl'
+                solved_header = ast.solve_from_image(output_file_name,)
+                enablePrint()
+
+                fits.writeto(output_file_name, fits.getdata(output_file_name, 0), solved_header, overwrite=True)
+                file_process_progress.cprint("solved plate and saved")
+
+    file_process_progress.cprint("all jobs done")
+
+                
